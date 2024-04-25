@@ -1,0 +1,56 @@
+---
+jupyter: ruby
+title: "langchainrb ツールの連携"
+author: "geeknees"
+date: "2023-08-08"
+categories: [ruby, ai, code, llm]
+---
+
+```{ruby}
+require 'bundler/setup'
+require "langchain"
+
+thread = Langchain::Thread.new
+assistant = Langchain::Assistant.new(
+  llm: Langchain::LLM::OpenAI.new(api_key: ENV["OPENAI_API_KEY"]),
+  thread: thread,
+  tools: [
+    Langchain::Tool::GoogleSearch.new(api_key: ENV["SERPAPI_API_KEY"]),
+    Langchain::Tool::Calculator.new
+    ]
+)
+
+assistant.add_message_and_run(content: "How many full soccer fields would be needed to cover the distance between NYC and DC in a straight line?", auto_tool_execution: true)
+assistant.thread.messages.last.content
+```
+
+
+```{ruby}
+
+thread = Langchain::Thread.new
+
+assistant = Langchain::Assistant.new(
+  llm: Langchain::LLM::OpenAI.new(api_key: ENV["OPENAI_API_KEY"]),
+  thread: thread,
+  tools: [
+    Langchain::Tool::GoogleSearch.new(api_key: ENV["SERPAPI_API_KEY"]),
+    Langchain::Tool::Calculator.new,
+    # Langchain::Tool::RubyCodeInterpreter.new,
+    Langchain::Tool::Weather.new(api_key: ENV["OPEN_WEATHER_API_KEY"]),
+    Langchain::Tool::Wikipedia.new
+    ]
+)
+
+assistant.add_message_and_run(content:  "明日の東京の天気は？", auto_tool_execution: true)
+assistant.thread.messages.last.content
+```
+
+```{ruby}
+assistant.add_message_and_run(content:  "聖徳太子の生涯について要約して", auto_tool_execution: true)
+assistant.thread.messages.last.content
+```
+
+```{ruby}
+assistant.add_message_and_run(content:  "rubyでランダムな数字の配列を作ってください", auto_tool_execution: true)
+assistant.thread.messages.last.content
+```

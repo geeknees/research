@@ -1,0 +1,72 @@
+---
+jupyter: python3
+title: "Crypto Ethereum SQL queries"
+author: "geeknees"
+date: "2024-04-24"
+categories: [crypto bigquery python analysis]
+---
+
+```{python}
+!pip install bigquery
+!pip install db-dtypes
+```
+
+```{python}
+#Importing necessary modules
+from google.cloud import bigquery
+from google.oauth2 import service_account
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+%matplotlib inline
+
+# Create a "Client" object
+key_path = os.environ['BIGQUERY_SERVICE_ACCOUNT_AUTH_FILE_PATH']
+credentials = service_account.Credentials.from_service_account_file(key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"])
+client = bigquery.Client(credentials=credentials, project=credentials.project_id)
+```
+
+```{python}
+# Construct a reference to the "Ethereum Blockchain" dataset
+eth_ref = client.dataset("crypto_ethereum", project="bigquery-public-data")
+
+# API request - fetch the dataset
+dataset = client.get_dataset(eth_ref)
+
+# List all the tables in the "crypto_ethereum" dataset
+tables = list(client.list_tables(dataset))
+
+# Print names of all tables in the dataset
+for table in tables:
+    print(table.table_id)
+```
+
+Use a function to show amount of data to be scanned for a query not to exceed the limit for a Kaggle user, before actually running the query
+```{python}
+def show_amount_of_data_scanned(query):
+    # dry_run lets us see how much data the query uses without running it
+    dry_run_config = bigquery.QueryJobConfig(dry_run=True)
+    query_job = client.query(query, job_config=dry_run_config)
+    print('Data processed: {} GB'.format(round(query_job.total_bytes_processed / 10**9, 3)))
+```
+
+The ethereum blockchain is fairly popular with users, the query below will show the top 10 wallet sender addresses with the most number of transactions
+```{python}
+transaction_table_ref = eth_ref.table("transactions")
+transaction_table = client.get_table(transaction_table_ref)
+
+most_transaction_query = """
+                 SELECT from_address as wallet_address, COUNT(*) AS transactions
+                 FROM `bigquery-public-data.crypto_ethereum.transactions`
+                 WHERE EXTRACT(YEAR from block_timestamp) = 2024
+                 GROUP BY wallet_address
+                 ORDER BY transactions DESC
+                 LIMIT 10
+                 """
+```
+
+Firstly, check amount of data scanned
+```{python}
+show_amount_of_data_scanned(most_transaction_query)
+```

@@ -1,0 +1,120 @@
+---
+jupyter: ruby
+title: "数学2、指数関数、対数関数、三角関数"
+author: "geeknees"
+date: "2023-07-23"
+categories: [ruby, math, code]
+---
+
+```{ruby}
+require "charty"
+require "datasets"
+require "numo/narray"
+```
+
+```{ruby}
+{
+  charty: Charty::VERSION,
+  datasets: Datasets::VERSION,
+  numo_narray: Numo::NArray::VERSION
+}
+```
+
+```{ruby}
+Charty::Backends.use(:plotly)
+```
+
+```{ruby}
+penguins = Datasets::Penguins.new
+
+plot = Charty.scatter_plot(data: penguins, x: :body_mass_g, y: :flipper_length_mm, color: :species)
+```
+
+
+# sin-cos-tan
+
+```{ruby}
+charty = Charty::Plotter.new(:gruff)
+```
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.sin(x) }
+  range x: 0..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/sin.png")
+```
+
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.cos(x) }
+  range x: 0..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/cos.png")
+```
+
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.tan(x) }
+  range x: 0..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/tan.png")
+```
+
+# squrt-log
+
+
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.log(x) }
+  range x: 1..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/log.png")
+```
+
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.log2(x) }
+  range x: 1..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/log2.png")
+```
+
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.log10(x) }
+  range x: 1..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/log10.png")
+```
+
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.sqrt(x) }
+  range x: 0..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/sqrt.png")
+```
+
+```{ruby}
+curve = charty.curve do
+  function {|x| Math.exp(x) }
+  range x: 0..10, y: -1..1
+  xlabel 'foo'
+  ylabel 'bar'
+end
+curve.render("sample_images/exp.png")
+```

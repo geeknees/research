@@ -1,0 +1,207 @@
+---
+jupyter: ruby
+title: "openai functions and embeddings"
+author: "geeknees"
+date: "2023-08-05"
+categories: [ai, ruby]
+---
+
+## Basic
+
+```{ruby}
+require "openai"
+
+OpenAI.configure do |config|
+  config.access_token = ENV.fetch('OPENAI_ACCESS_TOKEN', nil)
+end
+
+client = OpenAI::Client.new
+
+response = client.chat(
+    parameters: {
+        model: "gpt-3.5-turbo", # Required.
+        messages: [{ role: "user", content: "Hello!"}], # Required.
+        temperature: 0.7,
+    })
+puts response.dig("choices", 0, "message", "content")
+
+```
+
+## Functions
+
+```{ruby}
+
+def get_current_weather(location:, unit: "fahrenheit")
+  puts "#{location}, #{unit}"
+  # use a weather api to fetch weather
+end
+
+response =
+  client.chat(
+    parameters: {
+      model: "gpt-3.5-turbo-0613",
+      messages: [
+        {
+          "role": "user",
+          "content": "What is the weather like in San Francisco?",
+        },
+      ],
+      functions: [
+        {
+          name: "get_current_weather",
+          description: "Get the current weather in a given location",
+          parameters: {
+            type: :object,
+            properties: {
+              location: {
+                type: :string,
+                description: "The city and state, e.g. San Francisco, CA",
+              },
+              unit: {
+                type: "string",
+                enum: %w[celsius fahrenheit],
+              },
+            },
+            required: ["location"],
+          },
+        },
+      ],
+    },
+  )
+
+message = response.dig("choices", 0, "message")
+
+puts message
+
+if message["role"] == "assistant" && message["function_call"]
+  function_name = message.dig("function_call", "name")
+  args =
+    JSON.parse(
+      message.dig("function_call", "arguments"),
+      { symbolize_names: true },
+    )
+
+  case function_name
+  when "get_current_weather"
+    get_current_weather(**args)
+  end
+end
+```
+
+## Embeddings
+
+```{ruby}
+response = client.embeddings(
+    parameters: {
+        model: "text-embedding-ada-002",
+        input: "The king is naked, the king's ears are donkey ears..."
+    }
+)
+
+puts response.dig("data", 0, "embedding")
+```
+
+
+```{ruby}
+text_array = []
+
+Dir.glob("training_data/*.txt") do |file|
+  text = File.read(file).dump()
+  text_array << text
+end
+```
+
+```{ruby}
+embedding_array = []
+
+text_array.each do |text|
+  response = client.embeddings(
+    parameters: {
+      model: "text-embedding-ada-002",
+      input: text
+    }
+  )
+
+  embedding = response['data'][0]['embedding']
+  embedding_hash = {embedding: embedding, text: text}
+  embedding_array << embedding_hash
+end
+```
+
+```{ruby}
+require 'csv'
+
+CSV.open("embeddings.csv", "w") do |csv|
+  csv << [:embedding, :text]
+  embedding_array.each do |obj|
+    csv << [obj[:embedding], obj[:text]]
+  end
+end
+```
+
+
+```{ruby}
+require 'cosine_similarity'
+
+question = "What is open AI"
+
+response = client.embeddings(
+  parameters: {
+    model: "text-embedding-ada-002",
+    input: question
+  }
+)
+
+question_embedding = response['data'][0]['embedding']
+
+similarity_array = []
+
+CSV.foreach("embeddings.csv", headers: true) do |row|
+  text_embedding = JSON.parse(row['embedding'])
+  similarity_array << cosine_similarity(question_embedding, text_embedding)
+end
+
+index_of_max = similarity_array.index(similarity_array.max)
+original_text = ""
+
+CSV.foreach("embeddings.csv", headers: true).with_index do |row, rowno|
+  if rowno == index_of_max
+    original_text = row['text']
+  end
+end
+
+prompt =
+"You are an AI assistant. You work for Sterling Parts which is a car parts online store located in Australia.
+You will be asked questions from a customer and will answer in a helpful and friendly manner.
+
+You will be provided company information from Sterline Parts under the [Article] section. The customer question
+will be provided unders the [Question] section. You will answer the customers questions based on the article.
+If the users question is not answered by the article you will respond with 'I'm sorry I don't know.'
+
+[Article]
+#{original_text}
+
+[Question]
+#{question}"
+
+response = client.completions(
+  parameters: {
+    model: "text-davinci-003",
+    prompt: prompt,
+    temperature: 0.2,
+    max_tokens: 500,
+  }
+)
+
+puts response['choices']
+
+response = client.chat(
+  parameters: {
+    model: "gpt-3.5-turbo",
+    messages: [{role: "user", content: prompt}],
+    temperature: 0.7,
+  }
+)
+
+puts response.dig("choices", 0, "message", "content")
+```

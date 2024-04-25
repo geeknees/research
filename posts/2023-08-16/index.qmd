@@ -1,0 +1,24 @@
+---
+jupyter: ruby
+title: "langchainrb eth拡張"
+author: "geeknees"
+date: "2023-08-16"
+categories: [ruby, ai, code, llm, crypto]
+---
+
+```{ruby}
+require 'bundler/setup'
+require "langchain"
+
+thread = Langchain::Thread.new
+assistant = Langchain::Assistant.new(
+  llm: Langchain::LLM::OpenAI.new(api_key: ENV["OPENAI_API_KEY"]),
+  thread: thread,
+  tools: [
+    Langchain::Tool::Eth.new(api_key: ENV["INFURA_ACCESS_TOKEN"])
+    ]
+)
+
+assistant.add_message_and_run(content: "geeknees.eth", auto_tool_execution: true)
+assistant.thread.messages.last.content
+```

@@ -1,0 +1,132 @@
+---
+jupyter: python3
+title: "Crypto Ethereum SQL queries"
+author: "geeknees"
+date: "2024-04-24"
+categories: [crypto bigquery python analysis]
+---
+
+```{python}
+!pip install bigquery
+!pip install db-dtypes
+```
+
+```{python}
+#Importing necessary modules
+from google.cloud import bigquery
+from google.oauth2 import service_account
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+%matplotlib inline
+
+# Create a "Client" object
+key_path = os.environ['BIGQUERY_SERVICE_ACCOUNT_AUTH_FILE_PATH']
+credentials = service_account.Credentials.from_service_account_file(key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"])
+client = bigquery.Client(credentials=credentials, project=credentials.project_id)
+```
+
+```{python}
+# Construct a reference to the "Ethereum Blockchain" dataset
+eth_ref = client.dataset("crypto_ethereum", project="bigquery-public-data")
+
+# API request - fetch the dataset
+dataset = client.get_dataset(eth_ref)
+
+# List all the tables in the "crypto_ethereum" dataset
+tables = list(client.list_tables(dataset))
+
+# Print names of all tables in the dataset
+for table in tables:
+    print(table.table_id)
+```
+
+Use a function to show amount of data to be scanned for a query not to exceed the limit for a Kaggle user, before actually running the query
+```{python}
+def show_amount_of_data_scanned(query):
+    # dry_run lets us see how much data the query uses without running it
+    dry_run_config = bigquery.QueryJobConfig(dry_run=True)
+    query_job = client.query(query, job_config=dry_run_config)
+    print('Data processed: {} GB'.format(round(query_job.total_bytes_processed / 10**9, 3)))
+```
+
+The ethereum blockchain is fairly popular with users, the query below will show the top 10 wallet sender addresses with the most number of transactions
+```{python}
+transaction_table_ref = eth_ref.table("transactions")
+transaction_table = client.get_table(transaction_table_ref)
+
+most_transaction_query = """
+                 SELECT from_address as wallet_address, COUNT(*) AS transactions
+                 FROM `bigquery-public-data.crypto_ethereum.transactions`
+                 WHERE EXTRACT(YEAR from block_timestamp) = 2024
+                 GROUP BY wallet_address
+                 ORDER BY transactions DESC
+                 LIMIT 10
+                 """
+```
+
+Firstly, check amount of data scanned
+```{python}
+show_amount_of_data_scanned(most_transaction_query)
+```
+Run the query
+```{python}
+query_job = client.query(most_transaction_query)
+
+addresses_with_most_transactions = query_job.to_dataframe()
+
+addresses_with_most_transactions
+```
+The ethereum blockchain is also known for its high gas prices, the query below will show the top 10 highest gas fees of the dataset
+```{python}
+highest_gas_query = """
+                 SELECT block_hash, block_timestamp, receipt_cumulative_gas_used
+                 FROM `bigquery-public-data.crypto_ethereum.transactions`
+                 WHERE EXTRACT(YEAR from block_timestamp) = 2024
+                 ORDER BY receipt_cumulative_gas_used DESC
+                 LIMIT 10
+                 """
+query_job = client.query(highest_gas_query)
+
+highest_gas = query_job.to_dataframe()
+
+highest_gas
+```
+
+Let's see the dates and the number of transactions in year 2024 using an analytic function
+```{python}
+transfer_date_query = """
+                      WITH transfer_a_day AS
+                      (
+                      SELECT DATE(block_timestamp) AS token_transfer_date,
+                          COUNT(*) as num_transfer
+                      FROM `bigquery-public-data.crypto_ethereum.token_transfers`
+                      WHERE EXTRACT(YEAR from block_timestamp) = 2024
+                      GROUP BY token_transfer_date
+                      )
+                      SELECT token_transfer_date,
+                          SUM(num_transfer)
+                              OVER (
+                                  ORDER BY num_transfer DESC
+                                  ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                              ) AS sum_transactions
+                              FROM transfer_a_day
+                     """
+```
+
+Firstly, check amount of data scanned
+```{python}
+show_amount_of_data_scanned(transfer_date_query)
+```
+
+Run the query
+```{python}
+query_job = client.query(transfer_date_query)
+
+transfer_date = query_job.to_dataframe()
+
+transfer_date.head()
+```
+
+ref. [https://www.kaggle.com/code/akafieva/crypto-ethereum-sql-queries](https://www.kaggle.com/code/akafieva/crypto-ethereum-sql-queries)

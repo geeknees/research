@@ -1,0 +1,72 @@
+---
+jupyter: ruby
+title: "Statistics Terminology"
+author: "geeknees"
+date: "2024-04-21"
+categories: [statistics]
+---
+
+1. 基本統計学
+
+- 平均（Mean） - データセットの中心を示す測定値。
+- 中央値（Median） - データセットを半分に分ける値。
+- 分散（Variance） - データが平均からどれだけ離れているかを示す測定値。
+- 標準偏差（Standard Deviation） - 分散の平方根で、データの散らばりを示す。
+- 相関係数（Correlation Coefficient） - 二つの変数間の線形関係の強さを示す。
+- 回帰分析（Regression Analysis） - 依存変数と一つまたは複数の独立変数との関係をモデル化。
+- ヒストグラム（Histogram） - データの分布を視覚的に表示するグラフ。
+- t検定（t-test） - 二つの平均値の差の統計的有意性を評価。
+- カイ二乗検定（Chi-squared Test） - カテゴリカルデータの期待値と観測値の違いを評価。
+- ANOVA（Analysis of Variance） - 複数のグループ間での平均値の差を評価。
+
+2. 確率論
+
+- 確率変数（Random Variable）
+- 確率密度関数（Probability Density Function, PDF）
+- 累積分布関数（Cumulative Distribution Function, CDF）
+- 条件付き確率（Conditional Probability）
+- 独立性（Independence）
+- ベイズの定理（Bayes' Theorem）
+- マルコフ連鎖（Markov Chain）
+- ポアソン分布（Poisson Distribution）
+- 指数分布（Exponential Distribution）
+- 正規分布（Normal Distribution）
+
+3. 確率的モデリング
+
+- モンテカルロ法（Monte Carlo Methods）
+- マルコフ連鎖モンテカルロ法（Markov Chain Monte Carlo, MCMC）
+- 隠れマルコフモデル（Hidden Markov Model, HMM）
+- ガウス過程（Gaussian Processes）
+- ベイジアンネットワーク（Bayesian Networks）
+- ランダムフォレスト（Random Forests）
+- サポートベクターマシン（Support Vector Machines, SVM）
+- 一般化線形モデル（Generalized Linear Models, GLM）
+- ロジスティック回帰（Logistic Regression）
+- サバイバル分析（Survival Analysis）
+
+4. 時系列解析
+
+- ARIMAモデル（AutoRegressive Integrated Moving Average）
+- 季節性調整（Seasonal Adjustment）
+- トレンド分析（Trend Analysis）
+- スペクトル分析（Spectral Analysis）
+- クロスコレログラム（Cross Correlogram）
+- ボラティリティ・モデリング（Volatility Modeling）
+- カルマンフィルタ（Kalman Filter）
+- 波形認識（Waveform Recognition）
+- 時系列クラスタリング（Time Series Clustering）
+- 因果関係分析（Causal Analysis）
+
+5. 応用統計学
+
+- 機械学習（Machine Learning）
+- データマイニング（Data Mining）
+- ビッグデータ分析（Big Data Analytics）
+- ネットワーク分析（Network Analysis）
+- テキストマイニング（Text Mining）
+- 画像解析（Image Analysis）
+- 自然言語処理（Natural Language Processing, NLP）
+- バイオインフォマティクス（Bioinformatics）
+- クラウドソーシングデータ分析（Crowdsourcing Data Analysis）
+- リアルタイムデータ処理（Real-time Data Processing）

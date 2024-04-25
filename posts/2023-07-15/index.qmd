@@ -1,0 +1,22 @@
+---
+jupyter: ruby
+title: "langchainrb"
+author: "geeknees"
+date: "2023-07-15"
+categories: [ruby, ai, code, llm]
+---
+
+[https://github.com/andreibondarev/langchainrb](https://github.com/andreibondarev/langchainrb)
+
+```{ruby}
+p ENV['RUBYINSPECT']
+```
+
+```{ruby}
+require 'bundler/setup'
+require 'langchain'
+
+llm = Langchain::LLM::OpenAI.new(api_key: ENV["OPENAI_API_KEY"])
+llm.chat(messages: [{role: "user", content: "What is the meaning of life?"}]).completion
+
+```

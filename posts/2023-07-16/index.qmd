@@ -1,0 +1,32 @@
+---
+jupyter: ruby
+title: "Boxcars"
+author: "geeknees"
+date: "2023-07-16"
+categories: [ruby, ai, code, llm]
+---
+
+[https://github.com/BoxcarsAI/boxcars](https://github.com/BoxcarsAI/boxcars)
+
+```{ruby}
+require 'boxcars'
+```
+
+```{ruby}
+
+# showcase Google Serp search
+s = Boxcars::GoogleSearch.new
+s.run "what temperature is it in Phoenix?"
+```
+
+```{ruby}
+require 'active_support'
+
+engine = Boxcars::Openai.new(max_tokens: 256)
+calc = Boxcars::Calculator.new(engine: engine)
+puts calc.run "what is pi to the forth power divided by 22.1?"
+```
+
+It is necessary to add gem 'activesupport' to call blank?.
+
+[https://github.com/BoxcarsAI/boxcars/blob/c92c1f29aac6485903731ad8d8a2cbbb1c2a7b24/lib/boxcars/ruby_repl.rb#L22](https://github.com/BoxcarsAI/boxcars/blob/c92c1f29aac6485903731ad8d8a2cbbb1c2a7b24/lib/boxcars/ruby_repl.rb#L22)

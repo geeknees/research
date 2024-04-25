@@ -1,0 +1,52 @@
+---
+jupyter: ruby
+title: "Daru"
+author: "geeknees"
+date: "2023-07-13"
+categories: [ruby, code, analysis]
+---
+
+
+[https://github.com/SciRuby/daru](https://github.com/SciRuby/daru)
+
+To plot the graph, it is necessary to add gem 'daru-view'.
+
+It also requires adding gem 'matrics'. After the PR below is merged, it will be resolved.
+[https://github.com/SciRuby/daru/pull/541](https://github.com/SciRuby/daru/pull/541)
+
+```{ruby}
+require 'bundler/setup'
+require 'daru'
+```
+
+```{ruby}
+df = Daru::DataFrame.new({
+    a: Array.new(100) {|i| i},
+    b: 100.times.map{rand}
+  })
+  df.plot type: :scatter, x: :a, y: :b
+```
+
+```{ruby}
+df = Daru::DataFrame.new({
+    :temperature => [30.4, 23.5, 44.5, 20.3, 34, 24, 31.45, 28.34, 37, 24],
+    :sales       => [350, 150, 500, 200, 480, 250, 330, 400, 420, 560],
+    :city        => ['Pune', 'Delhi']*5,
+    :staff       => [15,20]*5
+    })
+  df
+```
+
+
+```{ruby}
+df.plot(type: :scatter, x: :temperature, y: :sales) do |plot, diagram|
+    plot.x_label "Temperature"
+    plot.y_label "Sales"
+    plot.yrange [100, 600]
+    plot.xrange [15, 50]
+    diagram.tooltip_contents([:city, :staff])
+    diagram.color(Nyaplot::Colors.qual) # set the color scheme for this diagram. See Nyaplot::Colors for more info.
+    diagram.fill_by(:city) # Change color of each point WRT to the city that it belongs to.
+    diagram.shape_by(:city) # Shape each point WRT to the city that it belongs to.
+  end
+```

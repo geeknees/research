@@ -1,0 +1,66 @@
+---
+jupyter: ruby
+title: "公式"
+author: "geeknees"
+date: "2023-08-03"
+categories: [math]
+---
+# 高校数学
+## 2次方程式の解の公式
+
+$$
+ax^2+bx+c=0 \quad (a \neq 0)
+$$
+
+$$
+x = \frac{-b \pm　\sqrt{b^2 - 4ac}}{2a}
+$$
+
+## 解と係数の関係
+
+2次方程式$ax^2+bx+c=0$の二つの解を$\alpha$, $\beta$とするとき, 解と係数の間には次の関係がある。
+
+$$
+\alpha + \beta = - \frac{b}{a}, \quad \alpha\beta = \frac{c}{a}
+$$
+
+## 乗法の公式
+
+$(x + b)(x + d) = x^2 + (b+d)x + bd$
+
+$(ax + b)(cx + d) = acx^2 + (ad + bc)x + bd$
+
+$(x+y)^2 = x^2 + 2xy + y^2$
+
+$(x-y)^2 = x^2 - 2xy + y^2$
+
+$(x+y)(x-y) = x^2 - y^2$
+
+$(x+y+z)^3 = x^2 + y^2 + z^2 + 2xy + 2yz +2zx$
+
+$(x+y)^3= x^3 + 3x^2y + 3xy^2 + y^3$
+
+$(x-y)^3= x^3 - 3x^2y + 3xy^2 - y^3$
+
+# 大学数学
+
+## フーリエ変換
+
+$\hat{f}(\xi) := \int_{-\infty}^{\infty} f(x)e^{- 2\pi i x \xi}\,dx$
+
+- $\xi$ は任意の実数
+- := という記号は，左辺を右辺で定義するという意味
+- $\int_{}{}$ は積分記号
+- $e^{- 2\pi i x \xi}$ は周波数（？）
+- $dx$ は瞬間的な変化量
+
+## 偏微分方程式
+
+以下では未知関数 ψ の変数 x に関する偏微分を ψx のように表す：
+$$
+\psi_x := {\partial \psi \over \partial x},
+$$
+
+$$
+\psi_{xy} := {\partial^2 \psi \over \partial y\, \partial x}.
+$$

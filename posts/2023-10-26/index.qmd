@@ -1,0 +1,507 @@
+---
+jupyter: ruby
+title: "Computer Science"
+author: "geeknees"
+date: "2023-10-26"
+categories: [ruby, code]
+---
+
+[https://github.com/shhossain/computer_science
+](https://github.com/shhossain/computer_science)
+
+
+# Heap Sort
+
+```{ruby}
+def heapify(arr, n, i)
+    largest = i  # Initialize largest as root
+    l = 2*i + 1  # left = 2*i + 1
+    r = 2*i + 2  # right = 2*i + 2
+
+    # If left child is larger than root
+    if l < n and arr[l] > arr[largest]
+        largest = l
+    end
+
+    # If right child is larger than largest so far
+    if r < n and arr[r] > arr[largest]
+        largest = r
+    end
+
+    # If largest is not root
+    if largest != i
+        arr[i], arr[largest] = arr[largest], arr[i]
+
+        # Recursively heapify the affected sub-tree
+        heapify(arr, n, largest)
+    end
+end
+
+# main function to do heap sort
+def heap_sort(arr)
+    n = arr.length
+
+    # Build heap (rearrange array)
+    (n/2 - 1).downto(0) do |i|
+        heapify(arr, n, i)
+    end
+
+    # One by one extract an element from heap
+    (n-1).downto(0) do |i|
+        # Move current root to end
+        arr[0], arr[i] = arr[i], arr[0]
+
+        # call max heapify on the reduced heap
+        heapify(arr, i, 0)
+    end
+end
+
+# Driver code
+arr = [12, 11, 13, 5, 6, 7]
+heap_sort(arr)
+n = arr.length
+puts "Sorted array is"
+for i in 0..n-1 do
+    print arr[i]
+end
+puts
+```
+# Sequential Search
+
+```{ruby}
+# Ruby program to search an item into the array
+# using linear search
+
+arr = [12,45,23,39,37];
+
+i    =   0;
+item =   0;
+flag =   0;
+
+print "Enter item: ";
+# item = gets.chomp.to_i;
+item = 12
+
+flag = -1
+while(i<arr.size)
+    if(arr[i]==item)
+        flag = i;
+        break;
+    end
+    i = i + 1;
+end
+
+
+if(flag>=0)
+    print "Item found at index: ",flag,"\n";
+else
+    print "Item not found\n";
+end
+# Ruby program to search an item into the array
+# using linear search
+
+arr = [12,45,23,39,37];
+
+i    =   0;
+item =   0;
+flag =   0;
+
+print "Enter item: ";
+# item = gets.chomp.to_i;
+item = 45
+
+flag = -1
+while(i<arr.size)
+    if(arr[i]==item)
+        flag = i;
+        break;
+    end
+    i = i + 1;
+end
+
+
+if(flag>=0)
+    print "Item found at index: ",flag,"\n";
+else
+    print "Item not found\n";
+end
+```
+
+# Quick Sort
+
+
+```{ruby}
+# This function takes last element as pivot, places
+# the pivot element at its correct position in sorted
+# array, and places all smaller (smaller than pivot)
+# to left of pivot and all greater elements to right
+# of pivot
+
+def partition(arr, low, high)
+    i = low - 1
+    pivot = arr[high]
+
+    for j in low..high - 1
+        if arr[j] <= pivot
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+        end
+    end
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+end
+
+# The main function that implements QuickSort
+# arr[] --> Array to be sorted,
+# low  --> Starting index,
+# high  --> Ending index
+def quick_sort(arr, low, high)
+    if low < high
+        # pi is partitioning index, arr[p] is now
+        # at right place
+        pi = partition(arr, low, high)
+
+        # Separately sort elements before
+        # partition and after partition
+        quick_sort(arr, low, pi - 1)
+        quick_sort(arr, pi + 1, high)
+    end
+end
+
+# Function to print an array
+def print_array(arr, size)
+    for i in 0..size - 1
+        print arr[i], " "
+    end
+    puts
+end
+
+# Driver code
+arr = [10, 7, 8, 9, 1, 5]
+n = arr.length
+quick_sort(arr, 0, n - 1)
+puts "Sorted array: "
+print_array(arr, n)
+```
+
+
+# Bubble Sort
+
+```{ruby}
+def bubble_sort(arr)
+  n = arr.length
+  loop do
+    swapped = false
+    (n-1).times do |i|
+      if arr[i] > arr[i+1]
+        arr[i], arr[i+1] = arr[i+1], arr[i]
+        swapped = true
+      end
+    end
+    break if not swapped
+  end
+  arr
+end
+
+def bubble_sort_desc(arr)
+  n = arr.length
+  loop do
+    swapped = false
+    (n-1).times do |i|
+      if arr[i] < arr[i+1]
+        arr[i], arr[i+1] = arr[i+1], arr[i]
+        swapped = true
+      end
+    end
+    break if not swapped
+  end
+  arr
+end
+
+arr = [64, 34, 25, 12, 22, 11, 90]
+p bubble_sort(arr)
+p bubble_sort_desc(arr)
+```
+
+# Insertion Sort
+
+```{ruby}
+def insertion_sort(arr)
+    n = arr.length
+    for i in 1...n
+        key = arr[i]
+        j = i - 1
+        while j >= 0 && arr[j] > key
+            arr[j + 1] = arr[j]
+            j = j - 1
+        end
+        arr[j + 1] = key
+    end
+end
+
+def insertion_sort_desc(arr)
+    n = arr.length
+    for i in 1...n
+        key = arr[i]
+        j = i - 1
+        while j >= 0 && arr[j] < key
+            arr[j + 1] = arr[j]
+            j = j - 1
+        end
+        arr[j + 1] = key
+    end
+end
+
+arr = [12, 11, 13, 5, 6]
+insertion_sort(arr)
+p arr
+insertion_sort_desc(arr)
+p arr
+```
+
+# Depth First Search
+
+```{ruby}
+class Graph
+    def initialize(vertices)
+        @vertices = vertices
+        @adj = Array.new(vertices) { Array.new }
+    end
+
+    def add_edge(source, destination)
+        @adj[source].push(destination)
+    end
+
+    def dfs_util(vertex, visited)
+        visited[vertex] = true
+        print vertex, " "
+
+        @adj[vertex].each do |v|
+            dfs_util(v, visited) unless visited[v]
+        end
+    end
+
+    def dfs(vertex)
+        visited = Array.new(@vertices, false)
+        dfs_util(vertex, visited)
+    end
+end
+
+g = Graph.new(4)
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 2)
+g.add_edge(2, 0)
+g.add_edge(2, 3)
+g.add_edge(3, 3)
+
+puts "Following is Depth First Traversal"
+g.dfs(2)
+```
+
+# Linear Search
+
+```{ruby}
+
+def linear_search(array, element)
+  i = 0
+  while i < array.length
+      if array[i] == element
+        return "#{element} at index #{array.index(element)}"
+      end
+      i+=1
+    end
+    return -1
+end
+
+p linear_search([1,2], 2)
+```
+
+# Binary Search
+
+```{ruby}
+def binary_search(n, arr)
+  middle = arr[arr.length / 2]
+  i = 0
+  j = arr.length - 1
+
+  while i < j
+    if middle == n
+      return true
+    elsif middle < n
+      i = middle
+      middle = i + j / 2
+    else
+      p "Middle is greater than n"
+      j = middle
+      p "j: #{j}"
+      middle = i + j / 2
+      p "middle: #{middle}"
+    end
+  end
+  false
+end
+
+p binary_search(1, [1,3])
+```
+
+# Shell Sort
+
+```{ruby}
+class ShellSorter
+
+  def self.sort(a = [3, 1, 2])
+    numComp = 0
+    len = a.length
+    k = len/2
+    while(k > 0.0)
+      # Increment = k. We sort all k-sequences (sequences of elements
+      # k-apart) using insertion sort over all k-sequences concurrently.
+      for i in k..len-1 do
+        t = a[i]
+        j = i
+        while( (j >= k) && (a[j-k] > t) ) do
+          numComp += 1
+          a[j] = a[j-k]
+          j -= k
+        end
+        ++numComp
+        a[j] = t;
+      end
+      k = (k/(k == 2 ? 2 : 2.2)).floor # "divide by 2.2" increment sequence
+    end
+    return numComp
+  end
+
+  def self.randomArray(len = 10)
+    a = []
+    if(len<0) then len = 0 end
+    for i in 0..len-1 do
+      a[i] = (rand*len).floor
+    end
+    return a;
+  end
+
+  def self.test(len = 10, show = false)
+    a = randomArray(len)
+    if(show) then puts "  In: " + a.join(" ") end
+    c = sort(a)
+    if(show)
+      puts " Out: " + a.join(" ")
+      puts "comp: #{c}"
+    end
+  end
+
+end
+
+ShellSorter.test(20, true)
+```
+
+# Breadth First Search
+
+```{ruby}
+class Graph
+    def initialize
+        @adj = Hash.new { |h, k| h[k] = [] }
+    end
+
+    def add_edge(u, v)
+        @adj[u] << v
+        @adj[v] << u
+    end
+
+    def bfs(s)
+        visited = Array.new(@adj.size, false)
+        queue = [s]
+        visited[s] = true
+
+        while !queue.empty?
+            u = queue.shift
+            puts u
+            @adj[u].each do |v|
+                if !visited[v]
+                    queue << v
+                    visited[v] = true
+                end
+            end
+        end
+    end
+end
+
+g = Graph.new
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 2)
+g.add_edge(2, 0)
+g.add_edge(2, 3)
+g.add_edge(3, 3)
+
+g.bfs(2)
+```
+
+# Selection Sort
+
+```{ruby}
+def selection_sort(arr)
+  for i in 0..arr.length-1
+    min = i
+    for j in i+1..arr.length-1
+      if arr[j] < arr[min]
+        min = j
+      end
+    end
+    if min != i
+      arr[i], arr[min] = arr[min], arr[i]
+    end
+  end
+  return arr
+end
+
+def selection_sort_desc(arr)
+  for i in 0..arr.length-1
+    max = i
+    for j in i+1..arr.length-1
+      if arr[j] > arr[max]
+        max = j
+      end
+    end
+    if max != i
+      arr[i], arr[max] = arr[max], arr[i]
+    end
+  end
+  return arr
+end
+
+arr = [64, 25, 12, 22, 11]
+p selection_sort(arr) # [11, 12, 22, 25, 64]
+p selection_sort_desc(arr) # [64, 25, 22, 12, 11]
+```
+
+# Merge Sort
+
+```{ruby}
+def merge_sort(arr)
+  return arr if arr.length <= 1
+
+  mid = arr.length / 2
+  left = merge_sort(arr[0...mid])
+  right = merge_sort(arr[mid..arr.length])
+
+  merge(left, right)
+end
+
+def merge(left, right)
+  if left.empty?
+    right
+  elsif right.empty?
+    left
+  elsif left.first < right.first
+    [left.first] + merge(left[1..left.length], right)
+  else
+    [right.first] + merge(left, right[1..right.length])
+  end
+end
+
+arr = [12, 11, 13, 5, 6, 7]
+p merge_sort(arr)
+```
