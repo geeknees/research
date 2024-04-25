@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="geeknees">
+<meta name="dcterms.date" content="2023-08-05">
+
+<title>Research - openai functions and embeddings</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Research</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/geeknees/research"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/_geeknees"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">openai functions and embeddings</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">ai</div>
+                <div class="quarto-category">ruby</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>geeknees </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 5, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic" id="toc-basic" class="nav-link active" data-scroll-target="#basic">Basic</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  <li><a href="#embeddings" id="toc-embeddings" class="nav-link" data-scroll-target="#embeddings">Embeddings</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="basic" class="level2">
+<h2 class="anchored" data-anchor-id="basic">Basic</h2>
+<div id="a8e5994b" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span> <span class="st">"openai"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">OpenAI</span><span class="at">.configure</span> <span class="cf">do</span> <span class="kw">|</span>config<span class="kw">|</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  config<span class="at">.access_token</span> <span class="kw">=</span> <span class="cn">ENV</span><span class="at">.fetch</span>(<span class="vs">'OPENAI_ACCESS_TOKEN'</span>, <span class="dv">nil</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>client <span class="kw">=</span> <span class="dt">OpenAI</span><span class="kw">::</span><span class="dt">Client</span><span class="at">.new</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>response <span class="kw">=</span> client<span class="at">.chat</span>(</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="wa">model: </span><span class="st">"gpt-3.5-turbo"</span>, <span class="co"># Required.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="wa">messages: </span><span class="kw">[{</span> <span class="wa">role: </span><span class="st">"user"</span>, <span class="wa">content: </span><span class="st">"Hello!"</span><span class="kw">}]</span>, <span class="co"># Required.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="wa">temperature: </span><span class="fl">0.7</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">}</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">puts</span> response<span class="at">.dig</span>(<span class="st">"choices"</span>, <span class="dv">0</span>, <span class="st">"message"</span>, <span class="st">"content"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hello! How can I assist you today?</code></pre>
+</div>
+</div>
+</section>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<div id="169524c2" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">def</span> get_current_weather(location:, <span class="wa">unit: </span><span class="st">"fahrenheit"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">puts</span> <span class="st">"</span><span class="sc">#{</span>location<span class="sc">}</span><span class="st">, </span><span class="sc">#{</span>unit<span class="sc">}</span><span class="st">"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># use a weather api to fetch weather</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>response <span class="kw">=</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  client<span class="at">.chat</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="wa">model: </span><span class="st">"gpt-3.5-turbo-0613"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      <span class="wa">messages: </span><span class="kw">[</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">{</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>          <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>          <span class="st">"content"</span>: <span class="st">"What is the weather like in San Francisco?"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">}</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">]</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>      <span class="wa">functions: </span><span class="kw">[</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">{</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>          <span class="wa">name: </span><span class="st">"get_current_weather"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>          <span class="wa">description: </span><span class="st">"Get the current weather in a given location"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>          <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>            <span class="wa">type: :object</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>            <span class="wa">properties: </span><span class="kw">{</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>              <span class="wa">location: </span><span class="kw">{</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                <span class="wa">type: :string</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                <span class="wa">description: </span><span class="st">"The city and state, e.g. San Francisco, CA"</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>              <span class="kw">}</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>              <span class="wa">unit: </span><span class="kw">{</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                <span class="wa">type: </span><span class="st">"string"</span>,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                <span class="wa">enum: </span><span class="ot">%w[</span><span class="st">celsius fahrenheit</span><span class="ot">]</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>              <span class="kw">}</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>            <span class="kw">}</span>,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>            <span class="wa">required: </span><span class="kw">[</span><span class="st">"location"</span><span class="kw">]</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>          <span class="kw">}</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="kw">}</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">]</span>,</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">}</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>message <span class="kw">=</span> response<span class="at">.dig</span>(<span class="st">"choices"</span>, <span class="dv">0</span>, <span class="st">"message"</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="fu">puts</span> message</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> message<span class="kw">[</span><span class="st">"role"</span><span class="kw">]</span> <span class="kw">==</span> <span class="st">"assistant"</span> <span class="kw">&amp;&amp;</span> message<span class="kw">[</span><span class="st">"function_call"</span><span class="kw">]</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  function_name <span class="kw">=</span> message<span class="at">.dig</span>(<span class="st">"function_call"</span>, <span class="st">"name"</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  args <span class="kw">=</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="cn">JSON</span><span class="at">.parse</span>(</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>      message<span class="at">.dig</span>(<span class="st">"function_call"</span>, <span class="st">"arguments"</span>),</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      <span class="kw">{</span> <span class="wa">symbolize_names: </span><span class="dv">true</span> <span class="kw">}</span>,</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> function_name</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">when</span> <span class="st">"get_current_weather"</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    get_current_weather(<span class="kw">**</span>args)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{"role"=&gt;"assistant", "content"=&gt;nil, "function_call"=&gt;{"name"=&gt;"get_current_weather", "arguments"=&gt;"{\n  \"location\": \"San Francisco, CA\"\n}"}}
+San Francisco, CA, fahrenheit</code></pre>
+</div>
+</div>
+</section>
+<section id="embeddings" class="level2">
+<h2 class="anchored" data-anchor-id="embeddings">Embeddings</h2>
+<div id="56872f51" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>response <span class="kw">=</span> client<span class="at">.embeddings</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="wa">model: </span><span class="st">"text-embedding-ada-002"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="wa">input: </span><span class="st">"The king is naked, the king's ears are donkey ears..."</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">}</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">puts</span> response<span class="at">.dig</span>(<span class="st">"data"</span>, <span class="dv">0</span>, <span class="st">"embedding"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-0.004684245
+-0.015983792
+0.0054681394
+-0.008597342
+-0.0027388495
+0.016506387
+-0.024128642
+-0.022356914
+-0.0053438633
+-0.011267681
+0.0032662253
+-0.000123778
+0.0257984
+-0.014161078
+-0.0064049885
+0.015665136
+0.021298977
+0.008731178
+0.022216706
+-0.0008492186
+-0.008132105
+0.0003077023
+-0.024485538
+0.008323298
+0.01751334
+-0.008463507
+0.014760152
+-0.010483786
+0.014441496
+-0.014938599
+0.001453072
+0.007921792
+-0.0005174179
+-0.009546937
+-0.028067231
+0.0050889384
+0.0011957572
+-0.016366178
+0.027710337
+-0.009827355
+-0.010929905
+0.005442647
+0.0012555051
+0.0033076506
+-0.02671613
+0.009196416
+0.014071855
+-0.037321005
+-0.0020824177
+0.013396304
+0.01210256
+-0.0059652426
+-0.0061564366
+0.0041680224
+-0.014352272
+0.017844744
+-0.01751334
+-0.0022289997
+0.0034319265
+-0.0057421834
+0.008845895
+-0.0033203969
+0.0033650089
+-0.009585177
+-0.008520865
+-0.020113574
+0.0034255534
+-0.008495373
+-0.016876029
+0.002542876
+0.048792627
+0.012746246
+-0.026945563
+-0.030540004
+0.019578233
+0.00013831668
+-0.021197006
+0.01904289
+0.00998031
+0.0005098498
+0.010917159
+-0.040864464
+-0.01775552
+0.023096196
+0.017577073
+0.006408175
+8.190458e-06
+0.025887623
+0.011567217
+-0.023363868
+-0.0069275843
+0.00095517177
+0.022828525
+0.0049805953
+-0.03724453
+0.0053279307
+0.0043018577
+0.016315194
+-0.005442647
+-0.014365018
+0.0066662864
+0.0035912546
+-0.006408175
+-0.0029794348
+-0.01150986
+0.0067363908
+-0.007169763
+-0.005222774
+-0.008240447
+-0.014964092
+0.013383557
+0.02400118
+0.031661674
+-0.05455393
+-0.0010212929
+-0.024625747
+0.023822732
+0.0010380223
+-0.019017398
+-0.042011626
+0.02793977
+0.016353432
+-0.008788536
+-0.008737551
+0.0123511115
+0.010088653
+-0.02481694
+-0.02610431
+-0.0302086
+-0.0061851153
+0.043031324
+-0.0017605751
+0.011930485
+0.025314042
+-0.008151224
+-0.0009304759
+-0.007800702
+0.021005813
+0.012574171
+2.5361792e-06
+0.0072398675
+0.0151425395
+-0.008412522
+-0.0013630516
+0.001827493
+0.023274643
+0.0051462967
+0.012860961
+0.0051367367
+-0.0026639653
+0.013829676
+-0.009323878
+0.042903863
+-0.036607217
+0.017933967
+0.009954818
+-0.014314033
+0.021171514
+0.005774049
+-0.01008228
+0.0017669483
+0.0332677
+0.01089804
+-0.013243349
+0.025466997
+0.029851707
+0.01657012
+0.012860961
+0.0033458893
+0.011764784
+0.01704173
+0.01330708
+-0.00857185
+0.021770587
+0.007966403
+0.025721923
+-5.6480553e-06
+0.009323878
+-0.0051462967
+0.0018928174
+-0.045886483
+0.01177753
+0.011006383
+0.024256105
+-0.0070423004
+0.007838941
+-0.008310552
+-0.019272324
+0.0012331993
+0.0021381828
+0.01785749
+0.006589809
+-0.020011606
+-0.0076095085
+-0.66321266
+-0.004789402
+-0.010362698
+0.012064321
+0.014301287
+-0.0024887044
+-0.004588648
+0.0048467596
+-0.023134435
+-0.0056179077
+-0.007998269
+0.005302438
+0.02077638
+-0.009068954
+-0.01785749
+-0.0134727815
+0.0039927615
+-0.019705696
+0.014607197
+0.0032566658
+-0.007533031
+-0.008189462
+0.012274634
+0.0034542324
+0.004352843
+-0.0023532754
+0.02426885
+0.016442657
+-0.018125162
+-0.0010682946
+-0.039079987
+0.0031531025
+0.009903832
+0.010636741
+0.04318428
+-0.012338365
+-0.018303609
+0.018431071
+0.0030702518
+0.03038705
+-0.018902682
+0.0023373428
+0.009304759
+-0.020789126
+-0.014237556
+0.01261241
+0.020559693
+-0.01571612
+-0.010024922
+0.0033427028
+-8.5788204e-05
+0.014352272
+-0.0017972206
+0.019093875
+-0.036913127
+0.0061118244
+0.029851707
+0.0046045813
+-0.0012610817
+0.009151804
+-0.00029814264
+-0.0020744514
+-0.02844962
+0.011866754
+0.0002509417
+0.016761312
+-0.010636741
+0.02416688
+0.008966983
+-0.026486699
+0.015129793
+0.013804183
+0.004588648
+0.015767105
+-0.0043018577
+0.025568968
+0.0006038534
+-0.017882982
+-0.0090052225
+0.0018944107
+-0.01361299
+0.0213882
+-0.022522615
+0.010541145
+0.016251463
+-0.0071060318
+-0.016621104
+0.0064623463
+0.011356904
+-0.013536513
+0.0015821276
+0.022752048
+0.002859939
+0.0032104605
+0.019705696
+0.010216116
+-0.015435703
+0.023873717
+0.0020457723
+-0.022344168
+0.002498264
+-0.02328739
+-0.024740461
+-0.0047479765
+0.034848236
+0.03171266
+-0.02576016
+0.0125423055
+0.054400973
+-0.013982631
+-0.003298091
+0.019119367
+0.006506958
+0.01602203
+0.012319246
+-0.028322157
+0.0181634
+0.0042094477
+0.01975668
+-0.008068373
+0.016582865
+0.022318676
+0.023784494
+-0.03285982
+-0.0016124
+0.029953677
+-0.02855159
+-0.022458885
+-0.029137917
+0.0021636751
+0.010241608
+-0.007807075
+0.015537673
+-0.0076222545
+0.025721923
+-0.00525464
+0.02926538
+-0.0011758411
+0.021069543
+-0.023159927
+-0.00015823268
+0.007590389
+0.00896061
+0.005598788
+-0.004888185
+-0.030106632
+-0.018137908
+-0.016774058
+-0.0075967624
+0.01863501
+-0.02539052
+-0.008807655
+-0.010139639
+-0.021987272
+0.02528855
+0.013638482
+-0.030106632
+-0.009929325
+-0.015805345
+-0.006433667
+0.028067231
+0.019119367
+-0.0536362
+-0.009088073
+-0.00046961947
+-0.0063508167
+0.015971046
+0.02630825
+-0.009993056
+-0.037626915
+0.0002589081
+-0.0130903935
+0.012790857
+0.012510439
+-0.027098518
+-0.005780422
+0.0043751486
+-0.036479753
+-0.014008123
+0.015117046
+-0.0050761923
+0.008304179
+-0.020317515
+-0.011662815
+0.0268181
+0.001794034
+-0.0071060318
+-0.0105029065
+-0.026461205
+0.006615301
+-0.042292044
+-0.007443807
+-0.012440335
+-0.00026010306
+0.03255391
+-0.0028806515
+0.0033108373
+0.021987272
+0.03069296
+0.031381257
+0.0020362127
+-0.01291832
+0.012809977
+0.0034446728
+0.010279846
+-0.024026671
+-0.0021095036
+-0.0074947923
+0.014645436
+-0.0011503487
+0.0047925883
+-0.011191203
+0.0128992
+0.008336045
+0.0042094477
+0.033701073
+-0.00028898127
+-0.001291354
+-0.0048690657
+-0.0033905013
+0.00082053954
+-0.0024568387
+-0.007635001
+0.011522606
+-0.016149493
+0.0075967624
+0.0012945406
+0.016073015
+-0.01608576
+-0.03410895
+-0.008871387
+-0.007953657
+0.011159338
+-0.006318951
+-0.017742774
+0.005417154
+0.013829676
+0.002139776
+0.0134727815
+-0.0025954542
+-0.018074175
+0.032681372
+0.0015550419
+0.013765945
+0.009725385
+0.006216981
+0.011433382
+0.02267557
+-0.004183955
+-0.006863853
+0.0149513455
+-0.013944392
+-0.014275795
+-0.009578804
+0.022548107
+-0.024332583
+0.018176146
+0.008323298
+0.010713219
+0.029290872
+0.016876029
+-0.01210256
+0.008826775
+-0.0019549553
+0.04807884
+-0.003406434
+0.0033363297
+-0.004607768
+-0.0051462967
+0.015040569
+0.0027739017
+0.019170353
+0.012829096
+-0.0065770624
+0.0011702647
+0.029902691
+-0.003922657
+0.002299104
+0.01775552
+0.019807665
+0.009546937
+-0.034873728
+0.023121689
+0.0095724305
+-0.0015685848
+-0.016315194
+-0.023567807
+0.011038248
+-0.03204406
+0.04739054
+-0.009502326
+0.026971055
+0.013969885
+-0.0048849983
+0.001240369
+-0.02630825
+0.01761531
+-0.00018920208
+0.013115887
+-0.009922952
+0.007284479
+-0.0024313463
+-0.00017834785
+0.0056402134
+0.01928507
+-0.0028424128
+-0.015129793
+-0.008304179
+0.012975678
+-0.014071855
+-0.011720172
+0.010585757
+0.01320511
+-0.008890506
+0.0077242246
+0.018558534
+-0.026231773
+-0.01110198
+0.033089254
+0.015983792
+-0.017322147
+-0.018150654
+0.0012355892
+0.017296655
+0.10513103
+-0.008622834
+0.008597342
+0.019973366
+0.037932824
+-0.00033797466
+-0.022943242
+-0.027149502
+-0.0035689487
+0.0090115955
+-0.0054139677
+-0.0013455255
+0.005732624
+0.010878921
+0.026040578
+-0.02006259
+-0.013931646
+-0.015168032
+-0.005767676
+-0.0007683596
+-0.034873728
+0.006863853
+-0.0048754388
+0.018086921
+-0.019157607
+-0.0268181
+0.0026496258
+0.030438034
+-0.008610088
+-0.02077638
+0.009355744
+0.0015088368
+0.005018834
+0.00075402006
+-0.0077305976
+-0.0053789155
+-0.006028974
+0.013791437
+0.00936849
+-0.016774058
+0.009604296
+0.003355449
+0.00645916
+-0.027812308
+0.02702204
+-0.012089814
+-0.015894568
+0.017640803
+-0.019680202
+-0.007807075
+0.039768286
+-0.0034956578
+0.006608928
+-0.017130954
+0.033701073
+0.017500594
+-0.0071506435
+0.007915419
+-0.00066240644
+0.018367339
+-0.011860381
+-0.007832568
+-0.00065523665
+-0.0004990952
+-0.016774058
+-0.013166871
+-0.030896898
+0.009578804
+-0.04124685
+0.014925853
+-0.0037155305
+-0.010853427
+-0.023708016
+0.0039991345
+-0.011841262
+0.004626887
+0.00796003
+-0.013727706
+0.0013112699
+0.0045089843
+0.004808521
+-0.0058377804
+-0.017640803
+-0.01663385
+-0.027353443
+0.01179665
+0.005417154
+0.011006383
+-0.04626887
+-0.0023644285
+0.012969305
+0.017220177
+0.0033076506
+-0.009037088
+0.005200468
+-0.024383567
+0.0041329702
+0.0019485822
+-0.0042476864
+-0.003361822
+0.006216981
+-0.021694109
+0.00493917
+-0.0008930338
+0.026563175
+-0.016888775
+-0.004881812
+-0.00040449412
+-0.02179608
+-0.0012841842
+-0.012943812
+-0.000594692
+-0.034465846
+-0.014352272
+-0.0054362738
+0.005006088
+0.017296655
+0.016468149
+0.009457714
+0.009311132
+-0.0038111273
+-0.023274643
+0.023567807
+0.037295513
+-0.0030463526
+0.02824568
+0.0024871111
+-0.020916589
+-0.01924683
+0.008112985
+0.001946989
+-0.00068311905
+-0.0041457163
+-0.020355754
+-0.022076497
+0.006704525
+-0.016174985
+0.004046933
+-0.025454251
+-0.004486678
+-0.017271163
+-0.022879511
+0.0010882107
+-0.03214603
+-0.023096196
+-0.017933967
+0.0118030235
+-0.007182509
+-0.03252842
+0.016914267
+-0.024358075
+0.0018800711
+-0.0043177907
+0.0080747465
+0.0131031405
+-0.039589837
+-0.022892257
+-0.005716691
+0.017806504
+0.007909046
+0.03755044
+0.01008228
+0.03316573
+0.008845895
+-0.015728867
+-0.011203949
+-0.008590969
+-0.015983792
+-0.049175013
+0.00051462965
+0.006819241
+0.026333742
+0.00987834
+0.025084611
+-0.0008149631
+0.014543466
+0.011465248
+-0.0095660575
+-0.023759002
+-0.01422481
+-0.0042891116
+-0.034363877
+0.004279552
+0.0013120666
+0.008520865
+-0.0049551027
+0.044943262
+0.0015534486
+-0.005834594
+-0.022216706
+0.0043337233
+-0.026040578
+0.029749736
+0.0011208729
+0.003776075
+0.0045663426
+0.0053852885
+0.015601404
+-0.0035721352
+0.0058728326
+0.011637322
+0.011452502
+-0.00928564
+0.010222489
+-0.01667209
+0.029214393
+-0.01442875
+-0.0029762483
+0.011720172
+-0.034542326
+-0.0010364291
+-0.03999772
+-0.020151814
+-0.047135614
+-0.014084601
+0.003954523
+-0.009476833
+0.0010858207
+-0.0074629267
+-0.0312283
+-0.005544617
+0.0055956016
+0.035485547
+-0.012331992
+0.017181939
+-0.0010428022
+-0.029877199
+-0.026078818
+0.02712401
+0.005085752
+-0.018303609
+0.0027978008
+-0.0040724254
+-0.0022114736
+-0.0016179765
+0.02379724
+0.008093866
+-0.017538834
+-0.015537673
+0.008431641
+-0.0029268565
+-0.007539404
+-0.0036581724
+-0.008915999
+0.009814609
+0.018341847
+-0.024090404
+-0.025670938
+-0.03143224
+-0.011197576
+-0.024740461
+0.00034892847
+-0.02250987
+-0.002593861
+-0.0030447594
+-0.014619944
+0.010700473
+-0.018749727
+-0.012523186
+0.007813448
+-0.017130954
+0.005812288
+-0.0027547823
+0.014594451
+0.009521445
+-0.0183291
+0.010917159
+-0.012312873
+-0.012790857
+0.027582875
+-0.0015096334
+0.0068765995
+0.012829096
+0.012555052
+0.019986112
+0.022191213
+-0.0041584624
+-0.0033012775
+0.0039385897
+-0.018086921
+0.007641374
+-0.0029650952
+-0.023924703
+-0.0025524355
+-0.0045312904
+-0.008648328
+-0.017959459
+-0.0030463526
+0.018864444
+-0.028194694
+-0.012688887
+0.020508708
+0.0062137945
+0.010464667
+0.016952505
+0.020954827
+0.009840101
+0.012778111
+-0.008527238
+-0.00020274497
+-0.017628057
+0.011229442
+-0.022854017
+-0.005796355
+0.033930507
+-0.025365029
+0.025059119
+-0.04002321
+-0.019603726
+-0.017933967
+0.004343283
+0.0026480325
+0.0006795342
+-0.010636741
+-0.0011543318
+0.0052036545
+0.01561415
+-0.0021509288
+-0.036709186
+0.029061439
+0.02189805
+-0.021298977
+0.025543476
+-0.018214384
+-0.012867334
+0.018303609
+0.0014116466
+0.03329319
+-0.037295513
+0.0013534919
+-0.032732356
+0.02512285
+-0.0063603763
+-0.02651219
+-0.003065472
+-0.004802148
+-0.008227701
+0.020406738
+-0.012765365
+-0.0067937486
+0.025581714
+0.017870236
+0.019807665
+0.016047522
+-0.00016898733
+-0.002526943
+-0.0049296105
+-0.016927013
+-0.03706608
+-0.025709176
+-0.017028984
+0.03469528
+-0.010050414
+-0.016761312
+-0.0118030235
+0.01608576
+-0.018647756
+-0.0025460625
+-0.007539404
+0.02949481
+0.016608357
+0.011427009
+0.006258406
+0.023911957
+0.009973937
+-0.0095724305
+-0.02957129
+-0.012657021
+-0.0016490455
+-0.018584026
+-0.0044834916
+0.0039449628
+-0.024613
+0.013676722
+0.010764204
+-0.00796003
+0.01008228
+0.029188901
+-0.007125151
+-0.008750297
+0.009610669
+0.00999943
+0.016378924
+0.0071952553
+-0.016774058
+-0.02732795
+-0.011739292
+0.012625156
+0.030641973
+-0.047849406
+0.007271733
+0.0080747465
+-0.013638482
+0.0029364163
+-0.021056797
+-0.004046933
+0.013562005
+-0.0065515703
+0.018826203
+-0.024064912
+-0.018991906
+-0.0016084168
+-0.009833728
+-0.039079987
+-0.0042158207
+0.00999943
+-0.026027832
+0.013268841
+-0.005519124
+-0.028475111
+0.0067937486
+0.0059971083
+3.5201545e-05
+-0.020929335
+-0.0008547951
+0.0039832015
+0.009145431
+-0.02420512
+0.010445548
+0.019986112
+-0.01910662
+0.008909625
+-0.0021190632
+0.0070359274
+-0.0053406768
+-0.012402097
+0.007214375
+-0.0071378974
+0.0030686585
+-0.013740452
+-0.030285079
+-0.02722598
+-0.017602565
+-0.015881822
+-0.022216706
+0.013396304
+0.23371515
+-0.02094208
+0.007845314
+0.009648908
+-0.0035657622
+0.009100819
+-0.0046906183
+0.001924683
+-0.014071855
+0.0020792312
+0.008393402
+0.004932797
+-0.01571612
+0.0050029014
+0.010228862
+-0.017181939
+-0.015219017
+-0.01422481
+-0.01038819
+-0.025326788
+0.0040405598
+-0.0006950687
+-0.011057368
+-0.010968144
+0.025454251
+-0.022497123
+-0.01887719
+-0.0027133569
+0.017436864
+0.004722484
+-0.020916589
+-0.002832853
+-0.0006424904
+-0.033216715
+-0.0302086
+0.0090115955
+0.0046396335
+0.027710337
+-0.005834594
+0.005726251
+0.04667675
+-0.010228862
+-0.026843593
+-0.016366178
+0.031789135
+0.017895728
+-0.0013192364
+-0.012236396
+-0.020100828
+-0.0013765945
+-0.023070704
+-0.0020919775
+0.0093812365
+0.037193544
+0.018099668
+-0.004269992
+0.045198187
+0.020865604
+0.005455393
+0.007679613
+0.011739292
+0.030183109
+-0.0022513056
+-0.0074629267
+-0.0017765079
+0.03365009
+-0.04504523
+0.014683674
+0.0068001216
+-0.02451103
+-0.012191784
+-0.027302457
+0.007896299
+0.0013973071
+-0.018851697
+-0.010745085
+0.02471497
+-0.007781583
+0.01179665
+0.0077114785
+-0.01288008
+-0.023822732
+0.009113565
+0.013421796
+-0.017105462
+-0.022484377
+0.03171266
+0.0037473962
+0.008737551
+0.0064559733
+-0.009820982
+-0.026894577
+0.00081456476
+-0.0099420715
+-0.005936564
+0.019234084
+0.0046013948
+-0.0033522625
+-0.0049296105
+-0.012937439
+0.0006297442
+-0.05485984
+0.018099668
+-0.005968429
+0.01887719
+0.01683779
+0.002225813
+0.008234074
+0.015066062
+-0.026690638
+-0.00023341562
+-0.009432222
+0.0056019747
+-0.0064846524
+0.026461205
+-0.0062010484
+0.011312293
+0.0009655281
+-0.009406729
+0.0024233798
+-0.0018673249
+-0.011771157
+0.0043209773
+0.0064910254
+-0.008514492
+-0.031381257
+0.0029985541
+0.020789126
+-0.001986821
+-0.018035937
+0.017500594
+-0.03143224
+0.0114142625
+0.0055414303
+0.008304179
+0.014199317
+0.012255515
+-0.0139189
+0.00060942984
+0.008763043
+0.008011015
+0.020750888
+0.0065451968
+0.01657012
+-0.002213067
+-0.015231763
+0.014186571
+-0.01853304
+0.0011168898
+0.011133845
+-0.047849406
+-0.012593291
+-0.0010890074
+-0.020508708
+0.031075345
+0.013230602
+-0.0026958308
+-0.019909635
+-5.13833e-05
+0.038646616
+-0.029928183
+0.0001412045
+0.010356325
+-0.01608576
+-0.0042891116
+-0.00544902
+-0.16141845
+-0.0116054565
+0.014161078
+-0.014823883
+0.022076497
+-0.0080811195
+0.026996547
+0.01330708
+-0.028169202
+-0.019234084
+0.005375729
+0.023822732
+-0.024192374
+-0.015371972
+0.0068319873
+-0.007437434
+-0.0040373732
+-0.01330708
+0.016748566
+0.025097357
+0.0028886178
+-0.0013734079
+0.0006970603
+-0.00014727889
+-0.01181577
+0.0049359836
+-0.0071570165
+0.022688316
+-0.0013080834
+-0.018086921
+-0.021732349
+-0.012325619
+0.0062966454
+-0.0011352125
+-0.008253193
+0.015473941
+-0.025454251
+0.011337785
+-0.0025986407
+0.020151814
+0.011197576
+0.027174994
+0.025976848
+-0.004824454
+-0.0020011605
+0.04045658
+0.018813457
+0.016774058
+0.014530719
+-0.023402106
+-0.012274634
+-0.006239287
+0.013268841
+0.0062552197
+0.009642535
+0.03201857
+0.006704525
+0.0054745125
+-0.0067363908
+-0.007641374
+-0.019387038
+-0.02363154
+0.00948958
+-0.032400955
+0.009789117
+0.0048786253
+0.0032375462
+0.008552731
+-0.034440354
+0.021847064
+-0.012026083
+-0.022497123
+0.019947873
+-0.035663996
+0.0008635581
+0.00665354
+-0.04677872
+-0.0027675284
+0.018112414
+-0.008559104
+-0.008858641
+0.04280189
+-0.0023771748
+0.016888775
+0.0030017407
+0.00797915
+0.011854008
+-0.005563736
+-0.007940911
+0.018915428
+0.0073609566
+-0.015932806
+-0.021235244
+-0.034491338
+0.014747405
+0.038468167
+0.018673249
+-0.02012632
+-0.009738131
+-0.0144032575
+0.010056787
+-0.0077688363
+-0.021222498
+0.03951336
+0.0257984
+0.00053972384
+0.0014227997
+0.0032168336
+0.029163409
+0.021719601
+0.010426428
+0.009668027
+0.0073482106
+0.02420512
+0.008176716
+0.025683684
+0.0011861975
+-0.015129793
+0.023351122
+-0.01649364
+0.057816967
+-0.007685986
+-0.010719593
+0.0018067802
+-0.016774058
+0.0035530159
+-0.09753427
+-0.037652407
+-0.0009320692
+0.009648908
+0.0027149501
+0.023006972
+0.0031068972
+0.025097357
+-0.003588068
+0.025505237
+-0.023771748
+-0.03265588
+-0.0013359658
+0.008093866
+0.012497693
+-0.029061439
+-0.009247401
+-0.0114206355
+0.0012212496
+0.022395153
+-0.005120804
+-0.011541725
+-0.0028137336
+-0.027557382
+0.00706142
+0.0018912242
+-0.03472077
+0.02630825
+0.006647167
+-0.007271733
+-0.007985523
+-0.01679955
+-0.0047129244
+0.0025285364
+-0.029137917
+-0.017003492
+-0.0139189
+-0.0068256143
+0.020559693
+-0.025645446
+0.022293182
+-0.008935118
+0.010802443
+-0.035562024
+0.0052387067
+-0.00816397
+0.0074947923
+0.025403267
+-0.011172084
+0.0106941
+-0.025377775
+0.0040501193
+-0.027965263
+0.0048722522
+0.038646616
+-0.011911366
+-0.008316925
+-0.006946704
+0.018915428
+0.00066280476
+0.01463269
+0.008093866
+0.014798391
+0.015486688
+-0.0031578823
+0.0018020004
+-0.008782163
+0.008004642
+-0.0016920641
+-0.008157597
+0.010725966
+0.0023580554
+-0.003457419
+0.0110509945
+-0.030183109
+-0.027174994
+-0.015384718
+-0.017118208
+0.019718442
+-0.017768266
+-0.0033108373
+-0.025301296
+0.0136512285
+-0.0038238736
+-0.0012140799
+0.011732919
+0.0027165436
+-0.017373132
+-0.010031295
+-0.01693976
+-0.0039449628
+0.0066599133
+0.0018386459
+-0.028296664
+-0.019807665
+0.005461766
+-0.0014610384
+-0.0011089233
+0.020406738
+-0.013243349
+-0.021681363
+-0.021706855
+-0.048435733
+0.012841842
+-0.004891372
+-0.010133265
+-0.01077695
+0.015333733
+0.011828516
+0.011968724
+-0.021834318
+-0.0058314074
+-0.017742774
+0.022012766
+-0.016098509
+0.016187731
+-0.030234093
+0.0014204097
+0.0033172104
+-0.010196996
+0.007482046
+-0.0011479587
+0.03849366
+0.03479725
+0.019514501
+-0.00685748
+-0.018086921
+0.0023867344
+0.001754202
+0.005786795
+-0.009846474
+-0.012140798
+0.020457724
+-0.04471383
+-0.00867382
+0.02824568
+0.0038621123
+-0.02742992
+0.009814609
+0.0037537692
+0.0069212113
+0.017487848
+-0.003935403
+-0.034822743
+0.003667732
+0.005321557
+-0.01945077
+0.025721923
+-0.014186571
+0.018023191
+0.03584244
+-0.014543466
+0.007813448
+0.021439185
+-0.00824682
+0.0019071569
+-0.016366178
+-0.009961191
+0.009655281
+-0.0053852885
+0.029214393
+-0.04030363
+0.026792608
+0.024957148
+0.0397173
+-0.013893408
+0.014505227
+0.030132124
+-0.019935127
+-0.007838941
+-0.01679955
+-0.026665146
+-0.004770282
+-0.019578233
+-0.003258259
+0.014760152
+0.0064559733
+-0.004518544
+-0.003792008
+-0.009954818
+-0.009617042
+0.009298386
+-0.00036107723
+-0.025683684
+-0.011630949
+0.01118483
+0.014887614
+0.008431641
+-0.003654986
+-0.0008930338
+0.0056083477
+0.013332573
+-0.028118217
+0.0050825654
+0.0028009873
+-0.0021110969
+-0.012975678
+0.018431071
+-0.016888775
+-0.0048340135
+0.02236966
+0.023746256
+-0.0016179765
+-0.002088791
+-0.019425279
+-0.008463507
+0.0012443522
+0.012848215
+-0.020827364
+-0.014186571
+-0.0017526087
+0.03879957
+0.018622264
+-0.015728867
+-0.00091135653
+0.0108598005
+-0.01632794
+0.0041011046
+-0.011223069
+-0.013294334
+-0.041935146
+0.011318666
+0.014377764
+0.0027866478
+0.01720743
+-0.005869646
+-3.5848814e-05
+0.012962932
+-0.0031706286
+-0.0015653983
+-0.011038248
+-0.014785645
+0.007635001
+0.00948958
+-0.024358075
+0.006239287
+-0.010764204
+0.0007305192
+0.005085752
+0.0056402134
+-0.028424127
+0.040660523
+0.0006918821
+-0.003654986
+0.028322157
+0.003639053
+0.031075345
+-0.011554471
+-0.0024568387
+-0.0038812316
+0.01965471
+0.027761322
+-0.013332573
+0.007309972
+0.00523552
+-0.014721913
+0.015779851
+0.0067300177
+0.021056797
+-0.020177307
+-0.0070359274
+0.024663985
+8.7481065e-05
+0.02226769
+-0.007953657
+-0.011076487
+-0.010808816
+0.033854026
+0.017462356
+0.011917739
+-0.031993076
+0.0030527257
+0.013778691
+0.010955398
+-0.005324744
+-0.003479725
+0.008896879
+0.018724235
+-0.0028567521
+0.009578804
+0.004524917
+-0.028271172
+0.025772909
+-0.017028984
+-0.006226541
+0.0056465864
+0.015996538
+0.000746452
+0.0019262764
+-0.019871397</code></pre>
+</div>
+</div>
+<div id="65f334a2" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>text_array <span class="kw">=</span> <span class="kw">[]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="dt">Dir</span><span class="at">.glob</span>(<span class="st">"training_data/*.txt"</span>) <span class="cf">do</span> <span class="kw">|</span>file<span class="kw">|</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  text <span class="kw">=</span> <span class="dt">File</span><span class="at">.read</span>(file)<span class="at">.dump</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  text_array <span class="kw">&lt;&lt;</span> text</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="18ef85f4" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>embedding_array <span class="kw">=</span> <span class="kw">[]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>text_array<span class="at">.each</span> <span class="cf">do</span> <span class="kw">|</span>text<span class="kw">|</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  response <span class="kw">=</span> client<span class="at">.embeddings</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="wa">model: </span><span class="st">"text-embedding-ada-002"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="wa">input: </span>text</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">}</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  embedding <span class="kw">=</span> response<span class="kw">[</span><span class="vs">'data'</span><span class="kw">][</span><span class="dv">0</span><span class="kw">][</span><span class="vs">'embedding'</span><span class="kw">]</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  embedding_hash <span class="kw">=</span> <span class="kw">{</span><span class="wa">embedding: </span>embedding, <span class="wa">text: </span>text<span class="kw">}</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  embedding_array <span class="kw">&lt;&lt;</span> embedding_hash</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>["\"OpenAI is an AGI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.\"", "\"OpenAI\\u2019s large language models, including the models that power ChatGPT, are developed using three primary sources of information: (1) information that is publicly available on the internet, (2) information that we license from third parties, and (3) information that our users or our human trainers provide.\""]</code></pre>
+</div>
+</div>
+<div id="bc729bf3" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span> <span class="vs">'csv'</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cn">CSV</span><span class="at">.open</span>(<span class="st">"embeddings.csv"</span>, <span class="st">"w"</span>) <span class="cf">do</span> <span class="kw">|</span>csv<span class="kw">|</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  csv <span class="kw">&lt;&lt;</span> <span class="kw">[</span><span class="wa">:embedding</span>, <span class="wa">:text</span><span class="kw">]</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  embedding_array<span class="at">.each</span> <span class="cf">do</span> <span class="kw">|</span>obj<span class="kw">|</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    csv <span class="kw">&lt;&lt;</span> <span class="kw">[</span>obj<span class="kw">[</span><span class="wa">:embedding</span><span class="kw">]</span>, obj<span class="kw">[</span><span class="wa">:text</span><span class="kw">]]</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>[{:embedding=&gt;[-0.009541887, -0.027511897, -0.00694962, -0.015462415, 0.0072427155, 0.011919217, -0.00973077, 0.026092011, -0.014107663, -0.012622646, 0.015449389, 0.01710375, 0.0067477096, -0.021845384, 0.0024066397, 0.009815442, 0.01843245, -0.013690816, 0.0039111967, 0.0071254773, -0.014824118, 0.010271369, -0.013000414, -0.009424648, -0.013990425, 0.0004367937, 0.016361242, -0.026365569, 0.00566, -0.01901864, 0.009300897, 0.003947019, 0.0002688744, -0.0005377488, -0.0019816512, -0.0010811967, 0.0070017255, -0.0064513576, 0.028632173, 0.0018562714, 0.018497583, 0.006591392, 0.004298734, -0.02488055, -0.020490631, 0.011000851, -0.030403772, 0.006754223, -0.00084102125, 0.0033901378, -0.0127008045, 0.033504073, 0.0037744187, -0.0019865362, -0.011697767, 0.0043117604, -0.040121518, 0.03277459, 0.010922692, 0.004295477, 0.010225777, -0.0144724045, -0.025531875, 0.0065262597, -0.013612658, 0.012551, -0.000623235, 0.0129417945, 0.005663256, -0.010720782, 0.026834521, 0.0016966972, -0.009411622, -0.013651737, 0.02204078, 0.018354291, -0.0035041196, -0.0073273876, -0.008630034, 0.017924419, 0.0009607019, -0.009802416, -0.0038330378, 0.0095939925, 0.011600069, -0.020177996, 0.0012945051, 0.0046537053, 0.0066630375, -0.012518434, 0.0027925489, -0.010134591, 0.019474568, 0.017116778, -0.037542276, 0.03082062, -0.0125249475, 0.013755948, -0.011033417, -0.047963448, -0.0090468805, -0.010727295, -0.006812842, -0.0037353393, -0.0084997695, -0.0028446545, 0.008395557, -0.01102039, 0.031211413, 0.009633072, 0.011580529, 0.017715994, -0.01079894, -0.019187985, -0.012870149, -0.0029081586, 0.020959584, -0.006379712, -0.019591805, -0.00031182103, 0.03144589, 0.017455464, -0.0012212312, 0.005725132, 0.0035236592, 0.034494083, -0.02123314, -0.017442439, 0.0020744647, -0.020073785, 0.0080177905, 0.012915742, 0.02521924, 0.011665201, -0.023121977, 0.020738134, -0.016647825, 0.0034324739, -0.0017357767, -0.012121127, 0.012635672, 0.008766812, -0.018745085, -0.0067151436, -0.02790269, 0.019122852, 0.00129939, -0.005744672, 0.025128054, 0.024255281, 0.01238817, -0.0053115417, -0.023095924, 0.013612658, 0.022066833, 0.0028707075, -0.008773325, 0.01802863, 0.00091918005, 0.011489344, 0.009281358, 0.011580529, -0.01640032, 0.005809804, 0.013729895, 0.030507984, 0.021154981, -0.003168688, 0.002217756, -0.022496708, 0.004494131, 0.045644738, -0.023786327, 0.013808055, 0.0047448906, 0.03019535, 0.018067708, 0.014355166, -0.014693854, 0.020204049, 0.0048849247, -0.0021086594, 0.016100712, 0.012648699, 0.017273095, -0.0076921284, 0.009737284, 0.0106882155, 0.017520597, -0.012238366, 0.015748998, -0.004034948, 0.023538824, 0.0063992515, -0.66653824, -0.033790655, -0.006917054, -0.015944395, 0.019774176, 0.02145459, 0.015214913, -0.027303474, 0.028085062, 0.030273508, -0.012362117, -0.010694729, -0.027407685, -0.014250955, 0.02292658, -0.019370355, -0.005096605, -0.02834559, -0.001151214, 0.0050835786, -0.024567915, 0.010303935, -0.006721657, -0.008734246, -0.0051910467, 0.0129939, 0.014589642, -0.008011277, -0.027147155, 0.0064448444, -0.003940506, 0.0173252, 0.020008652, -0.023030793, 0.046165798, -0.0013409118, -0.015058595, 0.017650861, 0.0005222799, 0.027590055, -0.029544026, 0.0033575718, 0.00803733, -0.017976524, -0.007210149, 0.023616984, 0.028970862, -0.013703843, -0.011346052, 0.0009696576, -0.0013832479, 0.012485868, -0.0008296231, -0.006259217, -0.0065685958, 4.23869e-05, 0.028918756, -0.009020828, 0.004220575, -0.020542737, -0.0020256154, 0.013065546, -0.043247867, -0.005783751, -0.030768514, 0.009574452, 0.0014483802, 0.0071645565, -0.00563069, -0.03650016, 0.026730308, 0.01063611, -0.0059107593, 0.00391771, -0.0035431988, 0.026730308, 0.01913588, 0.00041033368, -0.024476731, -0.005588354, 0.017663889, -0.022327363, 0.03011719, -0.010746835, 0.029804556, 0.008597468, 0.00389817, -0.009945707, 0.018197974, -0.0071710697, 0.020516684, 0.010603543, -0.0034617835, -0.032852747, 0.005353878, -0.009079447, -0.018575741, -0.009711231, -0.0025955234, -0.012713831, -0.0007701898, -0.0024652588, 0.031497996, 0.01621795, 0.002535276, 0.031836685, 0.0040447176, 0.0060638203, 0.027772427, -0.030247455, -0.016309137, -0.014198848, -0.0030889008, 0.0045820596, 0.013404234, -0.026639124, -0.01496741, -0.013195811, 0.018601794, -0.01847153, -0.010531898, -0.009366029, -0.007972198, -0.0186539, 0.014211874, 0.014498457, -0.006500207, -0.024255281, -0.040642574, -0.00065295165, 0.023239216, -0.007294821, -0.002413153, -0.0022910298, 0.0493182, 0.00028597165, 0.023460666, -0.014042531, 0.010714268, 0.014237928, -0.010584004, -0.004367123, 0.03785491, 0.0013848762, -0.029908767, -0.011267893, 0.00077181816, -0.0070473184, -0.013599631, -0.007633509, -0.010505845, 0.008564902, -0.01946154, 0.028996915, -0.011111576, -0.021923544, -0.031133255, -0.029596131, 0.013052519, -0.01412069, 0.008310885, 0.0049956497, -0.014876225, -0.020282209, -0.008512796, -0.0073860064, -0.00036555523, 0.04212759, -0.031862736, -0.025427662, 0.018380344, -0.03785491, -0.007340414, 0.02012589, 0.006353659, 0.025401609, -0.027042944, 0.0015224683, 0.0082197, -0.018106788, -0.009437675, -0.012466328, -0.0036506671, -0.012283958, 0.009294384, -0.010811967, 0.02455489, 0.02359093, -0.00694962, 0.0011072496, -0.017207962, 0.053773254, 0.001167497, 0.02993482, -0.017702969, 0.011131115, 0.0043540965, -0.004214062, 0.0069040274, 0.015267018, 0.019331276, 0.0013075316, 0.014498457, -0.0034096777, 0.007854959, -0.0072492287, 0.00368649, -0.017755074, 0.023929618, -0.0022861448, 0.018901402, 0.0045299535, 0.0083239125, -0.016426373, 0.00694962, 0.020686029, -0.023174083, 0.011932244, -0.026964786, 0.025036868, 0.02488055, 0.023786327, -0.0038362944, -0.00017860507, 0.005819574, 0.0221971, 0.006236421, 0.024059884, 0.008897076, -0.025102, 0.0013718498, 0.00952886, -0.0033836246, 0.013990425, 0.023721196, 0.0014980437, 0.018732058, -0.009561426, 0.010421173, -0.010141104, -0.002968406, -0.0036506671, 0.025610033, -0.026860574, 0.0190968, -0.005578584, 0.022587894, 0.0057186186, -0.05012584, 0.017833233, -0.028032957, 0.0056502298, -0.005318055, -0.0011585413, 0.011515397, -0.019513646, -0.007288308, -0.01301344, 0.0038590906, 0.03118536, 0.0027811506, 0.017155856, 0.028554015, 0.0020467835, -0.009704717, 0.00030571487, 0.019774176, 0.005777238, 0.0002586975, -0.0048523587, -0.0062527037, -0.008669114, 0.013143704, -0.024046857, 0.028293485, 0.026547939, -0.010141104, 0.0050347294, 0.00978939, 0.020321287, 0.0011577272, -0.031133255, 0.014876225, 0.015514522, 0.02185841, 0.0042661675, -0.018224027, 0.01126138, -0.026000828, -0.010154131, -0.00097047177, 0.016152818, -0.014237928, 0.020686029, 0.0033575718, 0.016348215, 0.020594843, -0.009059907, 0.0011699395, -0.032930907, 0.0059075025, 0.003797215, 0.01961786, -0.018237052, 0.004673245, -0.0003728826, -0.013443314, -0.00389817, -0.022952633, -0.036005154, 0.0108184805, -0.0075488375, 0.02207986, -0.0035073762, 0.0053473646, -0.004907721, -0.016322162, -0.022653025, -0.0008687025, 0.0024799136, -0.008245753, -0.018588768, -0.017729022, 0.009620045, 0.07393822, -0.001055958, -0.018484555, 0.007789827, -0.020738134, 0.026547939, -0.018276133, -0.009893601, -0.00564046, 0.008395557, -0.015801104, -0.009685177, -0.0041912654, -0.031419836, 0.0042270883, 0.0056697694, -0.01647848, -0.0102062365, 0.0008524194, -0.01518886, -0.00025849394, -0.0047709434, -0.008864511, -0.012205799, 0.012101587, -0.024711207, 0.015814131, 0.017924419, -0.029804556, -0.017377306, 0.009092473, -0.0074641653, 0.0036832334, -0.0048621288, -0.037229642, 0.007633509, 0.008356478, 0.016309137, 0.0028804773, -0.0051421975, 0.014589642, 0.015345178, -0.020946559, -0.030429825, 0.016725983, -0.012342577, -0.0070798844, 0.014498457, -0.012134153, -0.025102, 0.0016787859, -0.025075948, -0.043768927, 0.0026557709, 0.0052692057, 0.041085474, 0.0004864571, -0.006343889, 0.009203198, -0.042596545, -0.013208837, -0.01990444, -0.004051231, -0.0060442802, 0.003338032, -0.03616147, 0.006155005, 0.0060703335, -0.005751185, 0.016165845, 0.02709505, -0.023525799, -0.047833186, -0.01214718, -0.005122658, -0.0155666275, 0.00088172895, -0.010544925, -0.0035985613, 0.035484094, 0.01019321, -0.032644324, -0.013150218, -0.02237947, 0.0061615184, -0.020633923, -0.019370355, -0.020425498, -0.0023089412, 0.016634798, 0.007841933, 0.0025124797, 0.02108985, 0.001436168, -0.0056339465, 0.010824993, 0.020842345, -0.011658687, -0.013495419, -0.007118964, -0.008734246, -0.014394245, -0.015944395, -0.0015884148, 0.016426373, 0.005200817, 0.018979562, 0.020972611, -0.0073013343, -0.012642185, 0.0051421975, -0.0070212656, 0.029726397, -0.016817167, 0.008760299, -0.003269643, 0.024633048, 0.015801104, -0.0012008774, -0.02296566, -0.015058595, -0.00047872265, 0.0069952123, 0.017455464, 0.008603981, 0.008695167, 0.016686903, -0.01692138, -0.029648237, 0.0036148445, -0.023108952, -0.0044192285, -0.0073534404, 0.0009818699, 0.004901208, -0.019201012, -0.013098112, -0.0042498847, -0.03431171, -0.031993, -0.011157168, -0.0016209809, 0.017924419, 0.004894695, 0.0065946486, -0.026378594, -0.009522347, 0.0031279803, 0.0024913116, 0.039313875, -0.024802392, 0.022874475, -0.018211, -0.0015664325, -0.012928768, -0.021207087, -0.00975031, -0.006119183, 0.018627847, 0.033894867, 0.0264307, -0.005477629, 0.014394245, 0.016322162, 0.014316087, -0.023317374, 0.024151068, -0.0031914844, -0.0034324739, -0.010981311, 0.0048067663, -0.00047180234, 0.021519722, -0.013521472, 0.0019735096, 0.012642185, -0.011769412, -0.02624833, -0.016543612, -0.040199675, -0.005878193, 0.020699056, 0.00820016, 0.026339514, -0.032409847, -0.01802863, 0.044654727, 0.012036455, 0.0137950275, -3.2591608e-05, 0.02993482, 0.011795465, -0.015006489, 0.03366039, 0.0040056384, 0.0046081124, 2.2529171e-05, -0.024138043, 0.015280046, 0.014485431, 0.02197565, 0.019826282, 0.008760299, -0.013508446, -0.01190619, 0.016634798, 0.0012692664, 0.0038949135, 0.005161737, -0.020112865, 0.0059921746, -0.022978688, 0.0039795856, -0.015762024, 0.00095256034, 0.001642963, -0.005682796, 0.021207087, -0.002471772, -0.028371643, 0.018588768, -0.010134591, 0.040616523, -0.0061810585, 0.03571857, 0.015931368, 0.009522347, -0.027746374, 0.0164394, 0.008545362, 0.002735558, 0.009711231, 0.0032566166, -0.0043182736, -0.0029114152, -0.0018953509, 0.00027701596, -0.014654775, -0.03147194, 0.015983474, 0.0007384378, -0.00013199475, -0.013508446, -0.02274421, -0.012726857, 0.019604832, -0.0011129488, -0.0030270251, 0.017833233, -0.0068258685, 0.0059758914, -0.0017260069, 0.008395557, 0.02366909, 0.023460666, 0.006793302, -0.020034706, -0.0006004387, -0.0006553941, -0.005624177, -0.008545362, 0.0047351206, -0.0015493353, 0.016061634, 0.0008113046, 0.01802863, 0.0016437772, -0.0011015505, -0.009470241, 0.024385545, -0.03321749, -0.009261818, -0.018380344, -0.009541887, 0.021115903, -0.021663014, -0.010271369, 0.008910103, -0.026534911, -0.000617943, 0.01939641, 0.0061452356, -0.015201886, 0.0006106156, 0.013586604, -0.026938733, 0.00075105723, -0.024320412, 0.02127222, 0.00017606083, -0.0014776898, 0.0093530025, -0.026365569, -0.018406397, 0.03561436, -0.012355603, 0.006141979, 0.039470192, -0.020842345, 0.00084427785, -0.02159788, 0.0065588257, -0.019891415, 0.018666927, -0.006389482, -0.0061745453, 0.023877513, -0.00805687, 0.0006838895, -0.021128928, 0.0010649136, 0.028892703, -0.0010307191, 0.00868214, -0.017859286, -0.017038617, -0.0009997813, 0.006786789, -0.0063666855, 0.01710375, 0.0053831874, -0.008069896, 0.029648237, -0.007705155, 0.025075948, 0.0031442633, 0.03324354, 0.0041293898, -0.023760274, -0.044029456, 0.008232727, -0.0073860064, -0.0029700343, -0.010023866, -0.006001944, -0.010023866, -0.025740298, -0.013046006, 0.00096884347, -0.010707756, -0.00926833, 0.008297859, 0.007210149, -0.015227939, 0.013124165, -0.003307094, -0.0018351035, 0.0028690791, -0.028423749, -0.0025678421, -0.008942669, 0.040486258, 0.006982186, -0.029465867, -0.0337646, 0.0020060758, -0.0426226, 0.013182784, -0.005086835, 0.030012978, 0.015384257, 0.017781127, 0.019748123, 0.020334315, 0.0095484, -0.001425584, 0.013977398, 0.0063666855, -0.0054515763, -0.019813256, -0.015553601, -0.0023659319, -0.0100759715, 0.005549275, 0.0088058915, -0.013912266, -0.027251368, 0.03126352, 0.0068323817, -0.011105062, 0.005265949, 0.016361242, 0.0039274795, 0.006395995, 0.020425498, -0.029387709, -0.013651737, 0.010343014, -0.025636086, 0.00410008, -0.011580529, 0.004113107, 0.005011933, 0.01957878, -0.006565339, 0.006871461, -0.00014644598, 0.0137950275, 0.02691268, 0.00036697998, -0.0028821058, 0.008649574, 0.0012806645, -0.00827832, -0.0024620022, 0.005018446, -0.008649574, -0.0078028534, 0.021298273, -0.016673878, 0.014224902, -0.01692138, 0.004223832, -0.023069872, 0.00022979501, -0.0057935207, 0.013742922, -0.025857536, 0.0032891827, -0.0033608284, -0.0016983255, -0.0023854717, -0.014042531, 0.0028902472, -0.020308262, -0.024320412, -0.01301344, -0.012186259, -0.0068844873, 0.017755074, -0.0114307245, -0.020959584, -0.0025108515, 0.029960873, -0.022757236, 0.010408146, 0.20811082, -0.025453715, -0.018015603, 0.005181277, -0.038245704, -0.0030775026, 0.02344764, -0.008695167, -0.014824118, 0.0068649477, -0.0031458917, 0.012355603, 0.00053164264, -0.0073013343, -0.002012589, -0.03650016, -0.035900943, -0.019643912, 0.001890466, -0.014211874, 0.029127179, -2.7528587e-05, -0.016035581, -0.017116778, 0.004637422, 0.008317399, -0.012844096, -0.006923567, 0.0144724045, 0.012277445, -0.014876225, 0.0108184805, 0.023395535, -0.006721657, 0.0046862713, -0.017260067, 0.018080736, 0.0012049482, 0.03251406, -0.005204073, 0.030898778, 0.027746374, -0.009476754, -0.0063569155, 0.010942232, 0.036291737, -0.013169757, -0.0168823, -0.0037581355, 0.024190148, -0.03311328, -0.009014315, 0.0017211218, 0.036422, -0.024385545, 0.007894038, 0.0051780203, 0.0025515591, 0.014915304, 0.012668239, 0.0034455003, 0.023017766, 0.010733808, 0.024945684, -0.022470655, 0.027225316, -0.031237466, 0.015866237, 0.0114763165, 0.007646536, 1.6003218e-05, -0.020855373, -0.020985637, -0.017181909, -0.01957878, -0.015214913, 0.039730724, 0.036734637, 0.0042336015, 0.0009281357, 0.009339976, -0.0076204827, -0.026834521, 0.01633519, -0.036265682, -0.029361656, 0.0063210926, 0.00054385496, -0.023161057, -0.013586604, 0.010935718, -0.004865385, 0.006591392, -0.0102062365, -0.010785914, 0.014498457, 0.032175373, 0.00052635063, -0.0032370768, 0.003702773, -0.008454177, 0.053669043, 0.0150846485, 0.023499746, -0.0119127035, 0.03454619, -0.02270513, 0.02451581, 0.00868214, -0.012752911, -0.02484147, -0.030169297, 0.0054971687, -0.009411622, 0.0017553164, -0.007600943, -0.005767468, -0.0069300802, 0.032175373, -0.0028983888, -0.023942646, -0.009652612, -0.01146329, 0.015879262, -0.0020484119, -0.03108115, -0.021610908, 0.005549275, -0.022275258, -0.0032794129, 0.010310448, -0.02252276, -0.019305224, 0.011769412, -0.00325336, 0.003152405, 0.009007801, 0.023760274, -0.016309137, 0.0027713808, -0.0104342, 0.006643498, 0.006001944, -0.020269182, 0.009874062, -0.011489344, 0.036422, 0.0068193553, -0.012622646, -0.010772888, -0.031550102, -0.012479355, -0.009620045, -0.0051128883, 0.042414173, 0.02580543, -0.0045039007, -0.0006924381, 0.002624833, 0.01961786, -0.041606534, -9.37295e-05, 0.012928768, 0.012029942, -0.018732058, -0.008493256, -0.16538402, 0.0036897466, 0.020412473, -0.029544026, 0.03605726, 0.0067151436, 0.024606995, -0.0071645565, -0.00868214, 0.008753786, 0.02264, 0.00021229069, -0.01150237, -0.0014459378, 0.025531875, 0.011958296, -0.0062136245, 0.036917005, 0.01901864, -0.011893163, 0.012355603, -0.01452451, -0.006151749, -0.012472842, 0.022431575, -0.0021558802, -0.009450701, 0.018510608, -0.016035581, -0.009763337, -0.0009859407, -0.011528423, 0.04087705, 0.027251368, 0.015045568, -0.0019148906, 0.018380344, -0.014889251, -0.029283496, 0.0014093008, 0.016986512, 0.0386365, 0.021610908, -0.0028821058, -0.011521909, -0.00023569763, 0.012596593, -0.007841933, -0.0014353538, -0.022144994, 0.021949597, -0.029882714, 0.012225339, 0.0041912654, 0.008851484, 0.017416386, 0.01430306, -0.003823268, -0.0050672954, -0.023916593, -0.013032979, -0.011613095, 0.02336948, -0.02967429, 0.010225777, -0.007145017, -0.016934406, 0.018575741, -0.020686029, 0.02536253, -0.004214062, 0.007894038, 0.009561426, -0.0034487569, -0.017168883, 0.013755948, -0.0164394, 0.022027755, 0.0084997695, -0.013078572, 0.0019262887, 0.00047220942, -0.01563176, 0.0059237857, -0.01124184, -0.01214718, 0.012049481, -0.0024326926, -0.021467617, -0.0217542, 0.011801979, -0.005741415, -0.02805901, 0.00028067964, -0.004324787, 0.014055558, 0.018862324, 0.0062885266, -0.0074446257, -0.015709918, 0.0035659953, -0.0016120252, 0.016517559, -0.005064039, 0.02336948, 0.010662163, -0.013046006, -0.0091055, -0.0019653682, -0.0137950275, -0.02153275, -0.012655213, -0.003057963, 0.024125015, -0.015110701, 0.016530586, -0.01321535, -0.01905772, 0.01853666, 0.009874062, 0.04121574, 0.0032354486, -0.014185822, 0.017559677, -0.01389924, -0.023942646, -0.1039512, -0.018771138, -0.00434107, 0.009274844, -0.011534936, 0.023265269, 0.0013653365, 0.0350933, -0.034936983, 0.0074641653, -0.017781127, -0.03368644, -0.029101126, -0.014316087, 0.006158262, -0.022509733, -0.025909642, -0.029648237, -0.02385146, 0.0039958684, 0.008297859, 0.005708849, 0.03587489, -0.008043843, 0.0026655407, 0.012427249, -0.04124179, 0.012029942, 0.008877537, 0.0037418525, 0.0038004715, -0.026000828, 0.005249666, -0.030794566, -0.0069952123, -0.0069691595, 0.00023691886, -0.025466742, 0.01236863, -0.012785477, -0.0018351035, 0.016791115, 0.027485844, -0.014615695, -0.010049919, -0.006106156, 0.020490631, 0.007907066, -0.0057902643, -0.033425912, -0.03782886, -0.0065197465, -0.031315625, 0.0067086304, 0.009366029, 0.014641748, 0.029544026, 0.0057381582, 0.005357134, -0.008095949, -0.008792865, -0.0045820596, -0.040616523, -0.0015705033, 0.0027160184, 0.0065848785, -0.014811092, -0.0043475833, 0.008838457, -0.014159769, 0.021558803, 0.013690816, 0.00077303936, 0.024893578, -0.011645661, -0.01019321, 0.0019393152, -0.028032957, 0.010551438, -0.008701679, -0.03037772, -0.020477606, -0.007763774, -0.012974361, 0.013319562, -0.007320874, -0.025636086, -0.006539286, 0.014290034, -0.014381219, -0.017494544, 0.017220989, -0.011951783, -0.022731183, -0.018862324, -0.016908353, 0.009001289, -0.02248368, -0.010010839, 0.013716869, -0.0036506671, -0.0034878363, -0.046504486, 0.018588768, -0.011052957, -0.0040121516, -0.012401196, -0.02521924, 0.013124165, -0.005835857, 0.0014589642, 0.019787202, -0.023577904, 0.0075879167, 0.006080103, 0.016504534, -0.007828906, -0.007711668, 0.032045107, 0.005080322, 0.0055427616, 0.00520733, -0.00103479, 0.009893601, 0.029986925, 0.0036734636, -0.0025580723, 0.023603957, -0.034363817, 0.030273508, 0.009248791, -0.006115926, 0.009027341, -0.016191898, -0.014316087, 0.010232289, -0.014068584, 0.0014003451, 0.009072934, 0.027850585, 0.009620045, 0.03144589, -0.03871466, -0.02455489, 0.019591805, -0.009554913, -0.022939608, 0.0046504484, 0.00021452962, -0.008336939, 0.029882714, 0.033373807, 0.0020142174, 0.02753795, -0.06028649, -0.026990838, -0.0075488375, 0.0017650862, 0.02532345, 0.012511921, 0.006702117, 0.018367318, 0.036474105, -0.00413916, 0.0005992174, -0.0026948503, 0.015149781, 0.025974775, -0.012844096, 0.017676914, 0.010772888, 0.005060782, -0.025948722, -0.010557951, 0.0016103969, -0.013195811, 0.020751162, 0.0021168008, 0.0050151898, -0.002207986, -0.018158894, 0.0150195155, 0.012746397, -0.021024717, -0.011639148, 0.0033868812, 0.01585321, 0.028658226, -0.012844096, -0.0010665419, -0.005663256, -0.019422462, -0.02252276, 0.015657812, -0.00012995936, 0.024580942, 0.0068584345, -0.005018446, 0.017689941, 0.0026964785, 0.03587489, 0.026964786, 0.026170172, -0.00410008, -0.0060963864, -0.013534498, -0.031055097, -0.014290034, -0.011437237, -0.026534911, 0.004262911, 0.027720321, 0.029283496, 0.026990838, 0.015618733, 0.01301344, -0.01518886, 0.020516684, 0.016426373, -0.01677809, -0.044342093, 0.007828906, 0.014498457, 0.006464384, 0.012427249, -0.017559677, 0.030768514, 0.014667802, 0.017051645, -0.022626972, 0.0026915937, 0.0036930032, -0.008897076, -0.012564027, -0.0008076409, 0.0009338348, -0.015058595, -0.01589229, -0.013938319, 0.00934649, -0.03595305, 0.06075544, 0.029908767, -0.0046081124, 0.005705592, 0.0013018325, -0.015931368, 0.0053375945, 0.014133716, -0.028449804, -0.00912504, -0.01567084, -0.006272244, 0.004627652, -0.007946145, -0.0033738548, -0.0056013805, 0.0016258658, 0.034936983, -0.00997176, -0.012818043, 0.038870975, 0.035015143, 0.011092036, 0.0019995626, -0.033009067, -0.009958734, 0.016152818, -0.002699735, 0.005392957, -0.031550102, 0.024437651, -0.0067477096, -0.024828445, -0.014498457, -0.006005201, 0.005767468, -0.0019214038, -0.011424211, 0.027824532, 0.005503682, -0.011717306, 0.027407685, -0.021806305, -0.040121518, -0.013098112, 0.020712081, -0.042336017, 7.240883e-05, -0.02234039], :text=&gt;"\"OpenAI is an AGI research and deployment company. Our mission is to ensure that artificial general intelligence benefits all of humanity.\""}, {:embedding=&gt;[0.005552796, 0.003520723, 0.0055626766, -0.0339096, 0.00242729, 0.009116334, 0.002451991, 0.016994324, -0.009689399, -0.045687065, 0.015268543, 0.042604372, -0.013081676, -0.008062423, 2.5022679e-05, 0.01976084, 0.013437372, 0.0020304264, 0.010519354, -0.02142075, 0.01698115, 0.006491436, -0.021697402, -0.017033845, 0.008121706, 0.010308572, 0.0139511535, -0.03298743, -0.021341708, -0.014899674, 0.007548641, 0.005197101, -0.018917711, -0.0073312717, -0.02142075, 0.010446898, 0.0043934933, -0.0029509522, 0.011968482, 0.0029015501, 0.024384877, 0.020406362, 0.0105391145, -0.009472029, -0.0038171357, 0.008358835, 0.006399219, -0.004363852, -0.014280501, 0.016836235, 0.003319821, 0.036017425, -0.0022296815, -0.003965342, -0.017270975, -0.00013235646, -0.018456625, 0.017442236, 0.021881837, 0.0032819463, 0.009722333, -0.0023482465, -0.0130619155, 0.019615928, -0.006046817, 0.0087804, -0.007324685, -0.0024322302, 0.01169183, -0.01292359, 0.019273406, -0.0094786165, 0.0063827513, -0.0047854166, 0.02341001, 0.012225374, -0.00800314, -0.009458856, -0.024516616, 0.01121757, 0.005141112, -0.012686459, -0.0149391955, 0.02341001, 0.008622313, -0.024253137, 0.022132142, -0.0029575392, 0.0072522284, 0.0020930024, 0.016124846, -0.011981656, 0.015755977, 0.0018278777, -0.03770368, 0.011744526, -0.02168423, 0.018179974, -0.01803506, -0.029456826, -0.009564247, 0.0010604984, -0.03770368, -0.010927745, -0.02433218, 0.0151368035, 0.02808674, -0.010875049, 0.009564247, 2.7325537e-05, -0.0059941215, 0.028692741, 0.004857873, -0.021605186, -0.019260233, 0.016493715, 0.019668624, -0.0100714415, -0.023067487, -0.003981809, 0.012488851, -0.0048183515, -0.0010802592, 0.021183621, 0.017613495, 0.02016923, -0.02927239, -0.01715241, -0.012436155, -0.0030876312, -0.0012663405, 0.012521786, 0.011915787, -0.00027891604, -0.042920545, 0.031353865, -0.014873326, 0.0014911201, 0.0019299753, -0.010591811, 0.0022856705, 0.011448113, -0.010499593, 0.0054243505, -0.0084774, 0.04131333, -0.002946012, 0.00970916, 0.02375253, 0.020024318, 0.02375253, -0.016348802, -0.016941627, 0.015545194, 0.0129631115, -0.009775029, 0.010209767, 0.028192133, 0.005398003, -0.015993107, 0.00681749, 0.018654233, 0.00092464266, -0.008431292, 0.024319008, 0.027217263, 0.026308265, 0.004011451, -0.011902613, -0.009228312, -0.023291444, 0.030089173, -0.01505776, -0.0094786165, -0.0043506785, 0.015294891, 0.033382647, -0.006083045, -0.02845561, -0.0112570925, 0.0077462494, 0.009050465, 0.0038566573, -0.009656464, -0.00038945323, -0.025992092, 0.0035306034, -0.025069918, 0.0155320205, -0.02700648, 0.02564957, 0.00035054906, 0.020129709, -0.031380214, -0.6639642, -0.038283333, 0.009050465, -0.037914466, 0.016572759, 0.016467366, 0.0070019243, -0.016098497, -0.007937271, 0.04974462, -0.007192946, 0.0036722228, 0.00076079235, -0.013977501, 0.015044587, -0.017705712, 0.010776245, -0.029904738, 0.024160922, 0.011474461, -0.024819616, 0.001651677, -0.0020995892, -0.0069162943, -0.024398051, 0.020393187, -0.010993614, -0.015874542, 0.011125353, 0.014412239, -0.011863091, -0.005141112, 0.02726996, -0.018614711, 0.039600722, -0.0074827718, -0.022013577, 0.022922575, -0.0026133712, 0.024845963, -0.032829344, -0.014267326, 0.0072258804, 0.026137006, -0.009340291, 0.023647139, 0.020353666, -0.0008106061, -0.025570527, -0.0072390544, -0.0038797117, -0.020380013, 0.015294891, -0.018364407, 0.0063333493, 0.008898965, 0.022474661, -0.01566376, 0.0011617728, -0.018838668, 0.013898457, 0.019154841, -0.0315383, -0.018298538, -0.01563741, 0.006554012, 0.0103678545, 0.011942134, -0.013740371, -0.02845561, 0.017099714, 0.015413456, -0.0020732414, -0.002633132, -0.029588565, 0.013417611, 0.017890148, -0.0044198413, -0.030589782, 0.01042055, 0.0055989046, -0.01009779, 0.0014927668, -0.015940411, 0.021262664, 0.021025535, 0.007133663, -0.0069624027, 0.01451763, -0.0008793574, -0.0028192133, 0.031090388, -0.012508612, -0.0235154, -0.017073367, 0.0024733986, -0.01941832, -0.02632144, -0.0014532452, -0.02036684, 0.0036623424, -0.02774422, 0.04263072, 0.0121463295, 0.036017425, 0.020116536, -0.018996755, 0.011816982, 0.0056746546, -0.016019454, -0.009010944, 0.022066271, -0.009933116, -0.0016426198, 0.022421967, -0.021776445, 0.0012202319, -0.0019003341, 0.010848701, -0.016348802, 0.003471321, -0.006527664, 0.0053189597, -0.015966758, 0.023462705, 0.021763273, 0.014306848, -0.015044587, 0.003919233, 0.025754962, 0.0023630671, -0.012087047, 0.007772597, -0.019497363, 0.03559586, 0.007983379, 0.041128896, -0.0068701855, 0.0026183114, -0.0020172524, -0.029430479, 0.005704296, 0.00054259977, 0.0009847486, -0.037203074, -0.012218786, -0.0002445404, -0.0057866327, -0.0025293876, -0.014201458, 0.011823569, -0.014636195, -0.00037278002, 0.02375253, -0.0074959453, -0.015452977, -0.011296614, -0.034462906, 0.011296614, -0.010110963, 0.0050060796, 0.017824277, -0.008510335, -0.00019380033, -9.7208926e-05, -0.008115118, 0.0056812414, 0.022777662, -0.03261856, -0.017033845, 0.021196796, -0.028877174, 0.007423489, 0.03488447, -0.0063926317, 0.022039924, -0.006254306, 0.0015380521, 0.013845762, -0.030168217, -0.0008513629, 0.008497162, 0.0027352297, -0.008681596, 0.012119982, 0.014767935, 0.032697603, 0.038942028, -0.030458042, -0.002946012, -0.018706929, 0.02662444, -0.0065046097, 0.034120385, 0.009182204, -0.0054671657, 0.019154841, -0.0030234086, 0.0018657526, 0.013832589, 0.01607215, 0.044580456, 0.00619173, -0.028376566, -0.0038006683, -0.033777863, 0.011316375, -0.032276038, 0.012633764, 0.0014754761, 0.007838466, 0.00455158, -0.01270622, -0.001059675, 0.010934331, 0.030800562, -0.004097081, 0.01363498, -0.012455916, 0.025583701, 0.008734291, 0.0022543825, 0.03130117, 0.0017126062, -0.011935548, 0.022250706, -0.022619575, 0.027111873, 0.0020287796, -0.028165784, 0.023647139, 0.0009641643, -0.0019151547, 0.01559789, 0.016533237, -0.009867246, 0.019273406, -0.021065056, 0.020590795, -0.0053683617, -0.014188283, -0.005654894, 0.010710375, -0.033382647, 0.042709764, -0.022342924, 0.014491283, -0.015400281, -0.044000804, -0.0054803398, -0.03095865, 0.011705005, -0.01674402, -0.005210275, 0.023963312, -0.0057734586, 0.021776445, -0.008556444, -0.0141224135, 0.015821846, -0.009656464, 0.0092349, 0.02148662, 0.0042617545, 0.00815464, -0.004383613, -0.007785771, -0.002921311, -0.012673286, -0.0007167421, -0.010143898, 0.008378596, 0.012811611, -0.026295092, 0.029456826, 0.019879404, -0.009926529, -0.003015175, 0.01617754, 0.044264283, -0.007904336, -0.026558569, 0.007660619, 0.022645922, -0.0094522685, -0.00020913556, -0.021802794, 0.008312726, -0.021328533, -0.0023449531, -0.011718178, 0.00227085, -0.0053420137, 0.016467366, -0.00203866, 0.0017817691, 0.0006549895, -0.017350018, -0.008246858, -0.016348802, -0.006909707, 0.0054869265, -0.017811105, -0.0013149192, 0.029799348, -0.00789775, -0.032908387, 0.0064387405, -0.010914571, -0.027217263, 0.01158644, 0.015993107, -0.000666105, -0.03319821, 0.011579853, 0.0055001006, -0.004396787, -0.0060896324, 0.00141043, 0.0028883761, -0.0017109595, -0.027875958, -0.014017023, 0.002801099, 0.047478713, 0.016098497, -0.013753545, 0.0031666746, -0.017653018, 0.000894178, -0.0034877884, -0.005697709, -0.013990675, 0.02595257, -0.011784048, -0.0036623424, 0.010670854, -0.0031238594, 0.0035240166, 0.00019287404, -0.007192946, -0.01939197, -0.027085526, -0.024503442, 0.01661228, -0.010736723, 0.003998277, 0.0038500703, 0.02090697, -0.009952877, 0.025807658, 0.025517832, -0.019141667, -0.012811611, 0.010927745, -0.00289661, -0.004584515, 0.0025524418, -0.020630317, 0.02940413, -0.0030843378, 0.004666852, 0.014003849, 0.019497363, 0.0026792407, 0.007212707, -0.006448621, -0.024147747, -0.006339936, -0.03201256, 0.005058775, 0.023541749, -0.0072719892, -0.03773003, -0.00096745783, 0.011856504, -0.03609647, 0.0038105487, 0.014675718, 0.0011230744, 0.0059315455, -0.011494222, 0.0033725167, -0.03962707, -0.0016911986, -0.026637612, 0.00076408585, -0.0069689895, -0.009313943, -0.0028603817, 0.0074564237, 0.002246149, -0.026440004, 0.017231453, 0.014030197, -0.032486822, -0.060283735, -0.014991891, 0.010749897, 0.003757853, 0.01887819, 0.010644506, -0.018627886, 0.026914265, -0.0072851633, -0.026308265, -0.0017916495, -0.019945275, 0.0005590671, 0.006227958, -0.02835022, -0.012139743, 0.013832589, 0.010921158, -0.0008661835, -0.010624745, -0.014069718, -0.0033791037, 0.0070085116, 0.018232668, 0.028587349, 0.008714531, 0.009267834, -0.011863091, -0.009952877, -0.024068704, -0.020090187, -0.01820632, 0.0034350927, 0.010914571, 0.019471014, 0.00932053, 0.008207336, -0.007021685, 0.014399066, 0.0012391694, 0.010947506, -0.015400281, 0.0012054113, -0.021447098, 0.03203891, -0.0016911986, -0.005322253, -0.02543879, -0.008602552, -0.04012768, 0.021302186, 0.022118967, -0.008549857, 0.0019629102, 0.0057405243, 0.00759475, -0.03796716, 0.006185143, -0.006623175, 0.02368666, -0.009887007, -0.0070941416, -0.0024437571, -0.01965545, -0.023133358, 0.009472029, -0.02435853, 0.00282086, -0.0003237896, -0.013779893, 0.006290534, 0.010229528, 0.019141667, -0.020696187, -0.007937271, 0.0035701252, 0.040206723, 0.03907377, -0.00822051, 0.021499794, -0.021183621, -0.017402714, -0.00093205296, -0.014912847, 0.0007513236, 0.023120183, 0.039442636, 0.026703482, 0.032776646, -0.017468583, 0.016322454, 0.031353865, -0.005460579, 0.003272066, -5.5680284e-05, 0.015373934, -0.0047360146, -0.031828128, 0.002382828, 0.010163659, 0.027322656, -0.007910923, 0.008918726, 0.012390047, -0.009274421, -0.004564754, -0.00822051, -0.013937979, -0.016230237, 0.023159705, -0.005335427, 0.028007697, -0.02892987, 0.0049863188, 0.014333196, -0.0060138823, 0.0043737325, 0.009070226, 0.023857921, -0.014385892, -0.016019454, 0.0169548, 0.0029278977, -0.016994324, -0.0026808872, -0.04297324, 0.013582285, 0.005760285, 0.011968482, 0.014240979, 0.009432508, -0.011052896, 0.011915787, 0.01143494, -0.010236115, 0.004999493, -0.014662543, -0.017705712, -0.021368055, -0.020050665, -0.012528373, 0.0054210573, -0.016559584, 0.008800161, 0.0009970991, 0.026743004, -0.012429569, -0.015927237, 0.045054715, 0.0035470708, 0.062338863, 0.009274421, 0.012119982, -0.0009493437, 0.0315383, -0.004248581, 0.0094786165, -0.00055742037, 0.008615727, 0.0055165677, -0.0008612433, -0.00391594, -0.007311511, 0.027190916, 0.03296108, -0.012462503, -0.027638828, 0.0261897, 0.015373934, 0.014794283, -0.018219495, -0.027665177, -0.02338366, 0.0010242702, 0.003471321, 0.014912847, 1.1880948e-05, -0.01098044, 0.002358127, 0.028561002, 0.027454395, 0.0074959453, 0.014623022, 0.01766619, 0.0017488344, 0.0025244474, -0.0013947859, -0.0054375245, -0.0067911423, -0.0043539717, 0.0026907679, 0.0024865724, -0.0037809075, 0.017613495, -0.0073839673, 0.01231759, 0.0047854166, 0.029588565, -0.030405346, 0.0012078814, -0.0145835, -0.0075222934, 0.02060397, -0.020116536, 0.0065309578, 0.009933116, -0.024780095, 0.010782832, 0.034673687, 0.016915279, -0.029878391, 0.003314881, 0.0026907679, -0.021157272, -0.011290027, -0.0026874742, 0.007825293, -0.033593427, -0.009722333, 0.010703788, -0.009392986, 0.00060805754, 0.0015100576, -0.026861569, 0.010262463, 0.046134975, -0.017350018, 0.010631332, -0.0057998067, 0.01363498, -0.033540733, 0.009663051, 0.0036491684, -0.019023102, 0.017587148, -0.012679872, -0.0135559365, -0.010637919, 0.0073971413, 0.016296105, 0.010723549, 0.020722535, 0.016967975, -0.0027039417, 0.009274421, 0.0020353666, 0.023897443, 0.01803506, 0.00088018074, -0.02703283, 0.025293875, -0.0068372507, 0.014464935, -0.010176833, 0.023344139, -0.0013437371, -0.034146734, -0.024371702, 0.01779793, -0.0031403268, 0.008609139, -0.015611064, -0.006527664, 0.0007546171, -0.023884268, 0.013042155, -0.006942642, -0.0065573053, 0.0011576558, 0.025899874, 0.009485204, -0.005286025, -0.02131536, 0.0050686556, -0.013226589, -0.004251874, -0.030984998, 0.013220002, -0.0053420137, 0.039785158, 0.00884627, -0.041576806, -0.042709764, -0.009867246, -0.0393109, 0.011658896, -0.0007241525, 0.024147747, 0.013819414, 0.02168423, 0.006386045, 0.01738954, -0.005009373, 0.0025524418, 0.0009987458, 0.009043878, -0.0006558129, -0.009742094, -0.022922575, 0.025596876, -0.003827016, -0.000666105, -0.0006018823, -0.021368055, -0.012416394, 0.0002865322, -0.008523509, -0.019668624, 0.003645875, 0.016454194, 0.005002786, -0.0043177437, 0.030379, -0.029983781, -0.016045803, 0.013990675, -0.0063629905, -0.017613495, -0.010670854, 0.0011016668, 0.020722535, 0.0005043131, -0.0060764584, -0.0007772597, -0.009827725, 0.007542054, 0.035780296, 0.00532884, -0.0015808672, 0.014372718, 0.00011372775, -0.005829448, 0.0028406207, 0.0117577, 0.0020304264, 0.01559789, 0.031511955, -0.026374135, 0.0025277408, -0.018364407, -0.0045449934, -0.042340893, -0.012508612, -0.0015643998, 0.004857873, -0.034225777, 0.012337351, 0.011678657, 0.0013643213, 0.0056186654, -0.013937979, 0.020459056, -0.024398051, -0.012067286, -0.019813536, -0.023489052, 0.007838466, 0.017982366, -0.013898457, -0.017600322, 0.019299755, 0.03211795, -0.041945677, 0.011362483, 0.19117954, -0.03177543, 0.002608431, 0.020327318, 0.0030234086, -0.0006916294, 0.012943351, 0.008997769, -0.0077396627, 0.00042032954, -0.011612787, 0.011461288, -0.01035468, -0.00461745, -0.0005780046, -0.026953787, -0.041260634, -0.03938994, -0.0027615775, 0.005108177, -0.011138527, -0.0076342714, -0.007403728, -0.020762056, -0.0048249387, 0.011942134, -0.008273205, -0.0010917864, 0.00808877, 0.015413456, 0.0014244273, 0.010387615, -0.008055836, 0.018562015, -0.008767226, -0.02304114, 0.0045186453, 0.0042057657, 0.024398051, 0.0018114104, 0.034014992, 0.006323469, 0.0019777308, -0.022883054, 0.007048033, 0.016664976, -0.012172678, -0.01559789, 0.013779893, 0.011527156, -0.021025535, -0.014926021, 0.013318806, 0.033119168, -0.019312927, 0.022645922, -0.011639135, 8.470402e-05, -0.0008735938, 0.0011848271, -0.027322656, 0.008246858, 0.00955766, 0.025610048, -0.016230237, 0.010710375, -0.0070282724, 0.0031930225, 0.01607215, -0.025807658, -0.017165583, -0.011230744, -0.007278576, -0.009900181, -0.033593427, -0.03298743, 0.02750709, 0.030668825, 0.018008713, 0.015966758, -0.00094440347, -0.028956218, 0.015993107, 0.0151368035, -0.012370286, -0.04429063, 0.0130355675, -0.02196088, -0.003540484, -0.0013396203, 0.0046899063, -0.0076145106, 0.0056450134, 0.0054869265, 0.008286379, 0.010176833, 0.00979479, -0.015268543, -0.0068899463, 0.0006372871, -0.009860659, 0.06260234, 0.025807658, 0.029641261, 0.0009707513, 0.018351234, -0.008681596, 0.010677441, -0.00020316614, 0.0054671657, -0.018496146, -0.027401699, 0.004047679, 0.007785771, -0.0088857915, -0.00884627, -0.008615727, -0.01098044, 0.03322456, -0.007449837, -0.0021045294, -0.01684941, -0.01285772, 0.017205104, 0.0120475255, -0.031011345, -0.020485405, -0.012311003, -0.018482972, -0.0011271912, 0.016151194, -0.031591, 0.0013223295, 0.026057962, -0.011546917, -0.008931899, 0.012054113, 0.0029591857, 0.005427644, 0.004209059, 0.0030975118, 0.0032523049, -0.009063639, -0.027349003, 0.01965545, -0.005816274, 0.0018772798, 0.0012185852, -0.013009219, 0.0024503442, -0.015466151, 0.008622313, -0.006050111, 0.011171462, 0.042709764, 0.009445681, -0.0151368035, -0.007673793, -0.0141487615, 0.010822354, -0.03670247, -0.0072456417, 0.0015010005, 0.0047887103, -0.009142682, -0.0070941416, -0.16693959, 0.004620743, 0.009584008, -0.044264283, 0.020577623, 0.014385892, 0.035200644, 0.010987028, -0.002170399, -0.008319314, 0.018601537, -0.018588364, -0.016888931, -0.0026166646, 0.004472537, 0.008852856, -0.011487635, 0.018865015, 0.022988444, 0.01158644, 0.029509522, -0.01464937, 0.016151194, -0.018153625, 0.003813842, 0.0057372306, -0.020735709, 0.019681796, -0.005908491, -0.039600722, -0.02500405, 7.343417e-05, 0.012133156, 0.0124427425, 0.033066474, -0.0014960603, 0.03525334, -0.017890148, -0.03132752, 0.009472029, 0.008740879, 0.01277209, 0.022580054, -0.0065177837, -0.001989258, -0.012791851, 0.00065622455, -0.02250101, 0.0069624027, -0.0035371904, 0.024319008, 0.0021621652, 0.011191223, -0.00455158, -0.010677441, 0.018825494, 0.0083654225, -0.0015347586, -0.0027862785, -0.0064189797, -0.0024239963, -0.017521279, 0.012488851, -0.02811309, 0.005098297, -0.013187068, -0.029377783, 0.0056944154, -0.033619776, 0.03130117, -0.010782832, 0.0036985707, 0.005111471, -0.01827219, 0.007423489, 0.008714531, -0.017402714, 0.0114547005, 0.02808674, -0.007581576, -0.012133156, -0.0023153117, -0.031222127, 0.008918726, -0.010124138, -0.012054113, 0.0111582875, 0.017942842, -0.028692741, -0.019154841, 0.0071073156, -0.0033856907, -0.009616942, 0.0014705359, 0.011388831, 0.008194162, 0.027401699, -0.007153424, 0.009030704, -0.0037117444, -0.0034449731, 0.004604276, -0.006942642, 0.0067582075, 0.033303604, -0.0064123925, -0.016454194, -0.003583299, 0.03132752, -0.0053420137, -0.022698618, -0.00012896006, -0.00471296, 0.0079702055, -0.027638828, 0.011494222, -0.024002833, -0.033356298, 0.012791851, 0.0017257801, 0.04655654, -0.00109755, 0.0036491684, 0.030326303, -0.011402004, -0.012087047, -0.11593027, -0.029456826, 0.014715239, 0.016019454, -0.009373225, 0.035068903, 0.0017438942, 0.028982567, -0.033514384, 0.029693956, -0.03475273, -0.010782832, 0.007910923, -0.008925313, 0.026005266, -0.009636703, -0.0108618755, -0.01881232, -0.025043571, 0.013806241, 0.0068240766, -0.0013182127, 0.011362483, -0.022118967, 0.009511551, -0.01044031, -0.035174295, 0.018614711, 0.015426629, -0.011593026, 0.028508306, -0.03417308, -0.007192946, -0.021671055, 0.0010168599, -0.009096573, -0.016809888, -0.026400482, 0.014135588, -0.008457639, 0.00084477593, 0.002619958, 0.019510536, -0.007192946, -0.013845762, -0.019102145, -0.033040125, 0.03596473, -0.020551274, -0.027085526, -0.03177543, 0.00541447, -0.02726996, -0.0077791843, 0.024292659, 0.024648355, 0.0066791642, 0.009755268, 0.0054375245, -0.020617144, -0.022158489, -0.024345355, -0.016902106, -0.010644506, 0.008800161, 0.0022477957, -0.011869678, -0.015690107, 0.007924097, -0.026808873, 0.014899674, 0.00431445, -0.0058986107, 0.009458856, -0.017310496, -0.006652816, -0.004459363, -0.020643491, 0.002069948, 0.0024157627, -0.004202472, -0.01928658, 0.011243918, -0.0070941416, -0.015927237, 0.003089278, 0.0009831018, -0.019563232, -0.016282933, -0.043052286, -0.007627684, 0.026914265, -0.009267834, -0.024780095, -0.0103678545, -0.011863091, -0.010651093, -0.0119092, -0.010512767, 0.0031913756, -0.0025820832, -0.0049896124, -0.051509924, 0.010868462, 0.008418118, -0.004577928, 0.0019217418, -0.026176527, -0.0068570115, -0.011210984, -0.0046767322, 0.009327116, -0.016888931, 0.019576406, -0.007416902, 0.009933116, -0.006610001, -0.0004127134, 0.01128344, 0.0035668316, 0.015887715, 0.0015866308, 0.021565665, -0.0024750452, 0.030879606, 0.015676932, 0.0028290937, 0.0029987076, -0.021802794, 0.047320627, -0.01339785, -0.00019102146, -0.009775029, -0.015149978, 0.0046306234, -0.010255876, 0.001926682, -0.0057767523, -0.002237915, 0.019326102, 0.016520062, 0.030932302, -0.017850626, -0.044027153, 0.008253444, -0.019747667, -0.0068899463, -0.00227085, -0.0010234469, 0.0033362885, 0.022303402, 0.018799147, 0.031933516, 0.01881232, -0.0476368, -0.030379, -0.018996755, 0.005668068, 0.03533238, 0.0048512863, -0.00045079418, 0.0143463705, 0.03823064, 0.013608632, 0.011375657, -0.0005788279, -0.0008213099, 0.009129508, -0.0035240166, 0.013193655, 0.012660111, -0.0151368035, -0.00901753, 0.0037117444, 0.0080690095, 0.009149269, 0.0020419534, 0.008483987, 0.007838466, 0.014702065, -0.0036359946, 0.02845561, 0.016032629, -0.011777461, -0.009215139, 0.006784555, 0.023620792, 0.00932053, 0.00026635965, 0.0026248982, -0.02672983, -0.018562015, -0.0021934533, 0.017600322, 0.018957233, 0.006942642, 0.0030761042, 0.0033955711, -0.004834819, 0.0036425816, 0.014056545, 0.023291444, 0.02845561, -0.013490067, -0.0031403268, -0.007785771, -0.033646125, -0.012594243, -0.027375352, -0.023528574, 0.0057734586, 0.022000402, 0.019747667, 0.016467366, 0.012133156, 0.012502025, -0.017784756, 0.0374929, -0.0022165077, -0.008556444, -0.03475273, 0.00030444044, 0.03022091, 0.009129508, 0.0135295885, -0.025860352, 0.037835423, 0.015729629, 0.03024726, -0.029509522, 0.023976486, 0.012205612, -0.024187269, -0.017363193, -0.0042584613, -0.0069162943, -0.03441021, -0.0046372106, -0.03717673, 0.021736924, -0.017982366, 0.07625049, 0.019853057, 0.009010944, 0.02165788, -0.0025491484, -0.0020238394, 0.018930886, 0.005147699, -0.010479832, -0.0018147038, -0.0063267625, -0.0016105085, -0.013832589, -0.022277053, -0.0043803197, -0.018179974, 0.0018163506, 0.01766619, -0.010374441, -0.005174047, 0.02845561, 0.022448314, 0.016836235, -0.013002633, -0.021065056, -0.0008085477, 0.016599106, -0.013338567, 4.9736595e-05, -0.023344139, 0.03549047, 0.0143463705, -0.024780095, -0.017600322, -0.021196796, 0.017284147, -0.009215139, -0.016019454, 0.0048315255, 0.007884575, 0.0053057857, 0.0068240766, -0.016467366, -0.020788403, -0.014873326, 0.0033181745, -0.023528574, -0.008036075, -0.025596876], :text=&gt;"\"OpenAI\\u2019s large language models, including the models that power ChatGPT, are developed using three primary sources of information: (1) information that is publicly available on the internet, (2) information that we license from third parties, and (3) information that our users or our human trainers provide.\""}]</code></pre>
+</div>
+</div>
+<div id="3b42ad7d" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span> <span class="vs">'cosine_similarity'</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>question <span class="kw">=</span> <span class="st">"What is open AI"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>response <span class="kw">=</span> client<span class="at">.embeddings</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="wa">model: </span><span class="st">"text-embedding-ada-002"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="wa">input: </span>question</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>question_embedding <span class="kw">=</span> response<span class="kw">[</span><span class="vs">'data'</span><span class="kw">][</span><span class="dv">0</span><span class="kw">][</span><span class="vs">'embedding'</span><span class="kw">]</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>similarity_array <span class="kw">=</span> <span class="kw">[]</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="cn">CSV</span><span class="at">.foreach</span>(<span class="st">"embeddings.csv"</span>, <span class="wa">headers: </span><span class="dv">true</span>) <span class="cf">do</span> <span class="kw">|</span>row<span class="kw">|</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  text_embedding <span class="kw">=</span> <span class="cn">JSON</span><span class="at">.parse</span>(row<span class="kw">[</span><span class="vs">'embedding'</span><span class="kw">]</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  similarity_array <span class="kw">&lt;&lt;</span> cosine_similarity(question_embedding, text_embedding)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>index_of_max <span class="kw">=</span> similarity_array<span class="at">.index</span>(similarity_array<span class="at">.max</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>original_text <span class="kw">=</span> <span class="st">""</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="cn">CSV</span><span class="at">.foreach</span>(<span class="st">"embeddings.csv"</span>, <span class="wa">headers: </span><span class="dv">true</span>)<span class="at">.with_index</span> <span class="cf">do</span> <span class="kw">|</span>row, rowno<span class="kw">|</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> rowno <span class="kw">==</span> index_of_max</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    original_text <span class="kw">=</span> row<span class="kw">[</span><span class="vs">'text'</span><span class="kw">]</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>prompt <span class="kw">=</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="st">"You are an AI assistant. You work for Sterling Parts which is a car parts online store located in Australia.</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="st">You will be asked questions from a customer and will answer in a helpful and friendly manner.</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="st">You will be provided company information from Sterline Parts under the [Article] section. The customer question</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="st">will be provided unders the [Question] section. You will answer the customers questions based on the article.</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="st">If the users question is not answered by the article you will respond with 'I'm sorry I don't know.'</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="st">[Article]</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="sc">#{</span>original_text<span class="sc">}</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="st">[Question]</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="sc">#{</span>question<span class="sc">}</span><span class="st">"</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>response <span class="kw">=</span> client<span class="at">.completions</span>(</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>  <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>    <span class="wa">model: </span><span class="st">"text-davinci-003"</span>,</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>    <span class="wa">prompt: </span>prompt,</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    <span class="wa">temperature: </span><span class="fl">0.2</span>,</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>    <span class="wa">max_tokens: </span><span class="dv">500</span>,</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="fu">puts</span> response<span class="kw">[</span><span class="vs">'choices'</span><span class="kw">]</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>response <span class="kw">=</span> client<span class="at">.chat</span>(</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>  <span class="wa">parameters: </span><span class="kw">{</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>    <span class="wa">model: </span><span class="st">"gpt-3.5-turbo"</span>,</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>    <span class="wa">messages: </span><span class="kw">[{</span><span class="wa">role: </span><span class="st">"user"</span>, <span class="wa">content: </span>prompt<span class="kw">}]</span>,</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>    <span class="wa">temperature: </span><span class="fl">0.7</span>,</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="fu">puts</span> response<span class="at">.dig</span>(<span class="st">"choices"</span>, <span class="dv">0</span>, <span class="st">"message"</span>, <span class="st">"content"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+[Answer]
+OpenAI is an AGI research and deployment company whose mission is to ensure that artificial general intelligence benefits all of humanity.</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="geeknees/quarto" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
