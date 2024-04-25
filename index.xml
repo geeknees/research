@@ -5,23 +5,23 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>Quarto</title>
-<link>https://geeknees.github.io/fragment/</link>
-<atom:link href="https://geeknees.github.io/fragment/index.xml" rel="self" type="application/rss+xml"/>
+<title>Research</title>
+<link>https://geeknees.github.io/research/</link>
+<atom:link href="https://geeknees.github.io/research/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.4.553</generator>
 <lastBuildDate>Tue, 23 Apr 2024 15:00:00 GMT</lastBuildDate>
 <item>
   <title>Crypto Ethereum SQL queries</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2024-04-24/</link>
+  <link>https://geeknees.github.io/research/posts/2024-04-24/</link>
   <description><![CDATA[ 
 
 
 
 
 
-<div id="dc25744d" class="cell" data-execution_count="1">
+<div id="22d96757" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>pip install bigquery</span>
@@ -88,7 +88,7 @@ Requirement already satisfied: pytz&gt;=2017.3 in /Users/masumi/.local/share/mis
 Requirement already satisfied: six&gt;=1.5 in /Users/masumi/.local/share/mise/installs/python/3.12/lib/python3.12/site-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=0.24.2-&gt;db-dtypes) (1.16.0)</code></pre>
 </div>
 </div>
-<div id="595d56d2" class="cell" data-execution_count="2">
+<div id="3e56daf0" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#Importing necessary modules</span></span>
@@ -147,7 +147,7 @@ font-style: inherit;">=</span>credentials, project<span class="op" style="color:
 background-color: null;
 font-style: inherit;">=</span>credentials.project_id)</span></code></pre></div>
 </div>
-<div id="06f40f9d" class="cell" data-execution_count="3">
+<div id="1c8ca68f" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Construct a reference to the "Ethereum Blockchain" dataset</span></span>
@@ -203,7 +203,7 @@ transactions</code></pre>
 </div>
 </div>
 <p>Use a function to show amount of data to be scanned for a query not to exceed the limit for a Kaggle user, before actually running the query</p>
-<div id="f8610228" class="cell" data-execution_count="4">
+<div id="99e4d72f" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">def</span> show_amount_of_data_scanned(query):</span>
@@ -246,18 +246,63 @@ font-style: inherit;">9</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>)))</span></code></pre></div>
 </div>
+<p>The ethereum blockchain is fairly popular with users, the query below will show the top 10 wallet sender addresses with the most number of transactions</p>
+<div id="6deece42" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">transaction_table_ref <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> eth_ref.table(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"transactions"</span>)</span>
+<span id="cb7-2">transaction_table <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> client.get_table(transaction_table_ref)</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">most_transaction_query <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb7-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 SELECT from_address as wallet_address, COUNT(*) AS transactions</span></span>
+<span id="cb7-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 FROM `bigquery-public-data.crypto_ethereum.transactions`</span></span>
+<span id="cb7-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 WHERE EXTRACT(YEAR from block_timestamp) = 2024</span></span>
+<span id="cb7-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 GROUP BY wallet_address</span></span>
+<span id="cb7-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 ORDER BY transactions DESC</span></span>
+<span id="cb7-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 LIMIT 10</span></span>
+<span id="cb7-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 """</span></span></code></pre></div>
+</div>
+<p>Firstly, check amount of data scanned</p>
+<div id="25e765be" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">show_amount_of_data_scanned(most_transaction_query)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data processed: 7.126 GB</code></pre>
+</div>
+</div>
 
 
 
  ]]></description>
   <category>crypto bigquery python analysis</category>
-  <guid>https://geeknees.github.io/fragment/posts/2024-04-24/</guid>
+  <guid>https://geeknees.github.io/research/posts/2024-04-24/</guid>
   <pubDate>Tue, 23 Apr 2024 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Statistics Terminology</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2024-04-21/</link>
+  <link>https://geeknees.github.io/research/posts/2024-04-21/</link>
   <description><![CDATA[ 
 
 
@@ -344,13 +389,13 @@ font-style: inherit;">3</span>)))</span></code></pre></div>
 
  ]]></description>
   <category>statistics</category>
-  <guid>https://geeknees.github.io/fragment/posts/2024-04-21/</guid>
+  <guid>https://geeknees.github.io/research/posts/2024-04-21/</guid>
   <pubDate>Sat, 20 Apr 2024 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Computer Science</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-10-26/</link>
+  <link>https://geeknees.github.io/research/posts/2023-10-26/</link>
   <description><![CDATA[ 
 
 
@@ -2974,13 +3019,13 @@ font-style: inherit;">p</span> merge_sort(arr)</span></code></pre></div>
  ]]></description>
   <category>ruby</category>
   <category>code</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-10-26/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-10-26/</guid>
   <pubDate>Wed, 25 Oct 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>langchainrb eth拡張</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-08-16/</link>
+  <link>https://geeknees.github.io/research/posts/2023-08-16/</link>
   <description><![CDATA[ 
 
 
@@ -3114,13 +3159,13 @@ I, [2024-04-25T23:04:38.893872 #29946]  INFO -- : [Langchain.rb] [Langchain::Ass
   <category>code</category>
   <category>llm</category>
   <category>crypto</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-08-16/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-08-16/</guid>
   <pubDate>Tue, 15 Aug 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>langchainrb 2</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-08-08/</link>
+  <link>https://geeknees.github.io/research/posts/2023-08-08/</link>
   <description><![CDATA[ 
 
 
@@ -3487,13 +3532,13 @@ I, [2024-04-25T23:02:26.398501 #28323]  INFO -- : [Langchain.rb] [Langchain::Ass
   <category>ai</category>
   <category>code</category>
   <category>llm</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-08-08/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-08-08/</guid>
   <pubDate>Mon, 07 Aug 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>openai functions and embeddings</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-08-05/</link>
+  <link>https://geeknees.github.io/research/posts/2023-08-05/</link>
   <description><![CDATA[ 
 
 
@@ -5930,13 +5975,13 @@ OpenAI is an AGI research and deployment company whose mission is to ensure that
  ]]></description>
   <category>ai</category>
   <category>ruby</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-08-05/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-08-05/</guid>
   <pubDate>Fri, 04 Aug 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>公式</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-08-03/</link>
+  <link>https://geeknees.github.io/research/posts/2023-08-03/</link>
   <description><![CDATA[ 
 
 
@@ -5991,13 +6036,13 @@ OpenAI is an AGI research and deployment company whose mission is to ensure that
 
  ]]></description>
   <category>math</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-08-03/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-08-03/</guid>
   <pubDate>Wed, 02 Aug 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>2進数、連立方程式</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-30/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-30/</link>
   <description><![CDATA[ 
 
 
@@ -6308,7 +6353,7 @@ font-style: inherit;">"sample_images/1.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-30/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-30/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6502,7 +6547,7 @@ font-style: inherit;">"sample_images/2.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-30/index_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-30/index_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6636,13 +6681,13 @@ font-style: inherit;">.lup.solve</span>(b)</span></code></pre></div>
   <category>ruby</category>
   <category>math</category>
   <category>code</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-30/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-30/</guid>
   <pubDate>Sat, 29 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>数学2、指数関数、対数関数、三角関数</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-23/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-23/</link>
   <description><![CDATA[ 
 
 
@@ -6869,7 +6914,7 @@ font-style: inherit;">"sample_images/sin.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6929,7 +6974,7 @@ font-style: inherit;">"sample_images/cos.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6989,7 +7034,7 @@ font-style: inherit;">"sample_images/tan.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -7052,7 +7097,7 @@ font-style: inherit;">"sample_images/log.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -7112,7 +7157,7 @@ font-style: inherit;">"sample_images/log2.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -7172,7 +7217,7 @@ font-style: inherit;">"sample_images/log10.png"</span>)</span></code></pre></div
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -7232,7 +7277,7 @@ font-style: inherit;">"sample_images/sqrt.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -7292,7 +7337,7 @@ font-style: inherit;">"sample_images/exp.png"</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <div>
 <figure class="figure">
-<p><img src="https://geeknees.github.io/fragment/posts/2023-07-23/index_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://geeknees.github.io/research/posts/2023-07-23/index_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -7305,13 +7350,13 @@ font-style: inherit;">"sample_images/exp.png"</span>)</span></code></pre></div>
   <category>ruby</category>
   <category>math</category>
   <category>code</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-23/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-23/</guid>
   <pubDate>Sat, 22 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>高校数学、単元リスト</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-21/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-21/</link>
   <description><![CDATA[ 
 
 
@@ -7512,13 +7557,13 @@ font-style: inherit;">"sample_images/exp.png"</span>)</span></code></pre></div>
   <category>ruby</category>
   <category>math</category>
   <category>code</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-21/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-21/</guid>
   <pubDate>Thu, 20 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>eth</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-17/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-17/</link>
   <description><![CDATA[ 
 
 
@@ -7528,42 +7573,60 @@ font-style: inherit;">"sample_images/exp.png"</span>)</span></code></pre></div>
 <p><a href="https://github.com/q9f/eth.rb">https://github.com/q9f/eth.rb</a></p>
 <p>It should be noted that using <code>gem 'eth', github: 'q9f/eth.rb'</code> can fix the error of <code>undefined method 'bytesize' for :inspect:Symbol</code>. The following PR addresses the issue of the overridden send method.</p>
 <p><a href="https://github.com/q9f/eth.rb/issues/171">https://github.com/q9f/eth.rb/issues/171</a></p>
-<div id="c55bd5ff" class="cell" data-execution_count="1">
+<div id="f0b11e29" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb1-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">p</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">ENV</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">[</span><span class="vs" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'RUBYINSPECT'</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">]</span></span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>"1"</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>"1"</code></pre>
-</div>
-</div>
-<div id="f14ba797" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'bundler/setup'</span></span>
-<span id="cb4-2"><span class="fu" style="color: #4758AB;
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'eth'</span></span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>true</code></pre>
 </div>
 </div>
-<div id="3f7c328c" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb6-1">client <span class="kw" style="color: #003B4F;
+<div id="ed11634e" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb3-1">name <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DAI"</span></span>
+<span id="cb3-2">abi <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'[{"inputs":[{"internalType":"uint256","name":"chainId_","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"guy","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":true,"inputs":[{"indexed":true,"internalType":"bytes4","name":"sig","type":"bytes4"},{"indexed":true,"internalType":"address","name":"usr","type":"address"},{"indexed":true,"internalType":"bytes32","name":"arg1","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"arg2","type":"bytes32"},{"indexed":false,"internalType":"bytes","name":"data","type":"bytes"}],"name":"LogNote","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"dst","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":true,"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"deny","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"move","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"holder","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"bool","name":"allowed","type":"bool"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"pull","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"push","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"rely","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"wards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]'</span></span>
+<span id="cb3-3">address <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0x6B175474E89094C44Da98b954EedeAC495271d0F"</span></span>
+<span id="cb3-4">dai <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Eth</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">::</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Contract</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.from_abi</span>(<span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">name: </span>name, <span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">address: </span>address, <span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">abi: </span>abi)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>#&lt;Eth::Contract::DAI:0x000000013885fd20&gt;</code></pre>
+</div>
+</div>
+<div id="c856a4a2" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb5-1">client <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
 background-color: null;
@@ -7589,97 +7652,55 @@ font-style: inherit;">]</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">}</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"</span></span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>#&lt;Eth::Client::Http:0x00000001236abc28 @id=0, @max_priority_fee_per_gas=0.101e10, @max_fee_per_gas=0.4269e11, @host="mainnet.infura.io", @port=443, @ssl=true, @uri=#&lt;URI::HTTPS https://mainnet.infura.io/v3/39521fd43bfd4bc39b5fa46492a69c54&gt;&gt;</code></pre>
-</div>
-</div>
-<div id="d2992254" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb8-1">name <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"DAI"</span></span>
-<span id="cb8-2">abi <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'[{"inputs":[{"internalType":"uint256","name":"chainId_","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"guy","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":true,"inputs":[{"indexed":true,"internalType":"bytes4","name":"sig","type":"bytes4"},{"indexed":true,"internalType":"address","name":"usr","type":"address"},{"indexed":true,"internalType":"bytes32","name":"arg1","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"arg2","type":"bytes32"},{"indexed":false,"internalType":"bytes","name":"data","type":"bytes"}],"name":"LogNote","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"dst","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":true,"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"deny","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"move","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"holder","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"bool","name":"allowed","type":"bool"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"pull","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"push","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"rely","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"wards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]'</span></span>
-<span id="cb8-3">address <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"0x6B175474E89094C44Da98b954EedeAC495271d0F"</span></span>
-<span id="cb8-4">dai <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Eth</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">::</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Contract</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">.from_abi</span>(<span class="wa" style="color: #5E5E5E;
-background-color: null;
-font-style: italic;">name: </span>name, <span class="wa" style="color: #5E5E5E;
-background-color: null;
-font-style: italic;">address: </span>address, <span class="wa" style="color: #5E5E5E;
-background-color: null;
-font-style: italic;">abi: </span>abi)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>#&lt;Eth::Contract::DAI:0x0000000123baf4e0&gt;</code></pre>
-</div>
-</div>
-<div id="2430771e" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb10-1">client<span class="at" style="color: #657422;
+font-style: inherit;">"</span></span>
+<span id="cb5-2">client<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.call</span>(dai, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"name"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>"Dai Stablecoin"</code></pre>
 </div>
 </div>
-<div id="4600abcb" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb12-1">client<span class="at" style="color: #657422;
+<div id="aa7de1a3" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb7-1">client<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.call</span>(dai, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"symbol"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>"DAI"</code></pre>
 </div>
 </div>
-<div id="eba662e3" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb14-1">client<span class="at" style="color: #657422;
+<div id="4db25928" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb9-1">client<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.call</span>(dai, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"decimals"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>18</code></pre>
 </div>
 </div>
-<div id="a360e585" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb16-1">client<span class="at" style="color: #657422;
+<div id="c1f803f4" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb11-1">client<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.call</span>(dai, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"totalSupply"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>3213299389324231503502930512</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>3211953036243517939066192400</code></pre>
 </div>
 </div>
-<div id="20d3733f" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb18-1">client<span class="at" style="color: #657422;
+<div id="9a43acff" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb13-1">client<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.call</span>(dai, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"balanceOf"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"0x9a315bdf513367c0377fb36545857d12e85813ef"</span>)</span></code></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>797534767207493696656</code></pre>
 </div>
 </div>
@@ -7690,13 +7711,13 @@ font-style: inherit;">"0x9a315bdf513367c0377fb36545857d12e85813ef"</span>)</span
   <category>ruby</category>
   <category>crypto</category>
   <category>code</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-17/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-17/</guid>
   <pubDate>Sun, 16 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Boxcars</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-16/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-16/</link>
   <description><![CDATA[ 
 
 
@@ -7805,13 +7826,13 @@ Answer: 4.407651178009159
   <category>ai</category>
   <category>code</category>
   <category>llm</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-16/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-16/</guid>
   <pubDate>Sat, 15 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>langchainrb</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-15/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-15/</link>
   <description><![CDATA[ 
 
 
@@ -7906,13 +7927,13 @@ font-style: inherit;">.completion</span></span></code></pre></div>
   <category>ai</category>
   <category>code</category>
   <category>llm</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-15/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-15/</guid>
   <pubDate>Fri, 14 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Daru</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-14/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-14/</link>
   <description><![CDATA[ 
 
 
@@ -8333,13 +8354,13 @@ font-style: inherit;">end</span></span></code></pre></div>
   <category>ruby</category>
   <category>code</category>
   <category>analysis</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-14/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-14/</guid>
   <pubDate>Wed, 12 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Introduction to Modeling in Gen</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-13/</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-13/</link>
   <description><![CDATA[ 
 
 
@@ -9281,13 +9302,13 @@ font-style: inherit;">grid</span>(render_trace, traces)</span></code></pre></div
   <category>probcomp</category>
   <category>code</category>
   <category>ai</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-13/</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-13/</guid>
   <pubDate>Wed, 12 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 <item>
   <title>rb_prob</title>
   <dc:creator>geeknees </dc:creator>
-  <link>https://geeknees.github.io/fragment/posts/2023-07-13/index2.html</link>
+  <link>https://geeknees.github.io/research/posts/2023-07-13/index2.html</link>
   <description><![CDATA[ 
 
 
@@ -10694,7 +10715,7 @@ direkt with event condition:     0.013739   0.000069   0.013808 (  0.013811)</co
   <category>probcomp</category>
   <category>code</category>
   <category>ai</category>
-  <guid>https://geeknees.github.io/fragment/posts/2023-07-13/index2.html</guid>
+  <guid>https://geeknees.github.io/research/posts/2023-07-13/index2.html</guid>
   <pubDate>Wed, 12 Jul 2023 15:00:00 GMT</pubDate>
 </item>
 </channel>

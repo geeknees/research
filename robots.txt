@@ -1,1 +1,1 @@
-Sitemap: https://geeknees.github.io/fragment/sitemap.xml
+Sitemap: https://geeknees.github.io/research/sitemap.xml
