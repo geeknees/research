@@ -152,7 +152,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="quarto-title column-body">
       <h1 class="title">Crypto Ethereum SQL queries</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">crypto bigquery python analysis</div>
+                <div class="quarto-category">crypto</div>
+                <div class="quarto-category">bigquery</div>
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">analysis</div>
               </div>
                   </div>
   </div>
@@ -191,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="22d96757" class="cell" data-execution_count="1">
+<div id="11d5e8c2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install bigquery</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install db<span class="op">-</span>dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -252,7 +255,7 @@ Requirement already satisfied: pytz&gt;=2017.3 in /Users/masumi/.local/share/mis
 Requirement already satisfied: six&gt;=1.5 in /Users/masumi/.local/share/mise/installs/python/3.12/lib/python3.12/site-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=0.24.2-&gt;db-dtypes) (1.16.0)</code></pre>
 </div>
 </div>
-<div id="3e56daf0" class="cell" data-execution_count="2">
+<div id="7cbbab69" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Importing necessary modules</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.cloud <span class="im">import</span> bigquery</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.oauth2 <span class="im">import</span> service_account</span>
@@ -267,7 +270,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/masumi/.local/share/mise/in
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>credentials <span class="op">=</span> service_account.Credentials.from_service_account_file(key_path, scopes<span class="op">=</span>[<span class="st">"https://www.googleapis.com/auth/cloud-platform"</span>])</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> bigquery.Client(credentials<span class="op">=</span>credentials, project<span class="op">=</span>credentials.project_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="1c8ca68f" class="cell" data-execution_count="3">
+<div id="c0f90f09" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct a reference to the "Ethereum Blockchain" dataset</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>eth_ref <span class="op">=</span> client.dataset(<span class="st">"crypto_ethereum"</span>, project<span class="op">=</span><span class="st">"bigquery-public-data"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -295,7 +298,7 @@ transactions</code></pre>
 </div>
 </div>
 <p>Use a function to show amount of data to be scanned for a query not to exceed the limit for a Kaggle user, before actually running the query</p>
-<div id="99e4d72f" class="cell" data-execution_count="4">
+<div id="17b35567" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_amount_of_data_scanned(query):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dry_run lets us see how much data the query uses without running it</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    dry_run_config <span class="op">=</span> bigquery.QueryJobConfig(dry_run<span class="op">=</span><span class="va">True</span>)</span>
@@ -303,7 +306,7 @@ transactions</code></pre>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Data processed: </span><span class="sc">{}</span><span class="st"> GB'</span>.<span class="bu">format</span>(<span class="bu">round</span>(query_job.total_bytes_processed <span class="op">/</span> <span class="dv">10</span><span class="op">**</span><span class="dv">9</span>, <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The ethereum blockchain is fairly popular with users, the query below will show the top 10 wallet sender addresses with the most number of transactions</p>
-<div id="6deece42" class="cell" data-execution_count="5">
+<div id="10076147" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>transaction_table_ref <span class="op">=</span> eth_ref.table(<span class="st">"transactions"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>transaction_table <span class="op">=</span> client.get_table(transaction_table_ref)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -317,10 +320,10 @@ transactions</code></pre>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">                 """</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Firstly, check amount of data scanned</p>
-<div id="25e765be" class="cell" data-execution_count="6">
+<div id="22aea14d" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>show_amount_of_data_scanned(most_transaction_query)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Data processed: 7.126 GB</code></pre>
+<pre><code>Data processed: 7.127 GB</code></pre>
 </div>
 </div>
 
