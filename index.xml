@@ -9,8 +9,772 @@
 <link>https://geeknees.github.io/research/</link>
 <atom:link href="https://geeknees.github.io/research/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.4.553</generator>
-<lastBuildDate>Wed, 24 Apr 2024 15:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.554</generator>
+<lastBuildDate>Sun, 19 May 2024 15:00:00 GMT</lastBuildDate>
+<item>
+  <title>RubyKaigi2024</title>
+  <dc:creator>geeknees </dc:creator>
+  <link>https://geeknees.github.io/research/posts/2024-05-20/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div id="a2ee4dc4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'open-uri'</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'json'</span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'csv'</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5">json_parse_object <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">JSON</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.parse</span>(<span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">URI</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://scrapbox.io/api/pages/ruby-jp/RubyKaigi_2024?followRename=true&amp;projects=5dfddb19a711910017dddc7e&amp;projects=664b5e94b73ada001d8da911&amp;projects=66054bdfe5afaa0027804a6b&amp;projects=635699829ff9cd002060a04d&amp;projects=5b7ac9f8422523001483308d&amp;projects=65b050b49239a40023cb8c76&amp;projects=5c6f5ba148eb0400174a245a&amp;projects=5f112854fd61a2001e36f78e&amp;projects=5a93e93c643fd50014a54022&amp;projects=611d884e67ff7100231d9d8b&amp;projects=5a3120024654f3001474d137&amp;projects=5ad7e0f01a73b00014acdf4f&amp;projects=5eeb68b2c44c070038cf6642&amp;projects=5f4485ab8ebf5b001e5e6690&amp;projects=6305c3459f68a4001e2f17d4&amp;projects=5b275fd29ee5d300149e858d&amp;projects=5df97d83ccfabb0017a19e41&amp;projects=5b758de2201e430014ef5021&amp;projects=5c79cfed9357760017def3f4&amp;projects=6527750e0ee467001c167e56&amp;projects=58f5da6ad89c7f00110eda98&amp;projects=597d2ec28962270011077c50&amp;projects=5ca7615401d3eb0017cad7b8&amp;projects=62ac4b00bbead10023dc10bb&amp;projects=63e0c61404bce7001dadca90&amp;projects=5838099b50fcab0011afe41e&amp;projects=59e71d79bef6b30012973bca&amp;projects=64f2e0fdc34adf001b08d94f&amp;projects=59910065a79fb60011c9eb82&amp;projects=5d65909159d69800177873ab&amp;projects=649f699b8f7379001bebfb5e&amp;projects=60f1caa58a8845001c07ad12&amp;projects=583dc452ebcbae0011e236ce&amp;projects=5b4cd6de4e36dc00147fee93&amp;projects=5886ce9301cee80011d205a8&amp;projects=5f895f010e7e08003872cbd9&amp;projects=5c7898bc69054300172c8f97&amp;projects=6372cdafc8307e001d5ff66f&amp;projects=5b2da74260188600147ba7fa&amp;projects=63d85811a97963001e5becef&amp;projects=6426d61140e51b001cdee328&amp;projects=5f0f1d8e061235001e929e19&amp;projects=60296e715a38ec001c5f1909&amp;projects=5f2f02f3c4a48d00237e1534&amp;projects=57ba889cc59c3e0f00979915&amp;search="</span>)<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.read</span>)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">links <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[]</span></span>
+<span id="cb1-8"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Link</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Struct</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.new</span>(<span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">:url</span>, <span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">:name</span>)</span>
+<span id="cb1-9"></span>
+<span id="cb1-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># iterate over the HTML cards</span></span>
+<span id="cb1-11">json_parse_object<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lines'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.each</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>line<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb1-12">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">next</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> line<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.nil?</span></span>
+<span id="cb1-13"></span>
+<span id="cb1-14">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 正規表現パターンを定義</span></span>
+<span id="cb1-15">  pattern <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/\[(https?:\/\/\S+)\s(.*?)\]/</span></span>
+<span id="cb1-16"></span>
+<span id="cb1-17">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># パターンにマッチする部分を抽出</span></span>
+<span id="cb1-18">  match_data <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> line<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'text'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.match</span>(pattern)</span>
+<span id="cb1-19">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">next</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> match_data<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.nil?</span></span>
+<span id="cb1-20"></span>
+<span id="cb1-21">  link <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Link</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.new</span>(match_data<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span>, match_data<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span>)</span>
+<span id="cb1-22"></span>
+<span id="cb1-23">  links<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.push</span>(link)</span>
+<span id="cb1-24"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb1-25"></span>
+<span id="cb1-26"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># populate the CSV output file</span></span>
+<span id="cb1-27"><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">CSV</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"output.csv"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"wb"</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>csv<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb1-28"></span>
+<span id="cb1-29">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># write the CSV header</span></span>
+<span id="cb1-30">  csv <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;&lt;</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"url"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"name"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-31"></span>
+<span id="cb1-32">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># transfrom each use case scraped info to a</span></span>
+<span id="cb1-33">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># CSV record</span></span>
+<span id="cb1-34">  links<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.each</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>line<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb1-35">    csv <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;&lt;</span> line</span>
+<span id="cb1-36">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb1-37"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>[#&lt;struct url="https://rubykaigi.org/2024/", name="RubyKaigi 2024"&gt;, #&lt;struct url="https://careers.bm-sms.co.jp/engineer/event-rubykaigi2024", name="RubyKaigi 2024 SNSアイコン缶バッチ申込フォーム 株式会社エス・エム・エス"&gt;, #&lt;struct url="https://smarthr.connpass.com/event/315394/", name="RubyKaigi 2024事前勉強会"&gt;, #&lt;struct url="https://kyobashirb.connpass.com/event/316115/", name="【大阪オフライン開催】RubyKaigi 2024 予習会"&gt;, #&lt;struct url="https://tegehoge.connpass.com/event/317493/", name="RubyKaigi 予習会 in 宮崎 Vol.1"&gt;, #&lt;struct url="https://smartbank.connpass.com/event/313812/", name="【初心者歓迎】登壇者と攻略するRubyKaigi 2024【プロも歓迎】"&gt;, #&lt;struct url="https://esminc.doorkeeper.jp/events/171826", name="ESM Night Cruise at RubyKaigi 2024 - 株式会社永和システムマネジメント | Doorkeeper"&gt;, #&lt;struct url="https://okinawarb.doorkeeper.jp/events/172719", name="第230回 Okinawa.rb Meetup 【RubyKaigi2024 day0・graphql-ruby回】 @那覇 - Okinawa Ruby User Group (Okinawa.rb) | Doorkeeper"&gt;, #&lt;struct url="https://coubic.com/storesinc/3574197", name="STORES CAFE for Women"&gt;, #&lt;struct url="https://airtable.com/appAjJot5p9NMgZ51/shrmapjSbPbqyB8OB", name="Vonage Lunch &amp; Learn Registration"&gt;, #&lt;struct url="https://connpass.com/event/318898/", name="aisaac Drinkup × Go to moon at RubyKaigi 2024 Day1 - connpass"&gt;, #&lt;struct url="https://tokyodev.doorkeeper.jp/events/172436", name="International and Japanese Rubyists' Dinner - TokyoDev | Doorkeeper"&gt;, #&lt;struct url="https://ruby-development-inc.connpass.com/event/318517/", name="Ruby Development Inc. Meatup at RubyKaigi 2024 - connpass"&gt;, #&lt;struct url="https://rubykaigikaraoke.doorkeeper.jp/events/173383", name="RubyKaraoke at RubyKaigi 2024 - rubykaigikaraoke | Doorkeeper"&gt;, #&lt;struct url="https://coubic.com/storesinc/3574197", name="STORES CAFE for Women"&gt;, #&lt;struct url="https://conference.pixiv.co.jp/2024/rubymusicmixin", name="RubyMusicMixin 2024"&gt;, #&lt;struct url="https://ruby-coworking-open.peatix.com/", name="RubyKaigi参加者限定！コワーキングエリア開放Days | Peatix"&gt;, #&lt;struct url="https://connpass.com/event/313639/", name="RubyKaigi ゴルフコンペ"&gt;, #&lt;struct url="https://hey.connpass.com/event/316585/", name="ふりかえり RubyKaigi 2024"&gt;, #&lt;struct url="https://fukuirb.connpass.com/event/317378/", name="fukui.rb #10 RubyKaigi 2024 感想戦 (オンライン)"&gt;, #&lt;struct url="https://timeedev.connpass.com/event/318445/", name="#kaigieffect LT大会 - connpass"&gt;, #&lt;struct url="https://smarthr.connpass.com/event/319010/", name="RubyKaigi 2024事後勉強会 - connpass"&gt;, #&lt;struct url="https://connpass.com/event/319693/", name="kaigieffect(RubyKaigi)オンラインもくもく会 - connpass"&gt;, #&lt;struct url="https://coincheck.connpass.com/event/318995/", name="After RubyKaigi 2024 〜 タイミー、note、コインチェック 〜 - connpass"&gt;, #&lt;struct url="https://connpass.com/event/318501/", name="RubyKaigi 2024 Wrap Party - connpass"&gt;, #&lt;struct url="https://hey.connpass.com/event/317153/", name="深堀りRubyKaigi 2024"&gt;, #&lt;struct url="https://www.ruby.or.jp/ja/news/20240520_2", name="「Ruby Association Activity Report」 開催のお知らせ"&gt;, #&lt;struct url="https://speakerdeck.com/pndcat/rubykaigi-2024-okinawa-guide", name="沖縄生まれのRubyistが案内するRubyKaigi観光ガイド編 - Speaker Deck"&gt;, #&lt;struct url="https://fussy-inc.beehiiv.com/p/rubykaigi-2024-okinawa-plan", name="RubyKaigi 前後で沖縄を満喫するプランの紹介"&gt;, #&lt;struct url="https://www.shunju.io/news/1tbzzthr", name="那覇周辺のおすすめ飲食店をリストアップ for RubyKaigi2024&nbsp;&nbsp;| 合同会社春秋"&gt;, #&lt;struct url="https://gongo.hatenablog.com/entry/2024/05/10/154441", name="沖縄に帰ったら食べるもの - Thanks Driven Life"&gt;, #&lt;struct url="https://developers.bookwalker.jp/entry/2024/05/13/195315", name="RubyKaigi2024に向けて、飲食関係で沖縄のおすすめスポットを紹介 - BOOK☆WALKER inside"&gt;, #&lt;struct url="https://tagomoris.hatenablog.com/entry/2024/05/20/184311", name="RubyKaigi 2024に行ってきた＆しゃべってきた - たごもりすメモ"&gt;, #&lt;struct url="https://gist.github.com/tagomoris/4392f1091f658294bd4d473d8ff631cb", name="\"Namespace on read\" for Ruby, FAQ"&gt;, #&lt;struct url="https://www.wantedly.com/companies/wantedly/post_articles/904936", name="RubyKaigi 2024 でスーファミと mruby/c について発表しました | Wantedly Engineer Blog"&gt;, #&lt;struct url="https://note.com/m3m0r7/n/n2565ca3617ad", name="RubyKaigi 2024 に初登壇 &amp;&amp; 初参加した｜めもりー"&gt;, #&lt;struct url="https://mikk0tan.hatenablog.jp/entry/2024/05/19/225922", name="RubyKaigi2024に参加しました - みっきーの備忘録。"&gt;, #&lt;struct url="https://note.com/chobishiba/n/n91a3e98dc697", name="まさかのLT登壇できたRubyKaigi 2024｜chobishiba"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-our-challenge", name="わたしたちはどんな準備をして RubyKaigi 2024 に向かったか - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-day1", name="RubyKaigi 2024 day1 まとめ - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-tompng-day1", name="RubyKaigi 2024 - Writing Weird Code (Day1) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-hsbt-day1", name="RubyKaigi 2024 - Long journey of Ruby standard library (Day1) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-jhawthorn-day1", name="RubyKaigi 2024 - Vernier: A next generation profiler for CRuby (Day1) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-osyoyu-day1", name="RubyKaigi 2024 - The depths of profiling Ruby (Day1) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-tagomoris-day1", name="RubyKaigi 2024 - Namespace, What and Why (Day1) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-spikeolaf-day1", name="RubyKaigi 2024 - The grand strategy of Ruby Parser (Day1) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-mametter-day2", name="RubyKaigi 2024 - Good first issues of TypeProf (Day2) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-junk0612-day3", name="RubyKaigi 2024 - From LALR to IELR: A Lrama's Next Step (Day3) - Techouse Developers Blog"&gt;, #&lt;struct url="https://developers.techouse.com/entry/RubyKaigi-2024-yukihiro_matz-day3", name="RubyKaigi 2024 - Matz Keynote (Day3) - Techouse Developers Blog"&gt;, #&lt;struct url="https://note.com/globis_engineers/n/naad7a607103a", name="RubyaKaigi2024 参加レポート：Day1｜グロービス・デジタル・プラットフォーム"&gt;, #&lt;struct url="https://note.com/globis_engineers/n/n0fbda0ff42cd?sub_rt=share_pb", name="RubyaKaigi2024 参加レポート：Day2｜グロービス・デジタル・プラットフォーム"&gt;, #&lt;struct url="https://note.com/globis_engineers/n/n3c6dc1a943c2", name="RubyKaigi2024 参加レポート：Day3｜グロービス・デジタル・プラットフォーム"&gt;, #&lt;struct url="https://note.com/mybest_product/n/n42eb688bf251", name="RubyKaigi体験記1日目｜mybestプロダクトチーム"&gt;, #&lt;struct url="https://note.com/mybest_product/n/n76d909169e08", name="RubyKaigi 2024 体験記2日目｜mybestプロダクトチーム"&gt;, #&lt;struct url="https://note.com/mybest_product/n/n8cd63d0b3125", name="RubyKaigi参加体験記 Day3｜mybestプロダクトチーム"&gt;, #&lt;struct url="https://blog.notainc.com/entry/rubykaigi2024-day1", name="RubyKaigi 2024の参加中間報告をします - Helpfeel Developers' Blog"&gt;, #&lt;struct url="https://blog.notainc.com/entry/2024/05/20/174839", name="Rubyistではない僕がRubyKaigi 2024を楽しめた理由 - Helpfeel Developers' Blog"&gt;, #&lt;struct url="https://blog.smartbank.co.jp/entry/rubykaigi2024/day2", name="【RubyKaigi 2024】 2日目もドリンクスペース大盛況 &amp; Lightning TalksでKoshibaがトークしました！ #rubykaigi - inSmartBank"&gt;, #&lt;struct url="https://developers.bookwalker.jp/entry/2024/05/15/175236", name="RubyKaigi2024 Day1速報記 - BOOK☆WALKER inside"&gt;, #&lt;struct url="https://developers.bookwalker.jp/entry/2024/05/16/180641", name="RubyKaigi2024 速報記 Day2 - BOOK☆WALKER inside"&gt;, #&lt;struct url="https://developers.bookwalker.jp/entry/2024/05/20/105743", name="RubyKaigi2024 速報記 Day3 - BOOK☆WALKER inside"&gt;, #&lt;struct url="https://blog.smartbank.co.jp/entry/rubykaigi2024/day1", name="【RubyKaigi 2024】 Hydration Sponsorとしてドリンクを配ってます &amp; 弊社から2名登壇しました！ #rubykaigi - inSmartBank"&gt;, #&lt;struct url="https://techracho.bpsinc.jp/hachi8833/2024_05_16/142087", name="RubyKaigi 2024@那覇（沖縄）に参加しております｜TechRacho by BPS株式会社"&gt;, #&lt;struct url="https://tech.coincheck.blog/entry/2024/05/15/174852", name="RubyKaigi 2024 day1 レポート - coincheck tech blog"&gt;, #&lt;struct url="https://tech.coincheck.blog/entry/2024/05/17/083749", name="Rubykaigi2024 参加レポート - coincheck tech blog"&gt;, #&lt;struct url="https://tech.coincheck.blog/entry/2024/05/17/104856", name="Rubykaigi2024 参加レポート - coincheck tech blog"&gt;, #&lt;struct url="https://blog.giftee.dev/2024-05-15-session-report-toki-for-rubykaigi/", name="RubyKaigi 2024 レポート ~Day1 Keynote Session~ | giftee engineer blog"&gt;, #&lt;struct url="https://blog.giftee.dev/2024-05-15-rubykaigi-2024-day2-memory-leak/", name="RubyKaigi 2024 Day2 「Finding Memory Leaks in the Ruby Ecosystem」速報レポ | giftee engineer blog"&gt;, #&lt;struct url="https://note.com/kihaya/n/nb4de3ba946c0", name="RubyKaigi2024 セッション編｜kiha"&gt;, #&lt;struct url="https://note.aiken-to-osanpo.dev/n/nd444f1b3b7ea", name="RubyKaigiに初参加してきました！｜あたまがきんに君"&gt;, #&lt;struct url="https://tech.findy.co.jp/entry/2024/05/20/164206", name="RubyKaigiで紹介されたGem「PBT(Property Based Testing)」を試してみた - Findy Tech Blog"&gt;, #&lt;struct url="https://www.wantedly.com/users/31964704/post_articles/904717", name="RubyKaigi2024参加記 初日にクワインを書き、2日目にOSS Contributorになり、3日目にクラブで盛り上がった"&gt;, #&lt;struct url="https://zenn.dev/tatsuyaaa/articles/665892c1f53238", name="RubyKaigi未参加/初参加の人に届けたい。初参加者の恥丸出しレポート【RubyKaigi2024】"&gt;, #&lt;struct url="https://jinsukim66.tistory.com/429", name="2024 rubykaigi를 참가했습니다! in Okinawa!"&gt;, #&lt;struct url="https://blog.m6a.jp/entry/2024/05/18/233848", name="RubyKaigi 2024 聞いたセッションとメモと感想 - #えむけーろぐ"&gt;, #&lt;struct url="https://blog.m6a.jp/entry/2024/05/19/105118", name="RubyKaigi 2024に参加した #rubykaigi - #えむけーろぐ"&gt;, #&lt;struct url="https://gongo.hatenablog.com/entry/2024/05/20/183123", name="RubyKaigi 2024 参加録 - Thanks Driven Life"&gt;, #&lt;struct url="https://zenn.dev/fussy_tech/articles/cad75c63429881", name="RubyKaigi 2024 で学んだこと・社員として参加する理由"&gt;, #&lt;struct url="https://qiita.com/ysk91_engineer/items/492e6be597654daf44d0", name="RubyKaigi 2024に参加した個人メモまとめ #RubyKaigi - Qiita"&gt;, #&lt;struct url="https://tech.route06.co.jp/entry/2024/05/20/125650", name="RubyKaigi 2024 協賛＆参加レポート - ROUTE06 Tech Blog"&gt;, #&lt;struct url="https://blog.mokuo.me/entry/2024/05/19/211703", name="5年ぶりの RubyKaigi がやっぱり楽しかったので、感想書きます - 明日から本気出す"&gt;, #&lt;struct url="https://blog.mokuo.me/entry/2024/05/19/211250", name="Matz Keynote まとめ (RubyKaigi 2024) - 明日から本気出す"&gt;, #&lt;struct url="https://lef237.hatenablog.com/entry/2024/05/19/204142", name="RubyKaigi 2024 Okinawa に行きました🌴 - LEFログ：学習記録ノート"&gt;, #&lt;struct url="https://shohei1913.hatenablog.com/entry/2024/05/20/062246", name="RubyKaigi 2024に行ってきた - Shohei Mitani"&gt;, #&lt;struct url="https://euglena1215.hatenablog.jp/entry/2024/05/19/220214", name="RubyKaigi2024 に参加してきました - カレーの恩返し"&gt;, #&lt;struct url="https://geeknees.github.io/web-nikki/posts/2024-05-19_rubykaigi/", name="RubyKaigi 2024 に参加してきた"&gt;, #&lt;struct url="https://scrpgil.hatenablog.com/entry/rubykaigi2024", name="RubyKaigi2024に参加しました。 - scrap book: 勉強ノート"&gt;, #&lt;struct url="https://pokosho.com/b/archives/5594", name="RubyKaigi 2024 に行ってきた！ | Pokosho!"&gt;, #&lt;struct url="https://kinoppyd.dev/blog/rubykaigi2024/", name="Rubykaigi2024、沖縄、ステーキ - kinoppyd dev"&gt;, #&lt;struct url="https://shugo.net/jit/20240518.html#p01", name="RubyKaigi 2024参加"&gt;, #&lt;struct url="https://justin.searls.co/shots/2024-05-18-13h23m42s/", name="RubyKaigi 2025 is heading to Matsuyama | justin․searls․co"&gt;, #&lt;struct url="https://www.tokyodev.com/articles/rubykaigi-2024-reflections", name="RubyKaigi 2024 reflections | TokyoDev"&gt;, #&lt;struct url="https://horikoshi-yuki.com/47a3811fd8184bf1a376296d249167f2", name="Rubyに関する2023年の自分とのDiff、そして次回に向けてのTODO（RubyKaigi 2024に参加）"&gt;, #&lt;struct url="https://tech-blog.optim.co.jp/entry/2024/05/17/180000", name="RubyKaigi 2024 参加レポート - OPTiM TECH BLOG"&gt;, #&lt;struct url="https://blog.smartbank.co.jp/entry/2024/05/17/180357", name="【RubyKaigi 2024】型特集！型の最新情報についてセッションレポート #rubykaigi - inSmartBank"&gt;, #&lt;struct url="https://railsgirls.jp/2024/01/28/start-accepting-rubykaigi2024-support-for-alumni/", name="Rails Girls - RubyKaigi 2024 参加支援募集のお知らせ"&gt;, #&lt;struct url="https://inside.pixiv.blog/2024/03/04/153000", name="ピクシブはRubyKaigi 2024に参加したい学生さんを招待します！ #rubykaigi - pixiv inside"&gt;, #&lt;struct url="https://tech.bm-sms.co.jp/entry/2024/03/11/123000", name="株式会社エス・エム・エスはRubyKaigi 2024に参加したい学生さんを支援します！ - エス・エム・エス エンジニア テックブログ"&gt;, #&lt;struct url="https://sites.google.com/st.inc/rubykaigi2024-storeschildcare/", name="STORES 託児サポート"&gt;, #&lt;struct url="https://justin.searls.co/links/2024-01-07-why-you-should-come-to-rubykaigi-in-2024/", name="Why you should come to RubyKaigi in 2024 | justin․searls․co"&gt;, #&lt;struct url="https://blog.unasuke.com/2024/rubykaigi-2024-okinawa-prep/", name="RubyKaigi 2024の予習をしに沖縄に行ってきた | うなすけとあれこれ"&gt;, #&lt;struct url="https://naitoh.hatenablog.com/entry/2024/02/25/111003", name="RubyKaigi 2024 に出したCFP - @naitohの日記"&gt;, #&lt;struct url="https://kinoppyd.dev/blog/your-proposal-for-rubykaigi-2024-has-not-been-accepted/", name="今年もRubyKaigiのCFP通らなかったので公開します - kinoppyd dev"&gt;, #&lt;struct url="https://jinroq.hatenablog.jp/entry/2024/02/24/132253", name="Re: 今年もRubyKaigiのCFP通らなかったので公開します - 虚無庵"&gt;, #&lt;struct url="https://koic.hatenablog.com/entry/rubykaigi-2024-information", name="RubyKaigi 2024 に登壇します"&gt;, #&lt;struct url="https://codezine.jp/article/detail/17733", name="Rubyに関する国際カンファレンス「RubyKaigi 2023」が5月11日～13日に開催|CodeZine（コードジン）"&gt;, #&lt;struct url="https://sue445.hatenablog.com/entry/2024/04/22/123042", name="RubyKaigi 2024 Mapを作った - くりにっき"&gt;, #&lt;struct url="https://speakerdeck.com/a_matsuda/rubykaigi-introduction", name="初心者のためのRubyKaigi入門/RubyKaigi Introduction - Speaker Deck"&gt;, #&lt;struct url="https://www.wantedly.com/companies/andpad/post_articles/900845", name="RubyKaigi 2024 で登壇する hsbt と ydah に聞く Speaker になるまでの道のり | ANDPAD_Engineers"&gt;, #&lt;struct url="https://speakerdeck.com/ytnk531/hutuunowebsahisukai-fa-zhe-karubykaigiwole-simutamenorubynozhi-shi", name="ふつうのWebサービス開発者がRubyKaigiを楽しむためのRubyの知識 - Speaker Deck"&gt;, #&lt;struct url="https://speakerdeck.com/katsyoshi/watashi-teki-rubykaigi-no-arukikata", name="（私的）RubyKaigi の歩き方 - Speaker Deck"&gt;, #&lt;struct url="https://speakerdeck.com/osyoyu/rubykaigi-2024-celebrates-the-profiler-year", name="今年のRubyKaigiはProfiler Year🤘 - Speaker Deck"&gt;, #&lt;struct url="https://www.docswell.com/s/kinoppyd/KQ86MW-schedule-select-meets-hotwire", name="Schedule.select meets Hotwire | ドクセル"&gt;, #&lt;struct url="https://zenn.dev/jnlmyz/scraps/9ca91c83e2eb81", name="RubyKaigi 2024 事前勉強メモ"&gt;, #&lt;struct url="https://s01.ninja/en/guide-to-wifi-on-pico.html", name="Guide to WiFi on PicoRuby/R2P2 | section 01"&gt;, #&lt;struct url="https://ikaruga.org/2024/05/06/%E8%BF%91%E6%B3%81/", name="4月の近況とRubyKaigiのあれこれ | ikaruga.org"&gt;, #&lt;struct url="https://zenn.dev/chihaso/articles/ce7b1f1cacd8e8", name="RubyKaigi2024 DAY1予習"&gt;, #&lt;struct url="https://zenn.dev/chihaso/articles/9d85fd34445b10", name="RubyKaigi2024 DAY2予習"&gt;, #&lt;struct url="https://zenn.dev/chihaso/articles/74bf0ac57f7fb3", name="RubyKaigi2024 DAY3予習"&gt;, #&lt;struct url="https://osyoyu.com/blog/2024/05/05/101904", name="RubyKaigi 2024事前勉強会 (SmartHR主催) と Gotanda.rb#58 で発表しました - osyoyu.com/blog"&gt;, #&lt;struct url="https://product.st.inc/entry/ronyori-ugokumono29", name="CTOが語るRubyKaigiの楽しみ方/聞きたいセッションを万全な状態で聞くためにやっていること【ep.29 #論より動くもの .fm】 - STORES Product Blog"&gt;, #&lt;struct url="https://www.wantedly.com/companies/wantedly/post_articles/902493", name="ウォンテッドリーは RubyKaigi 2024 に協賛します＆RubyKaigi限定のWantedly Engineering Handbook Miniをブースにてプレゼントします！ | Wantedly Engineer Blog"&gt;, #&lt;struct url="https://ohbarye.hatenablog.jp/entry/2024/05/08/rubykaigi-2024", name="RubyKaigi 2024に登壇します - valid,invalid"&gt;, #&lt;struct url="https://blog.agile.esm.co.jp/entry/rubykaigi-2024-lt-esminc-speaker", name="RubyKaigi 2024 の Lightning Talks に弊社 S.H. が登壇します - ESM アジャイル事業部 開発者ブログ"&gt;, #&lt;struct url="https://blog.smartbank.co.jp/entry/2024/05/09/170000", name="登壇者と攻略するRubyKaigi 2024 開催レポート - inSmartBank"&gt;, #&lt;struct url="https://note.coincheck.com/n/n47b639917184", name="【RubyKaigi 2024事前勉強会】igaigaさんとCoincheck開発チームが語る。必見のセッションと見どころ｜コインチェック株式会社"&gt;, #&lt;struct url="https://linkers.hatenablog.com/entry/2024/05/09/160923", name="【RubyKaigi 2024】リンカーズはGold Sponsorとして協賛します - Linkers Tech Blog"&gt;, #&lt;struct url="https://product.st.inc/entry/2024/05/09/144034", name="RubyKaigi 2024に STORES から5名が登壇、2名がLTに登壇します - STORES Product Blog"&gt;, #&lt;struct url="https://blog.smartbank.co.jp/entry/2024/05/10/160000", name="焼きたての Ruby 3.4.0dev を携えて沖縄に行く #rubykaigi - inSmartBank"&gt;, #&lt;struct url="https://tech.smarthr.jp/entry/2024/05/10/133139", name="RubyKaigi 公式スケジュールアプリ Schedule.select の2024年版をリリースしました！ - SmartHR Tech Blog"&gt;, #&lt;struct url="https://scrapbox.io/kiryuanzu-public/RubyKaigi%E5%89%8D%E4%BA%88%E7%BF%92%E3%83%A1%E3%83%A2%E3%81%A8%E3%82%84%E3%82%8A%E3%81%9F%E3%81%84%E3%81%93%E3%81%A8", name="RubyKaigi前予習メモとやりたいこと - kiryuanzu-public"&gt;, #&lt;struct url="https://suzuka-hk.hatenablog.com/entry/2024/05/04/181459", name="フィヨルドブートキャンプでプログラミングの勉強をする【13ヶ月目】 - すずかのプログラミング勉強記"&gt;, #&lt;struct url="https://ken1flan.hatenablog.com/entry/2024/05/10/090609", name="STORES.rb RubyKaigi 2024 直前スペシャル に参加しました - ken1flanのブログ"&gt;, #&lt;struct url="https://tech.mntsq.co.jp/entry/rubykaigi2024_jessie", name="RubyKaigiに初めて参加する方へ届けたい、2回目参加者が送る Tips と心構え - MNTSQ Techブログ"&gt;, #&lt;struct url="https://note.com/akiroom/n/n1456e7cf5f86?sub_rt=share_pb", name="RubyKaigi 2024 直前LT祭に参加しました｜akiroom"&gt;, #&lt;struct url="https://blog.m6a.jp/entry/2024/05/11/184812", name="RubyKaigi 2024の準備（心構え系と技術系） - #えむけーろぐ"&gt;, #&lt;struct url="https://d.s01.ninja/entry/20240511/1715428470", name="【予告編】RubyKaigi 2024にて登壇したりいろいろします - そんなことはさておいて"&gt;, #&lt;struct url="https://note.com/msykd/n/n44909d90b402?sub_rt=share_pb", name="3年連続3回目のRubyKaigiへ、自分なりの楽しみ方まとめ｜クドウマサヤ | iCARE CTO"&gt;, #&lt;struct url="https://shiorin223.hatenablog.com/entry/2024/05/14/151750", name="RubyKaigi 2024の前に勉強したら、楽しみな気持ちが数十倍に増えた - shiorinのアウトプット"&gt;, #&lt;struct url="https://inside.pixiv.blog/2024/03/01/132000", name="今年もピクシブはRubyKaigi 2024にMusic Event Sponsorとして協賛します！ - pixiv inside"&gt;, #&lt;struct url="https://engineerteam.note.jp/n/nc202db1c9a6a", name="noteはRubyKaigi 2024にプラチナスポンサーで協賛します｜noteエンジニアチームの技術記事"&gt;, #&lt;struct url="https://www.ruby-dev.jp/news/138", name="RubyKaigi 2024 に協賛します | Ruby開発"&gt;, #&lt;struct url="https://prtimes.jp/main/html/rd/p/000000103.000056805.html", name="電話AI SaaSのIVRy（アイブリー）、RubyKaigi 2024にRubyスポンサーとして初の協賛 | 株式会社IVRyのプレスリリース"&gt;, #&lt;struct url="https://route06.co.jp/news/37", name="ROUTE06はRubyKaigi 2024にスポンサーとして協賛します - 株式会社ROUTE06 (ルートシックス)"&gt;, #&lt;struct url="https://product.st.inc/entry/rubykaigi2024-childcare", name="STORES はRubyKaigi 2024にNursery Sponsorとして協賛します - STORES Product Blog"&gt;, #&lt;struct url="https://www.st.inc/news/2024-03-26-rubykaigi2024", name="STORES、RubyKaigi 2024 にNursery Sponsorとして協賛｜STORES 株式会社"&gt;, #&lt;struct url="https://note.com/kuronekopunk/n/nc82301db979b", name="RubyKaigi 2024 に協賛します｜あっきー"&gt;, #&lt;struct url="https://conference.pixiv.co.jp/2024/rubymusicmixin", name="RubyMusicMixin 2024"&gt;, #&lt;struct url="https://blog.smartbank.co.jp/entry/2024/03/28/100000", name="スマートバンクはRubyKaigi 2024に協賛します！！ - inSmartBank"&gt;, #&lt;struct url="https://jp.creativesurvey.com/news/pressrelease-rubykaigi2024-creativesurvey/", name="クリエイティブサーベイ、「RubyKaigi 2024」にSilver Sponsorとして協賛"&gt;, #&lt;struct url="https://bootcamp.fjord.jp/articles/118", name="フィヨルドブートキャンプは RubyKaigi 2024 を応援してます📢"&gt;, #&lt;struct url="https://www.clear-code.com/topics/20240307-rubykaigi-2024-sponsor.html", name="クリアコードはRubyKaigi 2024のシルバースポンサーになりました。 - クリアコード"&gt;, #&lt;struct url="https://www.xmile.co.jp/news/release46", name="ノンデスクDXのクロスマイル、「RubyKaigi2024」にゴールドスポンサーとして初の協賛 〜2024年5月15日から17日の3日間、沖縄県那覇市で開催〜&nbsp;&nbsp;│ニュース│X Mile株式会社(クロスマイル)"&gt;, #&lt;struct url="https://timetreeapp.com/intl/ja/newsroom/2024-03-01/rubykaigi-2024-sponsored", name="RubyKaigi 2024に協賛！ 今年は那覇で開催 🏖️ - TimeTree（タイムツリー）"&gt;, #&lt;struct url="https://twogate.com/news/rubykaigi2024-sponsorship", name="TwoGateがRubyKaigi2024にPlatinum Sponsorとして協賛します - お知らせ - TwoGate 株式会社トゥーゲート"&gt;, #&lt;struct url="https://blog.agile.esm.co.jp/entry/rubykaigi-2024-esminc-speakers", name="RubyKaigi 2024 に永和システムマネジメントから @koic @junk0612 の2人が登壇します - ESM アジャイル事業部 開発者ブログ"&gt;, #&lt;struct url="https://tech.smarthr.jp/entry/2024/04/12/103826", name="松田明さんをお招きし、「RubyKaigi 2024事前勉強会 ── 初参加でもこれで安心！」を開催します - SmartHR Tech Blog"&gt;, #&lt;struct url="https://www.clear-code.com/blog/2024/4/22/rubykaigi-2024-code-party.html", name="RubyKaigi 2024 2日目にコード懇親会を開催するよ！ #rubykaigi #codeparty - 2024-04-22 - ククログ"&gt;, #&lt;struct url="https://tech.andpad.co.jp/entry/2024/04/24/100000", name="アンドパッドは RubyKaigi 2024 を全力で盛り上げます - ANDPAD Tech Blog"&gt;, #&lt;struct url="https://tech.smarthr.jp/entry/2024/04/25/182047", name="第1回「利きブルーシールアイス大会」を開催しました！ #RubyKaigi 2024 - SmartHR Tech Blog"&gt;, #&lt;struct url="https://product.st.inc/entry/2024/04/25/102000", name="RubyKaigi 2024 に関連して STORES がやっていることを紹介したい。 - STORES Product Blog"&gt;, #&lt;struct url="https://job-draft.jp/articles/588", name="転職ドラフトはRubyKaigi 2024に協賛します！ブース企画・ノベルティ紹介｜転職ドラフトReport"&gt;, #&lt;struct url="https://prtimes.jp/main/html/rd/p/000000318.000027275.html", name="Helpfeel、「RubyKaigi 2024」にHack Space Sponsorとして協賛 | 株式会社Helpfeelのプレスリリース"&gt;, #&lt;struct url="https://tech.bm-sms.co.jp/entry/2024/04/30/120000", name="エス・エム・エスは RubyKaigi 2024 をすごく楽しみにしています！ - エス・エム・エス エンジニア テックブログ"&gt;, #&lt;struct url="https://studist.tech/rubykaigi-2024-sponsor-560e749125f3", name="スタディストは「RubyKaigi 2024」にゴールドスポンサーとして協賛します！#rubykaigi - スタディスト Tech Blog"&gt;, #&lt;struct url="https://diggle.engineer/entry/diggle-sponsored-rubykaigi-2024", name="DIGGLEは、RubyKaigi 2024にシルバースポンサーとして協賛します！ - DIGGLE開発者ブログ"&gt;, #&lt;struct url="https://esm.co.jp/news/20240410-01", name="RubyKaigi 2024 に弊社社員2人が登壇します。&nbsp;｜永和システムマネジメント"&gt;, #&lt;struct url="https://churadata.okinawa/topics/rubykaigi2024/", name="【5/16】RubyKaigi 2024（沖縄開催）の Drinkup Sponsor として、交流イベントを開催します。 - ちゅらデータ"&gt;, #&lt;struct url="https://bootcamp.fjord.jp/articles/118", name="フィヨルドブートキャンプは RubyKaigi 2024 を応援してます📢 | FJORD BOOT CAMP（フィヨルドブートキャンプ）"&gt;, #&lt;struct url="https://bootcamp.fjord.jp/articles/120", name="今年も卒業生の ima1zumi さんが RubyKaigi で登壇します！！ | FJORD BOOT CAMP（フィヨルドブートキャンプ）"&gt;, #&lt;struct url="https://techblog.hacomono.jp/entry/2024/05/07/122324", name="RubyKaigi 2024にhacomonoがプラチナスポンサーとして協賛します！ - hacomono TECH BLOG"&gt;, #&lt;struct url="https://note.com/kuronekopunk/n/n2086db3d9e47", name="TRUSTDOCK × ツクリンク RubyKaigi 2024前座談会を開催しました｜あっきー"&gt;, #&lt;struct url="https://www.simpleform.co.jp/news/iRqIvLpN", name="シンプルフォーム、国際カンファレンス「RubyKaigi 2024」にPlatinumスポンサーとして初協賛&nbsp; | シンプルフォーム株式会社"&gt;, #&lt;struct url="https://blog.notainc.com/entry/2024/05/08/115433", name="RubyKaigi 2024も昨年に続きHack Space Sponsorとして参加します！ - Helpfeel Developers' Blog"&gt;, #&lt;struct url="https://technote.zozo.com/n/n3bc1616b8cbb", name="ZOZOは #RubyKaigi 2024にPlatinum Sponsorとして協賛します！｜ZOZO DEVELOPERS BLOG"&gt;, #&lt;struct url="https://blog.agile.esm.co.jp/entry/night-cruise-access-at-rubykaigi-2024", name="RubyKaigi 2024 Night Cruise アクセス情報🚢【参加者向け】 - ESM アジャイル事業部 開発者ブログ"&gt;, #&lt;struct url="https://blog.agile.esm.co.jp/entry/rubykaigi2024-and-esminc", name="RubyKaigi 2024への6つの関わり - ESM アジャイル事業部 開発者ブログ"&gt;, #&lt;struct url="https://tech.studyplus.co.jp/entry/2024/05/10/114618", name="スタディプラスはRubyKaigi 2024にゴールドスポンサーとして協賛します - Studyplus Engineering Blog"&gt;, #&lt;struct url="https://prtimes.jp/main/html/rd/p/000000152.000018721.html", name="AppBrew、RubyKaigi 2024 に Silver Sponsor として協賛 | 株式会社AppBrewのプレスリリース"&gt;, #&lt;struct url="https://prtimes.jp/main/html/rd/p/000000055.000021371.html", name="Techouse、プログラミング言語Rubyの国際カンファレンス「RubyKaigi 2024」にPlatinumスポンサーとして初協賛 | 株式会社Techouseのプレスリリース"&gt;, #&lt;struct url="https://tech.findy.co.jp/entry/2024/05/10/090147", name="ファインディはRubyKaigi 2024 にPlatinum Sponsorsとして協賛します！ - Findy Tech Blog"&gt;, #&lt;struct url="https://prtimes.jp/main/html/rd/p/000000051.000048583.html", name="デジタル決済プラットフォーム「KOMOJU」、RubyKaigi 2024にRuby Sponsorとして協賛 | 株式会社DEGICAのプレスリリース"&gt;, #&lt;struct url="https://docs.esa.io/posts/507", name="diary/2024/05/09/We support RubyKaigi 2024 at Naha, Okinawa 🌺 - docs.esa.io"&gt;, #&lt;struct url="https://prtimes.jp/main/html/rd/p/000000194.000023589.html", name="スタメン、RubyKaigi 2024 にPlatinumスポンサーとして協賛 | 株式会社スタメンのプレスリリース"&gt;, #&lt;struct url="https://prtimes.jp/main/html/rd/p/000000018.000101212.html", name="シンプルフォーム、国際カンファレンス「RubyKaigi 2024」にPlatinumスポンサーとして初協賛 | シンプルフォーム株式会社のプレスリリース"&gt;, #&lt;struct url="https://inside.pixiv.blog/2024/05/10/180240", name="RubyKaigi 2024の企業ブースのノベルティについてご紹介します！ - pixiv inside"&gt;, #&lt;struct url="https://www.optim.co.jp/newsdetail/20240510-info-01", name="オプティムはプログラミング言語Rubyの技術カンファレンス「RubyKaigi 2024」に協賛します | OPTiM"&gt;, #&lt;struct url="https://note.com/good_peony927/n/ndf3f010f0702", name="IVRyはRubyKaigi 2024 Rubyスポンサーとして初の協賛をします｜k.k"&gt;, #&lt;struct url="https://developers.freee.co.jp/entry/rubykaigi-2024-sponsor", name="freee は RubyKaigi 2024 のプラチナスポンサーです - freee Developers Hub"&gt;, #&lt;struct url="https://blog.agile.esm.co.jp/entry/information-esm-night-cruise-2024", name="Participant Information: ESM Night Cruise at RubyKaigi 2024 - ESM アジャイル事業部 開発者ブログ"&gt;, #&lt;struct url="https://blog.giftee.dev/2024-05-10-rubykaigi-2024-notice/", name="RubyKaigi 2024にPlatinum Sponsorsとして参加します！ | giftee engineer blog"&gt;, #&lt;struct url="https://moneyforward-dev.jp/entry/2024/05/13/rubykaigi2024", name="マネーフォワードはRubyKaigi 2024にスポンサーします！沖縄で「Let's make it!」しよう - Money Forward Developers Blog"&gt;, #&lt;struct url="https://blog.smartbank.co.jp/entry/rubykaigi2024", name="RubyKaigi 2024でスマートバンクのメンバーとお会いしましょう #rubykaigi - inSmartBank"&gt;, #&lt;struct url="https://japan.cnet.com/release/30973792/", name="mov、「RubyKaigi 2024」にAfter Party Sponsorとして協賛 - CNET Japan"&gt;, #&lt;struct url="https://engineerteam.note.jp/n/n35c05e42765e", name="RubyKaigi2024 各社のブースをまとめて紹介（随時更新）｜noteエンジニアチームの技術記事"&gt;, #&lt;struct url="https://tech.smarthr.jp/entry/2024/05/15/220000", name="RubyKaigi 2024開幕！ SmartHRスポンサーブースでお待ちしています！ - SmartHR Tech Blog"&gt;, #&lt;struct url="https://engineerteam.note.jp/n/nfd9e1ee7b3fd?sub_rt=share_b", name="オリジナルパーカーも！RubyKaigi2024のnoteブースを紹介｜noteエンジニアチームの技術記事"&gt;, #&lt;struct url="https://engineer.crowdworks.jp/entry/2024/05/14/093842", name="クラウドワークスがRubyKaigi2024 にてプラチナスポンサーとして協賛・ブース出展 - クラウドワークス エンジニアブログ"&gt;, #&lt;struct url="https://tsushin.my-best.com/articles/068", name="マイベストが「RubyKaigi 2024」にスポンサーとして参加します――協賛ブースの出展・ゆんたくNightの開催を実施！"&gt;, #&lt;struct url="https://tech.medpeer.co.jp/entry/rubykaigi2024-announce", name="メドピアはRubyKaigi 2024にPlatinumスポンサーとして協賛します！ - メドピア開発者ブログ"&gt;, #&lt;struct url="https://blog.notainc.com/entry/2024/05/20/170009", name="RubyKaigi 2024にHack Space Sponsorとして参加してきました！ - Helpfeel Developers' Blog"&gt;, #&lt;struct url="https://note.zochang.com/n/n0359f5adfcd8", name="RubyKaigi2024のnoteブースに立って英語対応で感じたこと｜zochang"&gt;, #&lt;struct url="https://note.com/k_121212/n/n1c3bd6c6700e", name="RubyKaigi2024 @沖縄に初参加してきました！（事前学習、当日の楽しみ方、振り返りまとめ）｜kayo"&gt;, #&lt;struct url="https://github.com/t0yohei/wasm-ruby-question-rubykaigi2024", name="t0yohei/wasm-ruby-question-rubykaigi2024: RubyKaigi2024 用の wasm ruby を使用したクイズアプリ"&gt;, #&lt;struct url="https://note.com/ayamakkie/n/nf43a8f9d6b24", name="RubyKaigi 2024参加してきた #rubykaigi｜まっきー|Findy DevRel"&gt;, #&lt;struct url="https://engineerteam.note.jp/n/n0c917a4332bb?sub_rt=share_b", name="技術広報の集い#4 in 沖縄の参加レポ｜noteエンジニアチームの技術記事"&gt;]</code></pre>
+</div>
+</div>
+<div id="0fc66686" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bundler/setup'</span></span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'open-uri'</span></span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'nokogiri'</span></span>
+<span id="cb3-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'csv'</span></span>
+<span id="cb3-5"></span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># CSVファイルのパス</span></span>
+<span id="cb3-7">csv_file_path <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'output.csv'</span></span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># テキスト全体を格納する変数</span></span>
+<span id="cb3-10">all_text <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span></span>
+<span id="cb3-11"></span>
+<span id="cb3-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># CSVファイルの読み込みとURLからのテキスト取得</span></span>
+<span id="cb3-13"><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">CSV</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.foreach</span>(csv_file_path, <span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">headers: </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">true</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>row<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb3-14">  url <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> row<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'url'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb3-15">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">begin</span></span>
+<span id="cb3-16">    page <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Nokogiri</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">::</span><span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">HTML</span>(<span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">URI</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.open</span>(url))</span>
+<span id="cb3-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">next</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> page<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.nil?</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">||</span> page<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.text.nil?</span></span>
+<span id="cb3-18"></span>
+<span id="cb3-19">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># script, styleタグを削除</span></span>
+<span id="cb3-20">    page<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.css</span>(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'script, style'</span>)<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.each</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">{</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>node<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> node<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.remove</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb3-21"></span>
+<span id="cb3-22">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># HTMLタグを除いたテキストを取得</span></span>
+<span id="cb3-23">    text <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> page<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.xpath</span>(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'//text()'</span>)<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.map</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&amp;</span><span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">:text</span>)<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.join</span>(<span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span>)</span>
+<span id="cb3-24">    all_text <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">+=</span> text</span>
+<span id="cb3-25">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">rescue</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=&gt;</span> e</span>
+<span id="cb3-26">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">puts</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Error fetching </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#{</span>url<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#{</span>e<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.message</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb3-27">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb3-28"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb3-29"></span>
+<span id="cb3-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># all_textをファイルに保存</span></span>
+<span id="cb3-31"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">File</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.write</span>(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'all_text.txt'</span>, all_text)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Error fetching https://ruby-coworking-open.peatix.com/: 502 Bad Gateway
+Error fetching https://note.aiken-to-osanpo.dev/n/nd444f1b3b7ea: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://note.aiken-to-osanpo.dev/n/nd444f1b3b7ea&amp;m=X7qo8RxmChLWzPa/K3An5N1GZ5gUnhLwm3R1ZJErwQCkAZIyiEtIDiiy6ce7ul2V
+Error fetching https://zenn.dev/jnlmyz/scraps/9ca91c83e2eb81: 404 Not Found
+Error fetching https://note.coincheck.com/n/n47b639917184: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://note.coincheck.com/n/n47b639917184&amp;m=21%2BhjQ0wQ4wj6Y2A2HNs5%2BQFmGjrziSwqffkijLQU7VUPi3e3czq/r0uPRXYYKOJ
+Error fetching https://engineerteam.note.jp/n/nc202db1c9a6a: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://engineerteam.note.jp/n/nc202db1c9a6a&amp;m=xHUOc52v3N1CiIjysYax/tRboUTXACfr5HIm%2BaiWpJFegttG1EtwlGB8Kp4FjtH3
+Error fetching https://technote.zozo.com/n/n3bc1616b8cbb: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://technote.zozo.com/n/n3bc1616b8cbb&amp;m=fia2L1ay246PMhO6eHwT9wva9NMuW1w5P40R19bEPSTOo9t17K2C%2B7OgIAPBYTfY
+Error fetching https://engineerteam.note.jp/n/n35c05e42765e: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://engineerteam.note.jp/n/n35c05e42765e&amp;m=eB/n/GyKdJ92rdE2pJPp1J4EYtKxOJyFkV78r9p0thEh9KCJyxT9GCWtDOR7ZM8u
+Error fetching https://engineerteam.note.jp/n/nfd9e1ee7b3fd?sub_rt=share_b: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://engineerteam.note.jp/n/nfd9e1ee7b3fd?sub_rt=share_b&amp;m=8n%2BiCRdCpEkOj/bh0m8wCQBD87OaQvXm/DWC5eOQ3LiIS4oi0Zv/%2BvjcT8xm5RFh
+Error fetching https://note.zochang.com/n/n0359f5adfcd8: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://note.zochang.com/n/n0359f5adfcd8&amp;m=rXabQnNcV/9m9P2E8fNP2RNn3joIkcjS4vWkRWKr5SCs5u8He7rOVyh%2BwxSTpH%2Bg
+Error fetching https://engineerteam.note.jp/n/n0c917a4332bb?sub_rt=share_b: HTTP redirection loop: https://note.com/cd/sessions?redirect_to=https://engineerteam.note.jp/n/n0c917a4332bb?sub_rt=share_b&amp;m=cYbyg8ADDISC7Of7ebBSOPbj9qXebCKAH5JNxWZZu2pOzXHOspBWZCK1HXkFEvvW</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>2942162</code></pre>
+</div>
+</div>
+<div id="6ee0af27" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bundler/setup'</span></span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mecab'</span></span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'magic_cloud'</span></span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># テキストファイルのパス</span></span>
+<span id="cb6-6">text_file_path <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'all_text.txt'</span></span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># テキストファイルの読み込み</span></span>
+<span id="cb6-9">all_text <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">File</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.read</span>(text_file_path)</span>
+<span id="cb6-10"></span>
+<span id="cb6-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 改行、スペースを除く</span></span>
+<span id="cb6-12">cleaned_text <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> all_text<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.gsub</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/\s+/</span>, <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>)</span>
+<span id="cb6-13"></span>
+<span id="cb6-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># all_textをファイルに保存</span></span>
+<span id="cb6-15"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">File</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.write</span>(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'cleaned_text.txt'</span>, cleaned_text)</span>
+<span id="cb6-16"></span>
+<span id="cb6-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># MeCabを使って日本語テキストの分かち書き</span></span>
+<span id="cb6-18">mecab <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">MeCab</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">::</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Tagger</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.new</span></span>
+<span id="cb6-19">words <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[]</span></span>
+<span id="cb6-20"></span>
+<span id="cb6-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># テキストをチャンクに分割して処理</span></span>
+<span id="cb6-22">chunk_size <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 解析するテキストのチャンクサイズ（適宜調整してください）</span></span>
+<span id="cb6-23">cleaned_text<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.scan</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/.{1,</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#{</span>chunk_size<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}/m</span>)<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.each</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>chunk<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb6-24">  parsed <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> mecab<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.parse</span>(chunk)</span>
+<span id="cb6-25">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> parsed</span>
+<span id="cb6-26">    parsed<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.split</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"\n"</span>)<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.each</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>line<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb6-27">      columns <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> line<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.split</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"\t"</span>)</span>
+<span id="cb6-28">      word <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> columns<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.first</span></span>
+<span id="cb6-29">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 一文字のアルファベット、一文字のひらがな、一文字の記号を除外</span></span>
+<span id="cb6-30">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">next</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> word <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=~</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/^[a-zA-Z]$/</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">||</span> word <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=~</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/^[ぁ-ゔ]$/</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">||</span> word <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=~</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/^[^\w\s]$/</span></span>
+<span id="cb6-31">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2文字以上の単語のみを追加</span></span>
+<span id="cb6-32">      words <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;&lt;</span> word <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> word<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.length</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">unless</span> columns<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.empty?</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">||</span> word <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">==</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'EOS'</span></span>
+<span id="cb6-33">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb6-34">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span></span>
+<span id="cb6-35">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">puts</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MeCab parse returned nil for chunk"</span></span>
+<span id="cb6-36">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb6-37"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb6-38"></span>
+<span id="cb6-39"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 単語の頻度を計算</span></span>
+<span id="cb6-40">word_frequency <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> words<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.each_with_object</span>(<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Hash</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.new</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">{</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>word, hash<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> hash<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span>word<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb6-41"></span>
+<span id="cb6-42"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># nil値を除外</span></span>
+<span id="cb6-43">word_frequency<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.delete</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">nil</span>)</span>
+<span id="cb6-44"></span>
+<span id="cb6-45"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># しきい値を設定して単語をフィルタリング</span></span>
+<span id="cb6-46">threshold <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># しきい値（適宜調整してください）</span></span>
+<span id="cb6-47">filtered_words <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> word_frequency<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.select</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">{</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>word, frequency<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> frequency <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;=</span> threshold <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb6-48"></span>
+<span id="cb6-49"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># magic_cloudを使ってWord Cloudを生成</span></span>
+<span id="cb6-50"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">p</span> cloud_words <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> filtered_words<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.map</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">{</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span>word, frequency<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span>word, frequency<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.to_f</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb6-51"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">p</span> cloud_words<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.size</span></span>
+<span id="cb6-52"></span>
+<span id="cb6-53">cloud <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">MagicCloud</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">::</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Cloud</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.new</span>(cloud_words, <span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">rotate: :free</span>, <span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">scale: :linear</span>, <span class="wa" style="color: #5E5E5E;
+background-color: null;
+font-style: italic;">font_family: </span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Noto Sans JP'</span>)</span>
+<span id="cb6-54"></span>
+<span id="cb6-55"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Word Cloudの画像を保存</span></span>
+<span id="cb6-56">cloud<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.draw</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">800</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">600</span>)<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.write</span>(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'wordcloud.png'</span>)</span>
+<span id="cb6-57"></span>
+<span id="cb6-58"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">puts</span> <span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Word Cloud generated as wordcloud.png'</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[["RubyKaigi", 2179.0], ["2024", 2619.0], ["那覇", 156.0], ["文化", 60.0], ["Matz", 81.0], ["株式会社", 353.0], ["協賛", 254.0], ["ブース", 308.0], ["企画", 58.0], ["興味", 78.0], ["いただき", 217.0], ["ありがとう", 73.0], ["ござい", 110.0], ["ます", 2824.0], ["として", 654.0], ["応募", 53.0], ["作成", 56.0], ["する", 1463.0], ["あり", 465.0], ["募集", 147.0], ["について", 587.0], ["可能", 95.0], ["ください", 508.0], ["当日", 75.0], ["弊社", 95.0], ["にて", 85.0], ["ので", 737.0], ["この", 416.0], ["登録", 110.0], ["よう", 555.0], ["いる", 954.0], ["こと", 1278.0], ["場合", 114.0], ["使用", 82.0], ["使う", 62.0], ["ため", 486.0], ["必要", 145.0], ["など", 363.0], ["ない", 740.0], ["ポリシー", 87.0], ["また", 188.0], ["プロダクト", 162.0], ["開発", 728.0], ["関連", 168.0], ["内容", 214.0], ["配信", 54.0], ["予定", 129.0], ["いただける", 53.0], ["嬉しい", 50.0], ["です", 2239.0], ["会社", 228.0], ["による", 164.0], ["技術", 284.0], ["カンファレンス", 244.0], ["主催", 62.0], ["登壇", 316.0], ["に関する", 78.0], ["報告", 83.0], ["提供", 161.0], ["新着", 54.0], ["情報", 422.0], ["採用", 265.0], ["まし", 1702.0], ["事前", 116.0], ["勉強", 223.0], ["connpass", 84.0], ["イベント", 539.0], ["ログイン", 226.0], ["お知らせ", 62.0], ["ある", 575.0], ["データ", 89.0], ["API", 67.0], ["方法", 108.0], ["23", 71.0], ["より", 242.0], ["企業", 161.0], ["コミュニティ", 173.0], ["個人", 128.0], ["向け", 149.0], ["開始", 56.0], ["いたし", 73.0], ["利用", 315.0], ["詳細", 67.0], ["ページ", 89.0], ["確認", 63.0], ["25", 85.0], ["参加", 1114.0], ["これ", 227.0], ["SmartHR", 108.0], ["rubykaigi", 197.0], ["無料", 116.0], ["LT", 171.0], ["一覧", 183.0], ["見る", 189.0], ["開催", 429.0], ["04", 148.0], ["19", 193.0], ["00", 215.0], ["21", 91.0], ["30", 129.0], ["Google", 52.0], ["ファイル", 105.0], ["期間", 55.0], ["09", 61.0], ["11", 119.0], ["まで", 273.0], ["会場", 222.0], ["東京", 79.0], ["時間", 188.0], ["から", 823.0], ["終了", 61.0], ["のみ", 50.0], ["公開", 253.0], ["説明", 83.0], ["概要", 116.0], ["なる", 617.0], ["昨年", 59.0], ["社内", 56.0], ["行っ", 103.0], ["今年", 183.0], ["スポンサー", 250.0], ["さん", 845.0], ["運営", 160.0], ["初心者", 52.0], ["予習", 70.0], ["タイム", 52.0], ["セッション", 401.0], ["懇親", 56.0], ["ドリンク", 60.0], ["アップ", 75.0], ["楽しみ", 163.0], ["楽しむ", 56.0], ["Ruby", 1449.0], ["知識", 67.0], ["Web", 94.0], ["サービス", 258.0], ["普段", 56.0], ["という", 675.0], ["パーサー", 72.0], ["処理", 126.0], ["メモリ", 60.0], ["管理", 100.0], ["発表", 332.0], ["理解", 117.0], ["pndcat", 51.0], ["沖縄", 464.0], ["Rubyist", 112.0], ["osyoyu", 52.0], ["18", 112.0], ["受付", 53.0], ["場所", 70.0], ["https", 271.0], ["://", 316.0], ["note", 61.0], ["com", 276.0], ["co", 99.0], ["スピーカー", 53.0], ["05", 460.0], ["10", 279.0], ["紹介", 401.0], ["20", 199.0], ["15", 240.0], ["2022", 140.0], ["12", 195.0], ["入社", 89.0], ["好き", 68.0], ["2023", 314.0], ["基本", 62.0], ["機能", 207.0], ["やっ", 140.0], ["アプリ", 67.0], ["最近", 52.0], ["たり", 239.0], ["GitHub", 51.0], ["CRuby", 53.0], ["新しい", 61.0], ["作っ", 118.0], ["仕事", 52.0], ["43", 50.0], ["エンド", 68.0], ["なく", 179.0], ["れる", 302.0], ["お願い", 80.0], ["様子", 60.0], ["申し込み", 155.0], ["いただい", 78.0], ["チーム", 208.0], ["プライバシー", 84.0], ["課題", 82.0], ["その", 244.0], ["実現", 73.0], ["活用", 69.0], ["組織", 66.0], ["支援", 98.0], ["マネジメント", 61.0], ["向上", 51.0], ["やすい", 52.0], ["環境", 72.0], ["貢献", 71.0], ["思う", 72.0], ["もの", 250.0], ["なっ", 320.0], ["エンジニア", 459.0], ["コミッター", 72.0], ["rb", 144.0], ["それ", 119.0], ["でき", 578.0], ["資料", 140.0], ["もっと", 130.0], ["14", 132.0], ["08", 52.0], ["メンバー", 142.0], ["オンライン", 85.0], ["ませ", 390.0], ["問い合わせ", 140.0], ["16", 134.0], ["プラットフォーム", 66.0], ["よく", 103.0], ["質問", 67.0], ["規約", 89.0], ["表示", 91.0], ["システム", 122.0], ["フロント", 52.0], ["今回", 216.0], ["つつ", 51.0], ["ところ", 120.0], ["話し", 57.0], ["いく", 97.0], ["歓迎", 58.0], ["以下", 100.0], ["最新", 156.0], ["ながら", 95.0], ["じゃ", 51.0], ["13", 108.0], ["ましょ", 104.0], ["org", 102.0], ["考え", 96.0], ["プログラミング", 180.0], ["持っ", 59.0], ["たい", 439.0], ["サイト", 90.0], ["てる", 147.0], ["交流", 68.0], ["できる", 289.0], ["スマート", 73.0], ["バンク", 71.0], ["自分", 199.0], ["トーク", 113.0], ["ここ", 88.0], ["聞い", 116.0], ["思い", 247.0], ["限定", 109.0], ["なり", 261.0], ["準備", 76.0], ["活動", 53.0], ["ruby", 150.0], ["ソフトウェア", 54.0], ["書く", 113.0], ["現在", 64.0], ["改善", 72.0], ["2020", 51.0], ["行う", 52.0], ["アプリケーション", 53.0], ["プログラム", 62.0], ["関係", 51.0], ["あれ", 60.0], ["でも", 153.0], ["タイトル", 54.0], ["たち", 115.0], ["本当に", 56.0], ["使っ", 195.0], ["2021", 50.0], ["リリース", 112.0], ["一緒", 94.0], ["公式", 82.0], ["ブログ", 529.0], ["いい", 159.0], ["事業", 153.0], ["20242024", 58.0], ["22", 66.0], ["今後", 74.0], ["英語", 62.0], ["twitter", 70.0], ["用意", 58.0], ["おり", 241.0], ["こちら", 110.0], ["食べ", 93.0], ["会い", 56.0], ["初めて", 75.0], ["わから", 77.0], ["たら", 216.0], ["ぜひ", 148.0], ["皆さん", 54.0], ["チェック", 54.0], ["jp", 140.0], ["閉じる", 267.0], ["写真", 60.0], ["聞き", 56.0], ["Day", 345.0], ["Rails", 150.0], ["なら", 106.0], ["STORES", 215.0], ["03", 84.0], ["動画", 51.0], ["様々", 58.0], ["対応", 81.0], ["決済", 52.0], ["言語", 193.0], ["機会", 59.0], ["しよ", 59.0], ["ツール", 72.0], ["だけ", 130.0], ["たくさん", 79.0], ["国際", 80.0], ["通り", 70.0], ["17", 209.0], ["日本", 60.0], ["どの", 66.0], ["かも", 82.0], ["感想", 80.0], ["導入", 58.0], ["CTO", 51.0], ["コード", 358.0], ["実装", 197.0], ["あなた", 50.0], ["世界", 75.0], ["2018", 51.0], ["によって", 62.0], ["サポート", 93.0], ["いき", 101.0], ["けど", 124.0], ["あっ", 165.0], ["みたい", 61.0], ["リンク", 81.0], ["ピクシブ", 52.0], ["02", 61.0], ["現地", 61.0], ["以上", 61.0], ["多く", 141.0], ["問題", 68.0], ["思っ", 173.0], ["解決", 81.0], ["そして", 73.0], ["実行", 132.0], ["レポート", 109.0], ["られる", 60.0], ["だっ", 146.0], ["あと", 64.0], ["Namespace", 141.0], ["06", 81.0], ["01", 76.0], ["みる", 54.0], ["参考", 110.0], ["って", 116.0], ["なかっ", 143.0], ["読者", 657.0], ["メソッド", 68.0], ["お話", 107.0], ["体験", 79.0], ["られ", 119.0], ["藤村", 56.0], ["書い", 128.0], ["まとめ", 101.0], ["ydah", 57.0], ["ライブラリ", 119.0], ["講演", 54.0], ["OSS", 54.0], ["特に", 66.0], ["最高", 51.0], ["こんにちは", 179.0], ["大変", 52.0], ["そんな", 57.0], ["まだ", 69.0], ["くれ", 63.0], ["でし", 344.0], ["良い", 121.0], ["そう", 266.0], ["いう", 51.0], ["同じ", 59.0], ["ちょっと", 60.0], ["記事", 553.0], ["しれ", 50.0], ["でしょ", 94.0], ["まず", 107.0], ["くらい", 58.0], ["フレーバー", 66.0], ["はじめ", 116.0], ["実際", 65.0], ["とか", 118.0], ["読む", 59.0], ["コメント", 94.0], ["プロフィール", 64.0], ["id", 61.0], ["月別", 57.0], ["アーカイブ", 61.0], ["▼▶", 409.0], ["52024", 58.0], ["20232023", 53.0], ["20212021", 50.0], ["はてな", 279.0], ["はじめる", 52.0], ["引用", 345.0], ["ストック", 247.0], ["再度", 88.0], ["試し", 108.0], ["やめる", 146.0], ["少し", 53.0], ["どう", 109.0], ["わかり", 56.0], ["感じ", 194.0], ["とき", 77.0], ["多い", 69.0], ["検索", 99.0], ["デザイン", 58.0], ["テスト", 103.0], ["RBS", 75.0], ["hsbt", 72.0], ["解説", 97.0], ["聞く", 52.0], ["動く", 57.0], ["状態", 81.0], ["最後", 88.0], ["パーサ", 84.0], ["文法", 77.0], ["定義", 66.0], ["結果", 63.0], ["スライド", 54.0], ["gem", 74.0], ["::", 61.0], ["使わ", 54.0], ["部分", 54.0], ["とても", 96.0], ["フォロー", 59.0], ["YJIT", 57.0], ["(@", 193.0], ["構文", 53.0], ["解析", 69.0], ["生成", 73.0], ["ノベルティ", 58.0], ["dev", 57.0], ["Lrama", 79.0], ["日間", 54.0], ["プレス", 55.0], ["\u008B\u0088", 84.0], ["\u0095\u0098", 56.0], ["\u0097\u0090", 82.0], ["\u008A\u0094", 69.0], ["\u0083\u0088", 52.0], ["\u0081\u0084", 52.0], ["フィヨルドブートキャンプ", 53.0], ["mase", 55.0]]
+451
+Word Cloud generated as wordcloud.png</code></pre>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>ruby</category>
+  <category>code</category>
+  <guid>https://geeknees.github.io/research/posts/2024-05-20/</guid>
+  <pubDate>Sun, 19 May 2024 15:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Try javascript notebook</title>
   <dc:creator>geeknees </dc:creator>
@@ -247,7 +1011,7 @@ font-style: inherit;">getMonth</span>()</span></code></pre></div>
 
 
 
-<div id="11d5e8c2" class="cell" data-execution_count="1">
+<div id="aff4cf13" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>pip install bigquery</span>
@@ -314,7 +1078,7 @@ Requirement already satisfied: pytz&gt;=2017.3 in /Users/masumi/.local/share/mis
 Requirement already satisfied: six&gt;=1.5 in /Users/masumi/.local/share/mise/installs/python/3.12/lib/python3.12/site-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=0.24.2-&gt;db-dtypes) (1.16.0)</code></pre>
 </div>
 </div>
-<div id="7cbbab69" class="cell" data-execution_count="2">
+<div id="e121f295" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#Importing necessary modules</span></span>
@@ -373,7 +1137,7 @@ font-style: inherit;">=</span>credentials, project<span class="op" style="color:
 background-color: null;
 font-style: inherit;">=</span>credentials.project_id)</span></code></pre></div>
 </div>
-<div id="c0f90f09" class="cell" data-execution_count="3">
+<div id="5ef95498" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Construct a reference to the "Ethereum Blockchain" dataset</span></span>
@@ -429,7 +1193,7 @@ transactions</code></pre>
 </div>
 </div>
 <p>Use a function to show amount of data to be scanned for a query not to exceed the limit for a Kaggle user, before actually running the query</p>
-<div id="17b35567" class="cell" data-execution_count="4">
+<div id="4911b93c" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">def</span> show_amount_of_data_scanned(query):</span>
@@ -473,7 +1237,7 @@ background-color: null;
 font-style: inherit;">3</span>)))</span></code></pre></div>
 </div>
 <p>The ethereum blockchain is fairly popular with users, the query below will show the top 10 wallet sender addresses with the most number of transactions</p>
-<div id="10076147" class="cell" data-execution_count="5">
+<div id="3a3a3312" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">transaction_table_ref <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> eth_ref.table(<span class="st" style="color: #20794D;
@@ -511,20 +1275,336 @@ background-color: null;
 font-style: inherit;">                 """</span></span></code></pre></div>
 </div>
 <p>Firstly, check amount of data scanned</p>
-<div id="22aea14d" class="cell" data-execution_count="6">
+<div id="4d478a68" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">show_amount_of_data_scanned(most_transaction_query)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Data processed: 7.127 GB</code></pre>
+<pre><code>Data processed: 8.633 GB</code></pre>
 </div>
 </div>
+<p>Run the query</p>
+<div id="0b98e7e6" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">query_job <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> client.query(most_transaction_query)</span>
+<span id="cb10-2"></span>
+<span id="cb10-3">addresses_with_most_transactions <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> query_job.to_dataframe()</span>
+<span id="cb10-4"></span>
+<span id="cb10-5">addresses_with_most_transactions</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">wallet_address</th>
+<th data-quarto-table-cell-role="th">transactions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0x75e89d5979e4f6fba9f97c104c2f0afb3f1dcb88</td>
+<td>1782754</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0xf89d7b9c864f589bbf53a82105107622b35eaa40</td>
+<td>1266789</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0x0d0707963952f2fba59dd06f2b425ace40b492fe</td>
+<td>1194395</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0x46340b20830761efd32832a74d7169b29feb9758</td>
+<td>1143232</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0x21a31ee1afc51d94c2efccaa2092ad1028285549</td>
+<td>1134223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>0x28c6c06298d514db089934071355e5743bf21d60</td>
+<td>1123122</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>0xdfd5293d8e347dfe59e90efd55b2956a1343963d</td>
+<td>1093943</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>0xae2fc483527b8ef99eb5d9b44875f005ba1fae13</td>
+<td>805327</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>0x9696f59e4d72e237be84ffd425dcad154bf96976</td>
+<td>694829</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>0x974caa59e49682cda0ad2bbe82983419a2ecc400</td>
+<td>670332</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>The ethereum blockchain is also known for its high gas prices, the query below will show the top 10 highest gas fees of the dataset</p>
+<div id="522e4559" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">highest_gas_query <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb11-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 SELECT block_hash, block_timestamp, receipt_cumulative_gas_used</span></span>
+<span id="cb11-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 FROM `bigquery-public-data.crypto_ethereum.transactions`</span></span>
+<span id="cb11-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 WHERE EXTRACT(YEAR from block_timestamp) = 2024</span></span>
+<span id="cb11-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 ORDER BY receipt_cumulative_gas_used DESC</span></span>
+<span id="cb11-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 LIMIT 10</span></span>
+<span id="cb11-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                 """</span></span>
+<span id="cb11-8">query_job <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> client.query(highest_gas_query)</span>
+<span id="cb11-9"></span>
+<span id="cb11-10">highest_gas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> query_job.to_dataframe()</span>
+<span id="cb11-11"></span>
+<span id="cb11-12">highest_gas</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">block_hash</th>
+<th data-quarto-table-cell-role="th">block_timestamp</th>
+<th data-quarto-table-cell-role="th">receipt_cumulative_gas_used</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0xd63e815a03a0b9e7be87d81bad646137473ef7e94c5a...</td>
+<td>2024-05-11 01:39:11+00:00</td>
+<td>30029206</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0xad5a9de8a918b61437c2bfc6a65cec33a010afb08482...</td>
+<td>2024-05-14 02:48:59+00:00</td>
+<td>30029204</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0x3b3eb42ce1ae1a38e238853cee998ff56dddaefbd102...</td>
+<td>2024-04-20 12:46:11+00:00</td>
+<td>30029204</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0xecec1ff6186785bb0f74b4f3a5537a659d440d778bcc...</td>
+<td>2024-04-22 03:34:23+00:00</td>
+<td>30029192</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0x3d6fdf73cb6976545182538542ae1bcc5e72990463d0...</td>
+<td>2024-03-15 13:10:11+00:00</td>
+<td>30029024</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>0xdacc31fe2b70a85722b5aefa90fcc50e44bb23e9dc5e...</td>
+<td>2024-04-29 02:20:23+00:00</td>
+<td>30028841</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>0x7244d9b8c76835da19c8849e8623f746e9ba0b91dc47...</td>
+<td>2024-04-12 02:26:35+00:00</td>
+<td>30028833</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>0x6adae77775bb702a110a08a46aaef2811beb0a75e071...</td>
+<td>2024-05-18 06:18:23+00:00</td>
+<td>30028766</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>0x2f31698831688a5c5cc903a661c2396a6a7dbf4dea89...</td>
+<td>2024-05-08 09:27:47+00:00</td>
+<td>30028630</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>0x43933205a01a9a6756f296e2b2db7146150046dde6ff...</td>
+<td>2024-05-11 12:03:47+00:00</td>
+<td>30028599</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Let’s see the dates and the number of transactions in year 2024 using an analytic function</p>
+<div id="d54e7ba9" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">transfer_date_query <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb12-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      WITH transfer_a_day AS</span></span>
+<span id="cb12-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      (</span></span>
+<span id="cb12-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      SELECT DATE(block_timestamp) AS token_transfer_date,</span></span>
+<span id="cb12-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                          COUNT(*) as num_transfer</span></span>
+<span id="cb12-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      FROM `bigquery-public-data.crypto_ethereum.token_transfers`</span></span>
+<span id="cb12-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      WHERE EXTRACT(YEAR from block_timestamp) = 2024</span></span>
+<span id="cb12-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      GROUP BY token_transfer_date</span></span>
+<span id="cb12-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      )</span></span>
+<span id="cb12-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                      SELECT token_transfer_date,</span></span>
+<span id="cb12-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                          SUM(num_transfer)</span></span>
+<span id="cb12-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                              OVER (</span></span>
+<span id="cb12-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                                  ORDER BY num_transfer DESC</span></span>
+<span id="cb12-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                                  ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span></span>
+<span id="cb12-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                              ) AS sum_transactions</span></span>
+<span id="cb12-16"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                              FROM transfer_a_day</span></span>
+<span id="cb12-17"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                     """</span></span></code></pre></div>
+</div>
+<p>Firstly, check amount of data scanned</p>
+<div id="54f489da" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">show_amount_of_data_scanned(transfer_date_query)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data processed: 1.415 GB</code></pre>
+</div>
+</div>
+<p>Run the query</p>
+<div id="48ce1317" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">query_job <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> client.query(transfer_date_query)</span>
+<span id="cb15-2"></span>
+<span id="cb15-3">transfer_date <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> query_job.to_dataframe()</span>
+<span id="cb15-4"></span>
+<span id="cb15-5">transfer_date.head()</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">token_transfer_date</th>
+<th data-quarto-table-cell-role="th">sum_transactions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>2024-01-22</td>
+<td>90060745</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2024-05-20</td>
+<td>176925824</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2024-02-25</td>
+<td>116016741</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>2024-05-02</td>
+<td>113584611</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2024-01-07</td>
+<td>176143595</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>ref. <a href="https://www.kaggle.com/code/akafieva/crypto-ethereum-sql-queries">https://www.kaggle.com/code/akafieva/crypto-ethereum-sql-queries</a></p>
 
 
 
  ]]></description>
-  <category>crypto</category>
-  <category>bigquery</category>
-  <category>python</category>
-  <category>analysis</category>
+  <category>crypto bigquery python analysis</category>
   <guid>https://geeknees.github.io/research/posts/2024-04-24/</guid>
   <pubDate>Tue, 23 Apr 2024 15:00:00 GMT</pubDate>
 </item>

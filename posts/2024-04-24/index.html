@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.554">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -102,6 +102,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -152,10 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="quarto-title column-body">
       <h1 class="title">Crypto Ethereum SQL queries</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">crypto</div>
-                <div class="quarto-category">bigquery</div>
-                <div class="quarto-category">python</div>
-                <div class="quarto-category">analysis</div>
+                <div class="quarto-category">crypto bigquery python analysis</div>
               </div>
                   </div>
   </div>
@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="11d5e8c2" class="cell" data-execution_count="1">
+<div id="aff4cf13" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install bigquery</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install db<span class="op">-</span>dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -255,7 +255,7 @@ Requirement already satisfied: pytz&gt;=2017.3 in /Users/masumi/.local/share/mis
 Requirement already satisfied: six&gt;=1.5 in /Users/masumi/.local/share/mise/installs/python/3.12/lib/python3.12/site-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=0.24.2-&gt;db-dtypes) (1.16.0)</code></pre>
 </div>
 </div>
-<div id="7cbbab69" class="cell" data-execution_count="2">
+<div id="e121f295" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Importing necessary modules</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.cloud <span class="im">import</span> bigquery</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.oauth2 <span class="im">import</span> service_account</span>
@@ -270,7 +270,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/masumi/.local/share/mise/in
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>credentials <span class="op">=</span> service_account.Credentials.from_service_account_file(key_path, scopes<span class="op">=</span>[<span class="st">"https://www.googleapis.com/auth/cloud-platform"</span>])</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> bigquery.Client(credentials<span class="op">=</span>credentials, project<span class="op">=</span>credentials.project_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="c0f90f09" class="cell" data-execution_count="3">
+<div id="5ef95498" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct a reference to the "Ethereum Blockchain" dataset</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>eth_ref <span class="op">=</span> client.dataset(<span class="st">"crypto_ethereum"</span>, project<span class="op">=</span><span class="st">"bigquery-public-data"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -298,7 +298,7 @@ transactions</code></pre>
 </div>
 </div>
 <p>Use a function to show amount of data to be scanned for a query not to exceed the limit for a Kaggle user, before actually running the query</p>
-<div id="17b35567" class="cell" data-execution_count="4">
+<div id="4911b93c" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_amount_of_data_scanned(query):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dry_run lets us see how much data the query uses without running it</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    dry_run_config <span class="op">=</span> bigquery.QueryJobConfig(dry_run<span class="op">=</span><span class="va">True</span>)</span>
@@ -306,7 +306,7 @@ transactions</code></pre>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Data processed: </span><span class="sc">{}</span><span class="st"> GB'</span>.<span class="bu">format</span>(<span class="bu">round</span>(query_job.total_bytes_processed <span class="op">/</span> <span class="dv">10</span><span class="op">**</span><span class="dv">9</span>, <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The ethereum blockchain is fairly popular with users, the query below will show the top 10 wallet sender addresses with the most number of transactions</p>
-<div id="10076147" class="cell" data-execution_count="5">
+<div id="3a3a3312" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>transaction_table_ref <span class="op">=</span> eth_ref.table(<span class="st">"transactions"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>transaction_table <span class="op">=</span> client.get_table(transaction_table_ref)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -320,12 +320,267 @@ transactions</code></pre>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">                 """</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Firstly, check amount of data scanned</p>
-<div id="22aea14d" class="cell" data-execution_count="6">
+<div id="4d478a68" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>show_amount_of_data_scanned(most_transaction_query)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Data processed: 7.127 GB</code></pre>
+<pre><code>Data processed: 8.633 GB</code></pre>
 </div>
 </div>
+<p>Run the query</p>
+<div id="0b98e7e6" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>query_job <span class="op">=</span> client.query(most_transaction_query)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>addresses_with_most_transactions <span class="op">=</span> query_job.to_dataframe()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>addresses_with_most_transactions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">wallet_address</th>
+<th data-quarto-table-cell-role="th">transactions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0x75e89d5979e4f6fba9f97c104c2f0afb3f1dcb88</td>
+<td>1782754</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0xf89d7b9c864f589bbf53a82105107622b35eaa40</td>
+<td>1266789</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0x0d0707963952f2fba59dd06f2b425ace40b492fe</td>
+<td>1194395</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0x46340b20830761efd32832a74d7169b29feb9758</td>
+<td>1143232</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0x21a31ee1afc51d94c2efccaa2092ad1028285549</td>
+<td>1134223</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>0x28c6c06298d514db089934071355e5743bf21d60</td>
+<td>1123122</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>0xdfd5293d8e347dfe59e90efd55b2956a1343963d</td>
+<td>1093943</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>0xae2fc483527b8ef99eb5d9b44875f005ba1fae13</td>
+<td>805327</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>0x9696f59e4d72e237be84ffd425dcad154bf96976</td>
+<td>694829</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>0x974caa59e49682cda0ad2bbe82983419a2ecc400</td>
+<td>670332</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>The ethereum blockchain is also known for its high gas prices, the query below will show the top 10 highest gas fees of the dataset</p>
+<div id="522e4559" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>highest_gas_query <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">                 SELECT block_hash, block_timestamp, receipt_cumulative_gas_used</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">                 FROM `bigquery-public-data.crypto_ethereum.transactions`</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">                 WHERE EXTRACT(YEAR from block_timestamp) = 2024</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">                 ORDER BY receipt_cumulative_gas_used DESC</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="st">                 LIMIT 10</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="st">                 """</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>query_job <span class="op">=</span> client.query(highest_gas_query)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>highest_gas <span class="op">=</span> query_job.to_dataframe()</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>highest_gas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">block_hash</th>
+<th data-quarto-table-cell-role="th">block_timestamp</th>
+<th data-quarto-table-cell-role="th">receipt_cumulative_gas_used</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0xd63e815a03a0b9e7be87d81bad646137473ef7e94c5a...</td>
+<td>2024-05-11 01:39:11+00:00</td>
+<td>30029206</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0xad5a9de8a918b61437c2bfc6a65cec33a010afb08482...</td>
+<td>2024-05-14 02:48:59+00:00</td>
+<td>30029204</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0x3b3eb42ce1ae1a38e238853cee998ff56dddaefbd102...</td>
+<td>2024-04-20 12:46:11+00:00</td>
+<td>30029204</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0xecec1ff6186785bb0f74b4f3a5537a659d440d778bcc...</td>
+<td>2024-04-22 03:34:23+00:00</td>
+<td>30029192</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0x3d6fdf73cb6976545182538542ae1bcc5e72990463d0...</td>
+<td>2024-03-15 13:10:11+00:00</td>
+<td>30029024</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>0xdacc31fe2b70a85722b5aefa90fcc50e44bb23e9dc5e...</td>
+<td>2024-04-29 02:20:23+00:00</td>
+<td>30028841</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>0x7244d9b8c76835da19c8849e8623f746e9ba0b91dc47...</td>
+<td>2024-04-12 02:26:35+00:00</td>
+<td>30028833</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>0x6adae77775bb702a110a08a46aaef2811beb0a75e071...</td>
+<td>2024-05-18 06:18:23+00:00</td>
+<td>30028766</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>0x2f31698831688a5c5cc903a661c2396a6a7dbf4dea89...</td>
+<td>2024-05-08 09:27:47+00:00</td>
+<td>30028630</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>0x43933205a01a9a6756f296e2b2db7146150046dde6ff...</td>
+<td>2024-05-11 12:03:47+00:00</td>
+<td>30028599</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Let’s see the dates and the number of transactions in year 2024 using an analytic function</p>
+<div id="d54e7ba9" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>transfer_date_query <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">                      WITH transfer_a_day AS</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">                      (</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">                      SELECT DATE(block_timestamp) AS token_transfer_date,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">                          COUNT(*) as num_transfer</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">                      FROM `bigquery-public-data.crypto_ethereum.token_transfers`</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">                      WHERE EXTRACT(YEAR from block_timestamp) = 2024</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">                      GROUP BY token_transfer_date</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">                      )</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">                      SELECT token_transfer_date,</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st">                          SUM(num_transfer)</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="st">                              OVER (</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="st">                                  ORDER BY num_transfer DESC</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="st">                                  ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="st">                              ) AS sum_transactions</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="st">                              FROM transfer_a_day</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="st">                     """</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Firstly, check amount of data scanned</p>
+<div id="54f489da" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>show_amount_of_data_scanned(transfer_date_query)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data processed: 1.415 GB</code></pre>
+</div>
+</div>
+<p>Run the query</p>
+<div id="48ce1317" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>query_job <span class="op">=</span> client.query(transfer_date_query)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>transfer_date <span class="op">=</span> query_job.to_dataframe()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>transfer_date.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">token_transfer_date</th>
+<th data-quarto-table-cell-role="th">sum_transactions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>2024-01-22</td>
+<td>90060745</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2024-05-20</td>
+<td>176925824</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2024-02-25</td>
+<td>116016741</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>2024-05-02</td>
+<td>113584611</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2024-01-07</td>
+<td>176143595</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>ref. <a href="https://www.kaggle.com/code/akafieva/crypto-ethereum-sql-queries">https://www.kaggle.com/code/akafieva/crypto-ethereum-sql-queries</a></p>
 
 
 

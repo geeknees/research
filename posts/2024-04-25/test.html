@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="geeknees">
-<meta name="dcterms.date" content="2023-08-03">
 
-<title>Research - 公式</title>
+<title>Research</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -69,35 +101,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -142,58 +145,11 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">公式</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">math</div>
-              </div>
-                  </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>geeknees </p>
-            </div>
-    </div>
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">August 3, 2023</p>
-      </div>
-    </div>
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#高校数学" id="toc-高校数学" class="nav-link active" data-scroll-target="#高校数学">高校数学</a>
-  <ul class="collapse">
-  <li><a href="#次方程式の解の公式" id="toc-次方程式の解の公式" class="nav-link" data-scroll-target="#次方程式の解の公式">2次方程式の解の公式</a></li>
-  <li><a href="#解と係数の関係" id="toc-解と係数の関係" class="nav-link" data-scroll-target="#解と係数の関係">解と係数の関係</a></li>
-  <li><a href="#乗法の公式" id="toc-乗法の公式" class="nav-link" data-scroll-target="#乗法の公式">乗法の公式</a></li>
-  </ul></li>
-  <li><a href="#大学数学" id="toc-大学数学" class="nav-link" data-scroll-target="#大学数学">大学数学</a>
-  <ul class="collapse">
-  <li><a href="#フーリエ変換" id="toc-フーリエ変換" class="nav-link" data-scroll-target="#フーリエ変換">フーリエ変換</a></li>
-  <li><a href="#偏微分方程式" id="toc-偏微分方程式" class="nav-link" data-scroll-target="#偏微分方程式">偏微分方程式</a></li>
-  </ul></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -201,62 +157,14 @@ window.Quarto = {
 
 
 
-
-<section id="高校数学" class="level1">
-<h1>高校数学</h1>
-<section id="次方程式の解の公式" class="level2">
-<h2 class="anchored" data-anchor-id="次方程式の解の公式">2次方程式の解の公式</h2>
-<p><span class="math display">\[
-ax^2+bx+c=0 \quad (a \neq 0)
-\]</span></p>
-<p><span class="math display">\[
-x = \frac{-b \pm　\sqrt{b^2 - 4ac}}{2a}
-\]</span></p>
-</section>
-<section id="解と係数の関係" class="level2">
-<h2 class="anchored" data-anchor-id="解と係数の関係">解と係数の関係</h2>
-<p>2次方程式<span class="math inline">\(ax^2+bx+c=0\)</span>の二つの解を<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>とするとき, 解と係数の間には次の関係がある。</p>
-<p><span class="math display">\[
-\alpha + \beta = - \frac{b}{a}, \quad \alpha\beta = \frac{c}{a}
-\]</span></p>
-</section>
-<section id="乗法の公式" class="level2">
-<h2 class="anchored" data-anchor-id="乗法の公式">乗法の公式</h2>
-<p><span class="math inline">\((x + b)(x + d) = x^2 + (b+d)x + bd\)</span></p>
-<p><span class="math inline">\((ax + b)(cx + d) = acx^2 + (ad + bc)x + bd\)</span></p>
-<p><span class="math inline">\((x+y)^2 = x^2 + 2xy + y^2\)</span></p>
-<p><span class="math inline">\((x-y)^2 = x^2 - 2xy + y^2\)</span></p>
-<p><span class="math inline">\((x+y)(x-y) = x^2 - y^2\)</span></p>
-<p><span class="math inline">\((x+y+z)^3 = x^2 + y^2 + z^2 + 2xy + 2yz +2zx\)</span></p>
-<p><span class="math inline">\((x+y)^3= x^3 + 3x^2y + 3xy^2 + y^3\)</span></p>
-<p><span class="math inline">\((x-y)^3= x^3 - 3x^2y + 3xy^2 - y^3\)</span></p>
-</section>
-</section>
-<section id="大学数学" class="level1">
-<h1>大学数学</h1>
-<section id="フーリエ変換" class="level2">
-<h2 class="anchored" data-anchor-id="フーリエ変換">フーリエ変換</h2>
-<p><span class="math inline">\(\hat{f}(\xi) := \int_{-\infty}^{\infty} f(x)e^{- 2\pi i x \xi}\,dx\)</span></p>
-<ul>
-<li><span class="math inline">\(\xi\)</span> は任意の実数</li>
-<li>:= という記号は，左辺を右辺で定義するという意味</li>
-<li><span class="math inline">\(\int_{}{}\)</span> は積分記号</li>
-<li><span class="math inline">\(e^{- 2\pi i x \xi}\)</span> は周波数（？）</li>
-<li><span class="math inline">\(dx\)</span> は瞬間的な変化量</li>
-</ul>
-</section>
-<section id="偏微分方程式" class="level2">
-<h2 class="anchored" data-anchor-id="偏微分方程式">偏微分方程式</h2>
-<p>以下では未知関数 ψ の変数 x に関する偏微分を ψx のように表す： <span class="math display">\[
-\psi_x := {\partial \psi \over \partial x},
-\]</span></p>
-<p><span class="math display">\[
-\psi_{xy} := {\partial^2 \psi \over \partial y\, \partial x}.
-\]</span></p>
+<div id="cell-0" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">Time</span><span class="at">.now</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2024-04-26 00:31:44.84626 +0900</code></pre>
+</div>
+</div>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -340,7 +248,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/geeknees\.github\.io\/research\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
